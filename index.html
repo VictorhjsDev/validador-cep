@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Validador de CEP em Massa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1e3a5f;
+      --navy-d:#162d4a;
+      --navy-l:#2a4f7c;
+      --blue-btn:#2980b9;
+      --blue-btn-h:#2471a3;
+      --green:#27ae60;
+      --green-bg:#eafaf1;
+      --red:#c0392b;
+      --red-bg:#fdf3f2;
+      --border:#d5d8dc;
+      --bg:#f2f3f4;
+      --text:#2c3e50;
+      --muted:#7f8c8d;
+      --label:#ecf0f1;
+    }
+    body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+
+    header{background:var(--navy-d);padding:10px 20px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--blue-btn)}
+    .logo{color:#fff;font-size:16px;font-weight:700;letter-spacing:.01em}
+    .logo span{color:#5dade2}
+    header p{color:#a9cce3;font-size:12px}
+
+    .wrap{display:flex;flex:1;min-height:0}
+
+    .sidebar{width:260px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column}
+    .sidebar-title{background:var(--navy-d);color:var(--label);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .sidebar-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+
+    .field-label{display:block;color:#a9cce3;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+
+    /* TEXTAREA */
+    textarea{width:100%;height:180px;resize:vertical;font-family:'Roboto',sans-serif;font-size:13px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.15);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
+    textarea::placeholder{color:#aaa}
+    textarea:focus{border-color:#5dade2}
+    .count{font-size:11px;color:#7fb3d3;text-align:right}
+
+    /* SEPARADOR */
+    .or-sep{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.25);font-size:11px}
+    .or-sep::before,.or-sep::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.15)}
+
+    /* UPLOAD AREA */
+    .upload-area{border:1px dashed rgba(255,255,255,.25);border-radius:3px;padding:14px 10px;text-align:center;cursor:pointer;transition:background .15s;position:relative}
+    .upload-area:hover{background:rgba(255,255,255,.06)}
+    .upload-area.drag{background:rgba(93,173,226,.15);border-color:#5dade2}
+    .upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .upload-icon{font-size:22px;margin-bottom:6px}
+    .upload-area p{font-size:12px;color:#a9cce3;line-height:1.5}
+    .upload-area strong{color:#fff}
+    .upload-name{font-size:11px;color:#58d68d;margin-top:4px;min-height:16px}
+
+    /* MODELO */
+    .btn-modelo{width:100%;padding:7px;background:transparent;color:#7fb3d3;font-size:11px;font-family:'Roboto',sans-serif;border:1px solid rgba(255,255,255,.15);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:6px}
+    .btn-modelo:hover{background:rgba(255,255,255,.07);color:#fff}
+
+    /* BOTÕES PRINCIPAIS */
+    .btn-primary{width:100%;padding:10px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;border-radius:3px;cursor:pointer}
+    .btn-primary:hover{background:var(--blue-btn-h)}
+    .btn-primary:active{filter:brightness(.9)}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+
+    .btn-clear{width:100%;padding:8px;background:transparent;color:#7fb3d3;font-size:12px;font-family:'Roboto',sans-serif;border:1px solid rgba(255,255,255,.15);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+    .btn-clear:hover{background:rgba(255,255,255,.07);color:#fff}
+
+    /* PROGRESS */
+    .prog{display:none;flex-direction:column;gap:5px}
+    .prog.show{display:flex}
+    .prog-bar{height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}
+    .prog-fill{height:100%;background:#5dade2;width:0%;transition:width .2s}
+    .prog-lbl{font-size:11px;color:#7fb3d3}
+
+    /* STATS */
+    .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);border-radius:3px;overflow:hidden;margin-top:4px}
+    .stat{background:var(--navy-d);padding:10px 6px;text-align:center}
+    .stat-n{display:block;font-size:22px;font-weight:700;color:#fff;line-height:1}
+    .stat-n.g{color:#58d68d}
+    .stat-n.r{color:#ec7063}
+    .stat-l{font-size:10px;color:#7fb3d3;text-transform:uppercase;letter-spacing:.04em}
+
+    /* CONTENT */
+    .content{flex:1;display:flex;flex-direction:column;min-width:0}
+    .content-head{background:#fff;border-bottom:2px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .content-head h2{font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em}
+    .export-row{display:flex;gap:6px}
+    .btn-exp{padding:5px 12px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:none;border-radius:3px;cursor:pointer}
+    .btn-exp:hover{background:var(--navy-l)}
+    .btn-exp.green{background:var(--green)}
+    .btn-exp.green:hover{background:#219a52}
+
+    /* TABLE */
+    .table-scroll{flex:1;overflow:auto}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    thead th{position:sticky;top:0;background:var(--navy);color:#fff;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
+    thead th:last-child{border-right:none}
+    tbody tr:nth-child(even) td{background:#f8f9fa}
+    tbody tr:hover td{background:#eaf4fb}
+    td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+    .td-cep{font-weight:700;font-size:13px;color:var(--navy)}
+    .badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;display:inline-block}
+    .badge-ok{background:var(--green-bg);color:var(--green);border:1px solid #a9dfbf}
+    .badge-err{background:var(--red-bg);color:var(--red);border:1px solid #f5b7b1}
+    .td-m{color:var(--muted);font-size:12px}
+
+    .empty{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem}
+    .empty-box{text-align:center;color:var(--muted)}
+    .empty-box p{font-size:13px;line-height:1.8;margin-top:6px}
+
+    footer{background:var(--navy-d);color:#7fb3d3;font-size:11px;padding:8px 20px;text-align:center;border-top:2px solid var(--blue-btn)}
+    footer a{color:#5dade2;text-decoration:none}
+
+    @media(max-width:680px){
+      .wrap{flex-direction:column}
+      .sidebar{width:100%}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Validador de <span>CEP</span> em Massa</div>
+    <p>Valide múltiplos CEPs e exporte os resultados</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <aside class="sidebar">
+    <div class="sidebar-title">Parâmetros</div>
+    <div class="sidebar-body">
+
+      <!-- TEXTAREA -->
+      <div>
+        <label class="field-label">CEPs para validar</label>
+        <textarea id="cepInput" placeholder="01310-100&#10;22070-900&#10;30112-020&#10;&#10;Um por linha, vírgula&#10;ou espaço."></textarea>
+        <div class="count" id="count">0 CEPs · máx. 100</div>
+      </div>
+
+      <div class="or-sep">ou importe um arquivo</div>
+
+      <!-- UPLOAD -->
+      <div class="upload-area" id="uploadArea">
+        <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" onchange="handleFile(this.files[0])"/>
+        <div class="upload-icon">&#128196;</div>
+        <p><strong>Clique para selecionar</strong><br>ou arraste aqui<br><span style="font-size:10px;opacity:.7">.xlsx · .xls · .csv</span></p>
+        <div class="upload-name" id="uploadName"></div>
+      </div>
+
+      <!-- MODELO -->
+      <button class="btn-modelo" onclick="baixarModelo()">&#8659; Baixar modelo Excel</button>
+
+      <button class="btn-primary" id="btnConsultar" onclick="consultar()">&#9654; Validar CEPs</button>
+      <button class="btn-clear" onclick="limpar()">Limpar tudo</button>
+
+      <div class="prog" id="prog">
+        <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+        <div class="prog-lbl" id="pLbl">0 / 0</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="stat-n" id="sTotal">—</span><span class="stat-l">Total</span></div>
+        <div class="stat"><span class="stat-n g" id="sOk">—</span><span class="stat-l">Válidos</span></div>
+        <div class="stat"><span class="stat-n r" id="sErr">—</span><span class="stat-l">Inválidos</span></div>
+      </div>
+
+    </div>
+  </aside>
+
+  <div class="content">
+    <div class="content-head">
+      <h2>Resultados <span id="hInfo" style="font-weight:400;color:var(--muted);font-size:12px;text-transform:none;letter-spacing:0"></span></h2>
+      <div class="export-row" id="exportRow" style="display:none">
+        <button class="btn-exp green" onclick="exportXLSX()">&#8659; Excel</button>
+        <button class="btn-exp" onclick="exportCSV()">&#8659; CSV</button>
+        <button class="btn-exp" onclick="copiar()">&#8663; Copiar</button>
+      </div>
+    </div>
+
+    <div class="table-scroll" id="tableScroll">
+      <div class="empty">
+        <div class="empty-box">
+          <p>Informe os CEPs ao lado ou<br>importe um arquivo Excel,<br>depois clique em <strong>Validar CEPs</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Dados fornecidos pela <a href="https://viacep.com.br" target="_blank">ViaCEP</a> — API pública e gratuita
+</footer>
+
+<script>
+  let res = [];
+
+  const inp    = document.getElementById('cepInput');
+  const cnt    = document.getElementById('count');
+  const btn    = document.getElementById('btnConsultar');
+  const prog   = document.getElementById('prog');
+  const pFill  = document.getElementById('pFill');
+  const pLbl   = document.getElementById('pLbl');
+  const sT     = document.getElementById('sTotal');
+  const sO     = document.getElementById('sOk');
+  const sE     = document.getElementById('sErr');
+  const hInfo  = document.getElementById('hInfo');
+  const expR   = document.getElementById('exportRow');
+  const scrl   = document.getElementById('tableScroll');
+  const upName = document.getElementById('uploadName');
+  const upArea = document.getElementById('uploadArea');
+
+  // drag & drop visual
+  upArea.addEventListener('dragover', e => { e.preventDefault(); upArea.classList.add('drag'); });
+  upArea.addEventListener('dragleave', () => upArea.classList.remove('drag'));
+  upArea.addEventListener('drop', e => {
+    e.preventDefault();
+    upArea.classList.remove('drag');
+    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+
+  inp.addEventListener('input', atualizarCount);
+
+  function atualizarCount() {
+    const n = parseTxt().length;
+    cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' · máx. 100';
+  }
+
+  function parseTxt() {
+    return [...new Set(
+      inp.value.split(/[\n,;\s]+/)
+        .map(t => t.replace(/\D/g, ''))
+        .filter(t => t.length > 0)
+    )].slice(0, 100);
+  }
+
+  // lê arquivo Excel/CSV e joga os CEPs no textarea
+  function handleFile(file) {
+    if (!file) return;
+    upName.textContent = 'Carregando...';
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const wb = XLSX.read(e.target.result, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+        // pega só a primeira coluna, ignora vazios
+        const ceps = rows
+          .map(r => String(r[0] || '').replace(/\D/g, ''))
+          .filter(c => c.length > 0);
+        inp.value = ceps.join('\n');
+        upName.textContent = file.name + ' · ' + ceps.length + ' linha(s)';
+        atualizarCount();
+      } catch(err) {
+        upName.textContent = 'Erro ao ler o arquivo.';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  // gera e baixa o modelo Excel
+  function baixarModelo() {
+    const ws = XLSX.utils.aoa_to_sheet([
+      ['01310-100'],
+      ['22070-900'],
+      ['30112-020'],
+      ['70040-020'],
+    ]);
+    // largura da coluna
+    ws['!cols'] = [{ wch: 16 }];
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
+    XLSX.writeFile(wb, 'modelo_ceps.xlsx');
+  }
+
+  async function consultar() {
+    const ceps = parseTxt();
+    if (!ceps.length) return;
+    res = [];
+    btn.disabled = true;
+    prog.classList.add('show');
+    expR.style.display = 'none';
+    scrl.innerHTML = '';
+
+    for (let i = 0; i < ceps.length; i++) {
+      pFill.style.width = (i / ceps.length * 100) + '%';
+      pLbl.textContent = (i + 1) + ' / ' + ceps.length;
+      res.push(await fetch_cep(ceps[i]));
+      render();
+      await new Promise(r => setTimeout(r, 60));
+    }
+
+    pFill.style.width = '100%';
+    pLbl.textContent = 'Concluído.';
+    btn.disabled = false;
+    expR.style.display = 'flex';
+  }
+
+  async function fetch_cep(cep) {
+    if (!/^\d{8}$/.test(cep)) return { cep: cep, ok: false, motivo: 'Formato inválido' };
+    try {
+      const d = await (await fetch('https://viacep.com.br/ws/' + cep + '/json/')).json();
+      if (d.erro) return { cep: cep, ok: false, motivo: 'Não encontrado na base' };
+      return { cep: d.cep || cep, ok: true, end: d.logradouro || '—', bairro: d.bairro || '—', cidade: d.localidade || '—', uf: d.uf || '—', ibge: d.ibge || '—' };
+    } catch {
+      return { cep: cep, ok: false, motivo: 'Erro na consulta' };
+    }
+  }
+
+  function render() {
+    const ok = res.filter(r => r.ok).length;
+    sT.textContent = res.length;
+    sO.textContent = ok;
+    sE.textContent = res.length - ok;
+    hInfo.textContent = '— ' + res.length + ' registro' + (res.length !== 1 ? 's' : '');
+
+    const rows = res.map((r, i) => {
+      if (r.ok) {
+        return '<tr><td class="td-m">' + (i+1) + '</td><td class="td-cep">' + r.cep + '</td>' +
+          '<td><span class="badge badge-ok">Válido</span></td>' +
+          '<td>' + r.end + '</td><td>' + r.bairro + '</td>' +
+          '<td>' + r.cidade + ' / ' + r.uf + '</td>' +
+          '<td class="td-m">' + r.ibge + '</td></tr>';
+      }
+      return '<tr><td class="td-m">' + (i+1) + '</td><td class="td-cep">' + fmt(r.cep) + '</td>' +
+        '<td><span class="badge badge-err">Inválido</span></td>' +
+        '<td class="td-m" colspan="4">' + r.motivo + '</td></tr>';
+    }).join('');
+
+    scrl.innerHTML = '<table><thead><tr>' +
+      '<th>#</th><th>CEP</th><th>Status</th><th>Logradouro</th><th>Bairro</th><th>Cidade / UF</th><th>IBGE</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function limpar() {
+    inp.value = '';
+    res = [];
+    upName.textContent = '';
+    document.getElementById('fileInput').value = '';
+    atualizarCount();
+    sT.textContent = sO.textContent = sE.textContent = '—';
+    hInfo.textContent = '';
+    expR.style.display = 'none';
+    prog.classList.remove('show');
+    pFill.style.width = '0%';
+    scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Informe os CEPs ao lado ou<br>importe um arquivo Excel,<br>depois clique em <strong>Validar CEPs</strong>.</p></div></div>';
+  }
+
+  function fmt(c) { return c.length === 8 ? c.slice(0,5) + '-' + c.slice(5) : c; }
+
+  // exporta resultado como Excel
+  function exportXLSX() {
+    const header = ['CEP', 'Status', 'Logradouro', 'Bairro', 'Cidade', 'UF', 'IBGE'];
+    const rows = res.map(r => r.ok
+      ? [r.cep, 'Válido', r.end, r.bairro, r.cidade, r.uf, r.ibge]
+      : [r.cep, 'Inválido', r.motivo, '', '', '', '']
+    );
+    const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
+    ws['!cols'] = [14,10,32,24,20,6,10].map(w => ({ wch: w }));
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Resultados');
+    XLSX.writeFile(wb, 'ceps_validados.xlsx');
+  }
+
+  function exportCSV() {
+    const rows = res.map(r => r.ok
+      ? '"' + r.cep + '","Válido","' + r.end + '","' + r.bairro + '","' + r.cidade + '","' + r.uf + '","' + r.ibge + '"'
+      : '"' + r.cep + '","Inválido","' + r.motivo + '","","","",""'
+    );
+    const b = new Blob(['CEP,Status,Logradouro,Bairro,Cidade,UF,IBGE\n' + rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    Object.assign(document.createElement('a'), { href: URL.createObjectURL(b), download: 'ceps_validados.csv' }).click();
+  }
+
+  function copiar() {
+    const lines = ['CEP\tStatus\tLogradouro\tBairro\tCidade\tUF\tIBGE'].concat(
+      res.map(r => r.ok
+        ? r.cep + '\tVálido\t' + r.end + '\t' + r.bairro + '\t' + r.cidade + '\t' + r.uf + '\t' + r.ibge
+        : r.cep + '\tInválido\t' + r.motivo + '\t\t\t\t'
+      )
+    );
+    navigator.clipboard.writeText(lines.join('\n'));
+  }
+</script>
+</body>
+</html>
