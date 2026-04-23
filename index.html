@@ -188,7 +188,7 @@
           name="cepInput"
           aria-describedby="cepHint"
           placeholder="01310-100&#10;22070-900&#10;30112-020&#10;&#10;Um por linha, vírgula&#10;ou espaço."></textarea>
-        <div class="count" id="cepHint" aria-live="polite">0 CEPs · máx. 100</div>
+        <div class="count" id="cepHint" aria-live="polite">0 CEPs · máx. 500</div>
       </div>
 
       <div class="or-sep" role="separator">ou importe um arquivo</div>
@@ -325,7 +325,7 @@
 
   function atualizarCount() {
     const n = parseTxt().length;
-    cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' · máx. 100';
+    cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' · máx. 500';
   }
 
   function parseTxt() {
@@ -333,7 +333,7 @@
       inp.value.split(/[\n,;\s]+/)
         .map(t => t.replace(/\D/g, ''))
         .filter(t => t.length > 0)
-    )].slice(0, 100);
+    )].slice(0, 500);
   }
 
   function handleFile(file) {
