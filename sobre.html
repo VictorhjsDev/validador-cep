@@ -1,11 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Sobre</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sobre | Validador de CEP em Massa</title>
+  <meta name="description" content="Conheça o Validador de CEP em Massa, ferramenta gratuita para consulta e validação de múltiplos CEPs de uma vez."/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1e3a5f;--navy-d:#162d4a;--navy-l:#2a4f7c;
+      --blue-btn:#2980b9;--border:#d5d8dc;--bg:#f2f3f4;
+      --text:#2c3e50;--muted:#5d6d7e;--side-text:#c8dff0;
+    }
+    body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+    header{background:var(--navy-d);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--blue-btn)}
+    .logo{color:#fff;font-size:16px;font-weight:700;text-decoration:none}
+    .logo span{color:#5dade2}
+    header p{color:#b8d4e8;font-size:12px}
+    nav{display:flex;gap:20px}
+    nav a{color:#b8d4e8;font-size:12px;text-decoration:none;font-weight:500}
+    nav a:hover{color:#fff}
+    nav a.active{color:#5dade2}
+    main{flex:1;max-width:760px;margin:0 auto;width:100%;padding:40px 24px}
+    .page-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px}
+    .page-subtitle{font-size:13px;color:var(--muted);margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+    .card{background:#fff;border:1px solid var(--border);border-radius:4px;padding:24px;margin-bottom:16px}
+    .card h2{font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .card p{font-size:13px;color:var(--text);line-height:1.8;margin-bottom:10px}
+    .card p:last-child{margin-bottom:0}
+    .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+    .feature{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:14px}
+    .feature strong{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+    .feature span{font-size:12px;color:var(--muted);line-height:1.6}
+    .badge-navy{display:inline-block;background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:16px}
+    footer{background:var(--navy-d);color:#b8d4e8;font-size:11px;padding:8px 20px;text-align:center;border-top:2px solid var(--blue-btn)}
+    footer a{color:#5dade2;text-decoration:underline}
+    @media(max-width:600px){.feature-grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-<h1>Sobre</h1>
-<p>O Validador de CEP em Massa é uma ferramenta gratuita para consulta e validação de CEPs em grande volume.</p>
+
+<header>
+  <div>
+    <a href="/" class="logo">Validador de <span>CEP</span> em Massa</a>
+    <p>Ferramenta gratuita para consultar e validar múltiplos CEPs</p>
+  </div>
+  <nav>
+    <a href="index.html" >Início</a>
+    <a href="sobre.html" class="active">Sobre</a>
+    <a href="contato.html">Contato</a>
+  </nav>
+</header>
+
+<main>
+  <div class="badge-navy">Sobre a ferramenta</div>
+  <h1 class="page-title">Validador de CEP em Massa</h1>
+  <p class="page-subtitle">Conheça a ferramenta e como ela pode ajudar no seu dia a dia</p>
+
+  <div class="card">
+    <h2>O que é</h2>
+    <p>O <strong>Validador de CEP em Massa</strong> é uma ferramenta gratuita criada para quem precisa consultar e validar grandes volumes de CEPs de uma só vez — sem precisar checar um por um.</p>
+    <p>Cole os CEPs diretamente no campo de texto, importe uma planilha Excel ou CSV, e obtenha em segundos o logradouro, bairro, cidade, estado e código IBGE de cada endereço. Os resultados podem ser exportados em Excel ou CSV para uso imediato.</p>
+  </div>
+
+  <div class="card">
+    <h2>Para quem é útil</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <strong>E-commerce e logística</strong>
+        <span>Valide endereços de clientes antes de processar pedidos ou gerar etiquetas de envio.</span>
+      </div>
+      <div class="feature">
+        <strong>Marketing e CRM</strong>
+        <span>Higienize bases de contatos e segmente campanhas por cidade ou estado.</span>
+      </div>
+      <div class="feature">
+        <strong>Desenvolvedores</strong>
+        <span>Teste rapidamente listas de CEPs sem precisar escrever scripts de consulta.</span>
+      </div>
+      <div class="feature">
+        <strong>Atendimento e suporte</strong>
+        <span>Confirme rapidamente a validade de um endereço informado pelo cliente.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Como funciona</h2>
+    <p>A ferramenta consulta cada CEP na base de dados da <strong>ViaCEP</strong>, uma API pública e gratuita mantida pela comunidade brasileira. Antes de consultar, o formato do CEP já é validado — CEPs com formato errado são identificados na hora, sem consumir requisições desnecessárias.</p>
+    <p>Todo o processamento é feito diretamente no seu navegador. Nenhum dado é armazenado em servidores.</p>
+  </div>
+
+  <div class="card">
+    <h2>Tecnologia</h2>
+    <p>Desenvolvido em HTML, CSS e JavaScript puro — sem frameworks ou dependências pesadas. Utiliza a <a href="https://viacep.com.br" target="_blank" rel="noopener" style="color:var(--navy);font-weight:500">API ViaCEP</a> para consulta dos endereços e a biblioteca SheetJS para leitura e exportação de arquivos Excel.</p>
+  </div>
+</main>
+
+<footer>
+  <p>Dados fornecidos pela <a href="https://viacep.com.br" target="_blank" rel="noopener noreferrer">ViaCEP</a> — API pública e gratuita &nbsp;|&nbsp; validadorcep.com.br</p>
+</footer>
+
 </body>
 </html>
