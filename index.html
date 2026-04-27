@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Validador de CEP em Massa | Consulta e Valida Vários CEPs de Uma Vez</title>
-  <meta name="description" content="Ferramenta gratuita para validar múltiplos CEPs de uma vez. Cole, importe Excel ou CSV e obtenha logradouro, bairro, cidade, estado e código IBGE. Exporte os resultados em Excel ou CSV."/>
+  <title>Validador de CEP Grátis | Valide Vários CEPs de Uma Vez</title>
+  <meta name="description" content="Validador de CEP gratuito e sem cadastro. Valide um ou centenas de CEPs de uma vez — cole a lista ou importe Excel e obtenha logradouro, cidade, estado e IBGE na hora."/>
   <meta name="keywords" content="validador de cep, validar cep em massa, consultar vários ceps, validar cep online, cep em lote"/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://validadorcep.com.br/"/>
@@ -188,7 +188,7 @@
           name="cepInput"
           aria-describedby="cepHint"
           placeholder="01310-100&#10;22070-900&#10;30112-020&#10;&#10;Um por linha, vírgula&#10;ou espaço."></textarea>
-        <div class="count" id="cepHint" aria-live="polite">0 CEPs · máx. 500</div>
+        <div class="count" id="cepHint" aria-live="polite">0 CEPs · máx. 100</div>
       </div>
 
       <div class="or-sep" role="separator">ou importe um arquivo</div>
@@ -266,16 +266,22 @@
 
     <!-- SEO CONTENT -->
     <section class="seo-block" aria-label="Sobre a ferramenta">
-      <h2>Como funciona o Validador de CEP em Massa</h2>
+      <h2>Validador de CEP gratuito — individual ou em massa</h2>
       <p>
-        Cole um ou centenas de CEPs no campo ao lado — separados por linha, vírgula ou espaço — ou importe uma planilha Excel com os CEPs na primeira coluna.
+        Este <strong>validador de CEP</strong> permite consultar desde um único CEP até centenas de uma só vez.
+        Cole os CEPs no campo ao lado — separados por linha, vírgula ou espaço — ou importe uma planilha Excel com os CEPs na primeira coluna.
         A ferramenta consulta cada CEP na base do <strong>ViaCEP</strong> e retorna logradouro, bairro, cidade, estado e código IBGE em segundos.
       </p>
+      <p style="margin-top:8px">
+        Diferente de outros <strong>validadores de CEP</strong>, aqui você não precisa checar um por um.
+        Cole a lista inteira, valide tudo de uma vez e exporte o resultado em Excel ou CSV — sem cadastro, sem limite.
+      </p>
       <ul>
-        <li>Valida o formato do CEP antes de consultar</li>
-        <li>Informa se o CEP é inválido, não encontrado ou com erro</li>
-        <li>Exporta os resultados em Excel ou CSV</li>
-        <li>Gratuito, sem cadastro e sem limite de uso</li>
+        <li>Valida o formato do CEP antes de consultar — CEPs inválidos são identificados na hora</li>
+        <li>Informa se o CEP é inválido, não encontrado ou com erro de consulta</li>
+        <li>Importa planilhas Excel e CSV com centenas de CEPs</li>
+        <li>Exporta os resultados em Excel ou CSV prontos para usar</li>
+        <li>100% gratuito, sem cadastro e sem limite de uso</li>
       </ul>
     </section>
   </main>
@@ -325,7 +331,7 @@
 
   function atualizarCount() {
     const n = parseTxt().length;
-    cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' · máx. 500';
+    cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' · máx. 100';
   }
 
   function parseTxt() {
@@ -333,7 +339,7 @@
       inp.value.split(/[\n,;\s]+/)
         .map(t => t.replace(/\D/g, ''))
         .filter(t => t.length > 0)
-    )].slice(0, 500);
+    )].slice(0, 100);
   }
 
   function handleFile(file) {
