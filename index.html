@@ -3,22 +3,19 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Validador de CEP Grátis | Valide Vários CEPs de Uma Vez</title>
-  <meta name="description" content="Validador de CEP gratuito e sem cadastro. Valide um ou centenas de CEPs de uma vez — cole a lista ou importe Excel e obtenha logradouro, cidade, estado e IBGE na hora."/>
-  <meta name="keywords" content="validador de cep, validar cep em massa, consultar vários ceps, validar cep online, cep em lote, buscar cep por endereço"/>
+  <title>Validador de CEP Gr&#225;tis | Valide, Consulte e Gere CEPs Online</title>
+  <meta name="description" content="Valide CEP online, em massa ou individualmente. Importe Excel, busque por endere&#231;o, gere CEPs por estado e baixe os resultados. Gratuito e sem cadastro."/>
+  <meta name="keywords" content="validador de cep, valida cep, validar cep, validar cep online, cep em lote, buscar cep por endereco, gerador de cep, cep excel download, validar cep em massa"/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://validadorcep.com.br/"/>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578934872428684" crossorigin="anonymous"></script>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"/>
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Validador de CEP Grátis | Valide Vários CEPs de Uma Vez"/>
+  <meta property="og:title" content="Validador de CEP em Massa"/>
   <meta property="og:description" content="Valide centenas de CEPs de uma vez. Importe Excel, exporte resultados com logradouro, bairro, cidade e IBGE."/>
   <meta property="og:url" content="https://validadorcep.com.br/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="pt_BR"/>
-
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
@@ -32,42 +29,31 @@
       --side-text:#c8dff0;--side-muted:#8fb8d8;
     }
     body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;display:flex;flex-direction:column}
-
     .skip-link{position:absolute;top:-40px;left:0;background:var(--navy);color:#fff;padding:8px 16px;font-size:13px;text-decoration:none;border-radius:0 0 4px 0;z-index:999}
     .skip-link:focus{top:0}
-
     header{background:var(--navy-d);padding:10px 20px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--blue-btn)}
     .logo{color:#fff;font-size:16px;font-weight:700;letter-spacing:.01em}
     .logo span{color:#5dade2}
     header p{color:#b8d4e8;font-size:12px}
-
     .wrap{display:flex;flex:1;min-height:0}
-
-    /* ── SIDEBAR 25% ── */
     .sidebar{width:25%;min-width:280px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column}
     .sidebar-title{background:var(--navy-d);color:var(--label);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.12)}
     .sidebar-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto}
-
-    /* ── ABAS ── */
     .tab-header{display:flex;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:2px}
     .tab-btn{flex:1;padding:8px 6px;font-family:'Roboto',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--side-muted);cursor:pointer;transition:color .15s,border-color .15s;margin-bottom:-1px}
     .tab-btn:hover{color:var(--side-text)}
     .tab-btn.active{color:#fff;border-bottom-color:#5dade2}
     .tab-btn:focus{outline:2px solid #5dade2;outline-offset:-2px}
-
+    .tab-btn.gerar{background:rgba(39,174,96,.18);color:#7dcea0}
+    .tab-btn.gerar:hover{background:rgba(39,174,96,.28);color:#a9dfb8}
+    .tab-btn.gerar.active{background:rgba(39,174,96,.28);color:#a9dfb8;border-bottom-color:#27ae60}
     .tab-panel{display:none;flex-direction:column;gap:10px}
     .tab-panel.active{display:flex}
-
-    /* ── CAMPOS ── */
     .field-label{display:block;color:var(--side-text);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-
     textarea{width:100%;height:200px;resize:vertical;font-family:'Roboto',sans-serif;font-size:13px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
     textarea::placeholder{color:#888}
     textarea:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
-
     .count{font-size:11px;color:var(--side-muted);text-align:right;margin-top:3px}
-
-    /* ── UPLOAD ── */
     .upload-area{border:1px dashed rgba(255,255,255,.3);border-radius:3px;padding:14px 10px;text-align:center;cursor:pointer;transition:background .15s;position:relative}
     .upload-area:hover,.upload-area:focus-within{background:rgba(255,255,255,.07);border-color:#5dade2}
     .upload-area.drag{background:rgba(93,173,226,.15);border-color:#5dade2}
@@ -77,56 +63,41 @@
     .upload-area strong{color:#fff}
     .upload-sub{font-size:11px;color:var(--side-muted);display:block;margin-top:2px}
     .upload-name{font-size:11px;color:#58d68d;margin-top:6px;min-height:16px;font-weight:500}
-
     .btn-modelo{width:100%;padding:7px;background:transparent;color:var(--side-text);font-size:11px;font-family:'Roboto',sans-serif;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
     .btn-modelo:hover{background:rgba(255,255,255,.08);color:#fff}
     .btn-modelo:focus{outline:2px solid #5dade2;outline-offset:2px}
-
-    /* ── BUSCA POR ENDEREÇO ── */
     .input-field{width:100%;font-family:'Roboto',sans-serif;font-size:13px;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
     .input-field::placeholder{color:#888}
     .input-field:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
     .input-hint{font-size:11px;color:var(--side-muted);margin-top:3px}
-
-    /* ── BOTÕES ── */
     .btn-primary{width:100%;padding:10px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;border-radius:3px;cursor:pointer}
     .btn-primary:hover{background:var(--blue-btn-h)}
     .btn-primary:focus{outline:2px solid #fff;outline-offset:2px}
     .btn-primary:active{filter:brightness(.9)}
     .btn-primary:disabled{opacity:.4;cursor:not-allowed}
-
     .btn-clear{width:100%;padding:8px;background:transparent;color:var(--side-text);font-size:12px;font-family:'Roboto',sans-serif;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
     .btn-clear:hover{background:rgba(255,255,255,.08);color:#fff}
     .btn-clear:focus{outline:2px solid #5dade2;outline-offset:2px}
-
-    /* ── PROGRESS ── */
     .prog{display:none;flex-direction:column;gap:5px}
     .prog.show{display:flex}
     .prog-bar{height:3px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden}
     .prog-fill{height:100%;background:#5dade2;width:0%;transition:width .2s}
     .prog-lbl{font-size:11px;color:var(--side-muted)}
-
-    /* ── STATS ── */
     .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
     .stat{background:var(--navy-d);padding:10px 6px;text-align:center}
     .stat-n{display:block;font-size:22px;font-weight:700;color:#fff;line-height:1}
     .stat-n.g{color:#58d68d}
     .stat-n.r{color:#e74c3c}
     .stat-l{font-size:10px;color:var(--side-muted);text-transform:uppercase;letter-spacing:.04em}
-
-    /* ── CONTENT ── */
     .content{flex:1;display:flex;flex-direction:column;min-width:0}
     .content-head{background:#fff;border-bottom:2px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .content-head h2{font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em}
     .export-row{display:flex;gap:6px}
     .btn-exp{padding:5px 12px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:none;border-radius:3px;cursor:pointer}
     .btn-exp:hover{background:var(--navy-l)}
     .btn-exp:focus{outline:2px solid var(--navy);outline-offset:2px}
     .btn-exp.green{background:var(--green)}
     .btn-exp.green:hover{background:#219a52}
-
-    /* ── TABLE ── */
-    .table-scroll{flex:1;overflow:auto}
+    .table-scroll{flex:1;overflow:auto;padding-bottom:60px}
     table{width:100%;border-collapse:collapse;font-size:13px}
     thead th{position:sticky;top:0;background:var(--navy);color:#fff;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
     thead th:last-child{border-right:none}
@@ -138,106 +109,127 @@
     .badge-ok{background:var(--green-bg);color:#1e8449;border:1px solid #a9dfbf}
     .badge-err{background:var(--red-bg);color:#922b21;border:1px solid #f5b7b1}
     .td-m{color:var(--muted);font-size:12px}
-
-    /* ── SEO BLOCK ── */
-    .seo-block{background:#fff;border-top:1px solid var(--border);padding:20px 24px}
+    .seo-block{background:#fff;border-top:1px solid var(--border);padding:20px 24px;margin-top:auto}
     .seo-block h2{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
-    .seo-block p{font-size:13px;color:var(--muted);line-height:1.7;max-width:72ch;margin-bottom:8px}
-    .seo-block p:last-child{margin-bottom:0}
+    .seo-block p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:8px}
     .seo-block ul{margin:8px 0 0 18px;font-size:13px;color:var(--muted);line-height:1.8}
-
-    /* ── EMPTY ── */
     .empty{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem}
     .empty-box{text-align:center;color:var(--muted)}
     .empty-box p{font-size:13px;line-height:1.8;margin-top:6px}
-
-    /* ── FOOTER ── */
-    footer{background:var(--navy-d);color:#b8d4e8;font-size:11px;padding:8px 20px;text-align:center;border-top:2px solid var(--blue-btn)}
+    footer{background:var(--navy-d);color:#b8d4e8;font-size:11px;padding:8px 20px;border-top:2px solid var(--blue-btn);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     footer a{color:#5dade2;text-decoration:underline}
     footer a:hover{color:#85c1e9}
-
     @media(max-width:768px){
       .wrap{flex-direction:column}
       .sidebar{width:100%;min-width:unset}
+      header{padding:8px 14px;gap:6px}
+      .logo{font-size:14px}
+      header p{font-size:11px}
+      .sidebar-body{padding:12px;gap:8px}
+      .sidebar-title{padding:8px 12px}
+      .tab-header{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+      .tab-header::-webkit-scrollbar{display:none}
+      .tab-btn{font-size:10px;padding:8px 10px;white-space:nowrap;flex:none}
+      textarea{height:130px}
+      .upload-area{padding:10px 8px}
+      .upload-icon{font-size:18px;margin-bottom:4px}
+      .upload-area p{font-size:11px}
+      .btn-primary{padding:11px;font-size:13px}
+      .btn-clear{padding:8px;font-size:12px}
+      .btn-modelo{font-size:11px;padding:7px}
+      .input-field{font-size:13px;padding:8px 10px}
+      .content-head{padding:8px 12px;gap:8px}
+      .content-head h1{font-size:13px}
+      .export-row{gap:5px}
+      .btn-exp{padding:5px 10px;font-size:10px}
+      .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+      table{font-size:12px;min-width:480px}
+      thead th{padding:8px 10px;font-size:10px}
+      td{padding:7px 10px}
+      .seo-block{padding:14px}
+      .seo-block h2{font-size:13px}
+      .seo-block p,.seo-block ul{font-size:12px}
+      .stat-n{font-size:18px}
+      .stat-l{font-size:9px}
+      .stat{padding:8px 4px}
+      footer{padding:8px 14px;flex-direction:column;text-align:center;gap:4px}
+      footer p{line-height:1.8}
+    }
+    @media(max-width:360px){
+      .tab-btn{font-size:9px;padding:7px 8px}
+      header p{display:none}
     }
   </style>
 </head>
 <body>
 
-<a href="#main-content" class="skip-link">Ir para o conteúdo principal</a>
+<a href="#main-content" class="skip-link">Ir para o conte&#250;do principal</a>
 
 <header>
   <div>
     <div class="logo" aria-label="Validador de CEP em Massa">Validador de <span>CEP</span> em Massa</div>
-    <p>Ferramenta gratuita para consultar e validar múltiplos CEPs de uma vez</p>
+    <p>Ferramenta gratuita para consultar e validar m&#250;ltiplos CEPs de uma vez</p>
   </div>
 </header>
 
 <div class="wrap">
-
-  <!-- SIDEBAR -->
   <aside class="sidebar" aria-label="Painel de entrada">
-    <div class="sidebar-title" aria-hidden="true">Parâmetros</div>
+    <div class="sidebar-title" aria-hidden="true">Busca</div>
     <div class="sidebar-body">
 
-      <!-- ABAS -->
       <div class="tab-header" role="tablist">
-        <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-ceps"      id="btn-ceps"      onclick="switchTab('ceps')">CEPs para validar</button>
-        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-importar"  id="btn-importar"  onclick="switchTab('importar')">Importar lista</button>
-        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-endereco"  id="btn-endereco"  onclick="switchTab('endereco')">Buscar por endereço</button>
+        <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-ceps"     id="btn-ceps"     onclick="switchTab('ceps')">CEPs</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-importar" id="btn-importar" onclick="switchTab('importar')">Importar</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-endereco" id="btn-endereco" onclick="switchTab('endereco')">Endere&#231;o</button>
+        <button class="tab-btn gerar"  role="tab" aria-selected="false" aria-controls="tab-gerar"    id="btn-gerar"    onclick="switchTab('gerar')">Gerar CEPs</button>
       </div>
 
-      <!-- ABA 1: CEPs manuais -->
+      <!-- ABA 1: CEPs -->
       <div class="tab-panel active" id="tab-ceps" role="tabpanel" aria-labelledby="btn-ceps">
         <div>
           <label class="field-label" for="cepInput">Cole os CEPs abaixo</label>
           <textarea id="cepInput" name="cepInput" aria-describedby="cepHint"
-            placeholder="01310-100&#10;22070-900&#10;30112-020&#10;&#10;Um por linha, vírgula&#10;ou espaço."></textarea>
-          <div class="count" id="cepHint" aria-live="polite">0 CEPs · máx. 500</div>
+            placeholder="01310-100&#10;22070-900&#10;30112-020&#10;&#10;Um por linha, v&#237;rgula&#10;ou espa&#231;o."></textarea>
+          <div class="count" id="cepHint" aria-live="polite">0 CEPs &middot; m&#225;x. 500</div>
         </div>
-        <button class="btn-primary" id="btnConsultar" onclick="consultarCeps()" aria-label="Iniciar validação dos CEPs informados">
-          &#9654; Validar CEPs
-        </button>
-        <button class="btn-clear" onclick="limpar()" aria-label="Limpar todos os campos e resultados">Limpar tudo</button>
-      </div>
-
-      <!-- ABA 2: Importar lista -->
-      <div class="tab-panel" id="tab-importar" role="tabpanel" aria-labelledby="btn-importar">
-        <div>
-          <label class="field-label">Arquivo Excel ou CSV</label>
-          <div class="upload-area" id="uploadArea" role="region" aria-label="Área de upload de arquivo">
-            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv"
-              aria-label="Selecionar arquivo Excel ou CSV com CEPs"
-              onchange="handleFile(this.files[0])"/>
-            <div class="upload-icon" aria-hidden="true">&#128196;</div>
-            <p><strong>Clique para selecionar</strong><br>ou arraste aqui<br><span class="upload-sub">.xlsx · .xls · .csv</span></p>
-            <div class="upload-name" id="uploadName" aria-live="polite"></div>
-          </div>
-          <div class="input-hint" style="margin-top:6px">CEPs na primeira coluna, sem cabeçalho.</div>
-        </div>
-        <button class="btn-modelo" onclick="baixarModelo()" aria-label="Baixar modelo de planilha Excel">
-          &#8659; Baixar modelo Excel
-        </button>
-        <button class="btn-primary" onclick="consultarCeps()" aria-label="Validar CEPs do arquivo importado">
+        <button class="btn-primary" id="btnConsultar" onclick="consultarCeps()" aria-label="Iniciar valida&#231;&#227;o dos CEPs informados">
           &#9654; Validar CEPs
         </button>
         <button class="btn-clear" onclick="limpar()">Limpar tudo</button>
       </div>
 
-      <!-- ABA 3: Buscar por endereço -->
+      <!-- ABA 2: Importar -->
+      <div class="tab-panel" id="tab-importar" role="tabpanel" aria-labelledby="btn-importar">
+        <div>
+          <label class="field-label">Arquivo Excel ou CSV</label>
+          <div class="upload-area" id="uploadArea" role="region" aria-label="Area de upload">
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv"
+              aria-label="Selecionar arquivo Excel ou CSV com CEPs"
+              onchange="handleFile(this.files[0])"/>
+            <div class="upload-icon" aria-hidden="true">&#128196;</div>
+            <p><strong>Clique para selecionar</strong><br>ou arraste aqui<br><span class="upload-sub">.xlsx &middot; .xls &middot; .csv</span></p>
+            <div class="upload-name" id="uploadName" aria-live="polite"></div>
+          </div>
+          <div class="input-hint" style="margin-top:6px">CEPs na primeira coluna, sem cabe&#231;alho.</div>
+        </div>
+        <button class="btn-modelo" onclick="baixarModelo()">&#8659; Baixar modelo Excel</button>
+        <button class="btn-primary" onclick="consultarCeps()">&#9654; Validar CEPs</button>
+        <button class="btn-clear" onclick="limpar()">Limpar tudo</button>
+      </div>
+
+      <!-- ABA 3: Endere&#231;o -->
       <div class="tab-panel" id="tab-endereco" role="tabpanel" aria-labelledby="btn-endereco">
         <div>
-          <label class="field-label" for="inputRua">Nome da rua / logradouro</label>
-          <input type="text" id="inputRua" class="input-field" placeholder="Ex: Avenida Paulista" aria-describedby="endHint"/>
-          <div class="input-hint" style="margin-top:3px">Rua, avenida, praça, travessa...</div>
+          <label class="field-label" for="inputRua">Nome da rua</label>
+          <input type="text" id="inputRua" class="input-field" placeholder="Ex: Avenida Paulista"/>
         </div>
         <div>
           <label class="field-label" for="inputCidade">Cidade</label>
-          <input type="text" id="inputCidade" class="input-field" placeholder="Ex: São Paulo" aria-describedby="endHint"/>
+          <input type="text" id="inputCidade" class="input-field" placeholder="Ex: S&#227;o Paulo"/>
         </div>
         <div>
           <label class="field-label" for="inputUF">Estado (UF)</label>
-          <select id="inputUF" class="input-field" aria-label="Estado">
+          <select id="inputUF" class="input-field">
             <option value="">Selecione...</option>
             <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
             <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
@@ -248,74 +240,109 @@
             <option selected>SP</option><option>SE</option><option>TO</option>
           </select>
         </div>
-        <div class="input-hint" id="endHint">Informe a rua, cidade e estado para encontrar o CEP.</div>
-        <button class="btn-primary" onclick="buscarPorEndereco()" id="btnEndereco">
-          &#9654; Buscar CEP
-        </button>
+        <div class="input-hint" id="endHint">Informe a rua, cidade e estado.</div>
+        <button class="btn-primary" onclick="buscarPorEndereco()">&#9654; Buscar CEP</button>
         <button class="btn-clear" onclick="limpar()">Limpar tudo</button>
       </div>
 
-      <!-- PROGRESS e STATS (compartilhados) -->
-      <div class="prog" id="prog" role="status" aria-live="polite" aria-label="Progresso da consulta">
+      <!-- ABA 4: Gerar CEPs -->
+      <div class="tab-panel" id="tab-gerar" role="tabpanel" aria-labelledby="btn-gerar">
+        <div>
+          <label class="field-label" for="inputQtd">Quantidade</label>
+          <input type="number" id="inputQtd" class="input-field" value="10" min="1" max="500"/>
+          <div class="input-hint" style="margin-top:3px">M&#237;nimo 1 &middot; m&#225;ximo 500</div>
+        </div>
+        <div>
+          <label class="field-label" for="selectEstado">Estado (opcional)</label>
+          <select id="selectEstado" class="input-field">
+            <option value="">Todos os estados</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+        <button class="btn-primary" style="background:#27ae60" onclick="gerarCeps()"
+          onmouseover="this.style.background='#219a52'" onmouseout="this.style.background='#27ae60'">
+          &#9654; Gerar CEPs
+        </button>
+        <div id="geradoWrap" style="display:none;flex-direction:column;gap:8px">
+          <div>
+            <label class="field-label">CEPs gerados</label>
+            <textarea id="geradoOutput" readonly style="height:140px;background:#f0f7ff;font-size:12px;cursor:default"></textarea>
+            <div class="count" id="geradoCount"></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-modelo" style="flex:1" onclick="copiarGerados()">&#8663; Copiar</button>
+            <button class="btn-modelo" style="flex:1" onclick="baixarGeradosTxt()">&#8659; .txt</button>
+            <button class="btn-modelo" style="flex:1" onclick="baixarGeradosXLSX()">&#8659; Excel</button>
+          </div>
+          <button class="btn-modelo" style="border-color:rgba(93,173,226,.5);color:#5dade2" onclick="enviarParaValidar()">
+            &#8594; Enviar para validar
+          </button>
+        </div>
+        <button class="btn-clear" onclick="limparGerador()">Limpar</button>
+      </div>
+
+      <!-- PROGRESS e STATS -->
+      <div class="prog" id="prog" role="status" aria-live="polite">
         <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
         <div class="prog-lbl" id="pLbl">0 / 0</div>
       </div>
 
       <div class="stats" role="region" aria-label="Resumo dos resultados">
-        <div class="stat"><span class="stat-n" id="sTotal" aria-label="Total">—</span><span class="stat-l">Total</span></div>
-        <div class="stat"><span class="stat-n g" id="sOk" aria-label="Válidos">—</span><span class="stat-l">Válidos</span></div>
-        <div class="stat"><span class="stat-n r" id="sErr" aria-label="Inválidos">—</span><span class="stat-l">Inválidos</span></div>
+        <div class="stat"><span class="stat-n" id="sTotal">&#8212;</span><span class="stat-l">Total</span></div>
+        <div class="stat"><span class="stat-n g" id="sOk">&#8212;</span><span class="stat-l">V&#225;lidos</span></div>
+        <div class="stat"><span class="stat-n r" id="sErr">&#8212;</span><span class="stat-l">Inv&#225;lidos</span></div>
       </div>
 
     </div>
   </aside>
 
-  <!-- CONTENT -->
   <main class="content" id="main-content">
     <div class="content-head">
       <h1 style="font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em">
         Resultados <span id="hInfo" style="font-weight:400;color:var(--muted);font-size:12px;text-transform:none;letter-spacing:0" aria-live="polite"></span>
       </h1>
       <div class="export-row" id="exportRow" style="display:none" role="group" aria-label="Exportar">
-        <button class="btn-exp green" onclick="exportXLSX()" aria-label="Exportar como Excel">&#8659; Excel</button>
-        <button class="btn-exp" onclick="exportCSV()" aria-label="Exportar como CSV">&#8659; CSV</button>
-        <button class="btn-exp" onclick="copiar()" aria-label="Copiar tabela">&#8663; Copiar</button>
+        <button class="btn-exp green" onclick="exportXLSX()">&#8659; Excel</button>
+        <button class="btn-exp" onclick="exportCSV()">&#8659; CSV</button>
+        <button class="btn-exp" onclick="copiar()">&#8663; Copiar</button>
       </div>
     </div>
 
     <div class="table-scroll" id="tableScroll" role="region" aria-label="Tabela de resultados" aria-live="polite">
       <div class="empty">
         <div class="empty-box">
-          <p>Informe os CEPs, importe um arquivo<br>ou busque por endereço ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p>
+          <p>Informe os CEPs, importe um arquivo<br>ou busque por endere&#231;o ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p>
         </div>
       </div>
     </div>
 
-    <!-- SEO CONTENT -->
     <section class="seo-block" aria-label="Sobre a ferramenta">
-      <h2>Validador de CEP gratuito — individual ou em massa</h2>
-      <p>Este <strong>validador de CEP</strong> permite consultar desde um único CEP até centenas de uma só vez. Cole os CEPs no campo ao lado — separados por linha, vírgula ou espaço — ou importe uma planilha Excel com os CEPs na primeira coluna. A ferramenta consulta cada CEP na base do <strong>ViaCEP</strong> e retorna logradouro, bairro, cidade, estado e código IBGE em segundos.</p>
-      <p>Diferente de outros <strong>validadores de CEP</strong>, aqui você não precisa checar um por um. Cole a lista inteira, valide tudo de uma vez e exporte o resultado em Excel ou CSV — sem cadastro, sem limite. Também é possível buscar o CEP pelo nome da rua e cidade.</p>
+      <h2>Validador de CEP gratuito &#8212; individual ou em massa</h2>
+      <p>Precisa <strong>validar CEP</strong> ou conferir uma lista inteira de uma vez? Este <strong>validador de CEP</strong> online e gratuito permite consultar desde um &#250;nico CEP at&#233; centenas simultaneamente. Cole os CEPs no campo ao lado &#8212; separados por linha, v&#237;rgula ou espa&#231;o &#8212; ou importe uma planilha Excel com os CEPs na primeira coluna. A ferramenta consulta cada CEP na base do <strong>ViaCEP</strong> e retorna logradouro, bairro, cidade, estado e c&#243;digo IBGE em segundos.</p>
+      <p>Diferente de outros <strong>validadores de CEP</strong>, aqui voc&#234; n&#227;o precisa checar um por um. Cole a lista inteira, <strong>valide CEPs</strong> em massa e baixe os resultados em Excel com um clique &#8212; sem cadastro, sem limite. Tamb&#233;m &#233; poss&#237;vel buscar o CEP pelo nome da rua e cidade, ou <strong>gerar CEPs aleat&#243;rios por estado</strong> para testes.</p>
       <ul>
-        <li>Valida o formato do CEP antes de consultar — CEPs inválidos são identificados na hora</li>
-        <li>Informa se o CEP é inválido, não encontrado ou com erro de consulta</li>
+        <li><strong>Valida CEP</strong> individualmente ou em lote &#8212; at&#233; 500 de uma vez</li>
+        <li>CEPs com formato incorreto s&#227;o identificados na hora, sem consumir requisi&#231;&#245;es</li>
+        <li>Informa se o CEP &#233; inv&#225;lido, n&#227;o encontrado ou com erro de consulta</li>
         <li>Importa planilhas Excel e CSV com centenas de CEPs</li>
         <li>Busca CEP pelo nome da rua e cidade</li>
-        <li>Exporta os resultados em Excel ou CSV prontos para usar</li>
+        <li>Gera CEPs aleat&#243;rios por estado para uso em testes e sistemas</li>
+        <li>Baixa os resultados em Excel ou CSV &#8212; pronto para usar no seu sistema</li>
         <li>100% gratuito, sem cadastro e sem limite de uso</li>
       </ul>
     </section>
   </main>
-
 </div>
 
 <footer>
+  <p>Dados fornecidos pela <a href="https://viacep.com.br" target="_blank" rel="noopener noreferrer">ViaCEP</a> &#8212; API p&#250;blica e gratuita &nbsp;|&nbsp; validadorcep.com.br</p>
   <p>
-    Dados fornecidos pela
-    <a href="https://viacep.com.br" target="_blank" rel="noopener noreferrer">ViaCEP</a>
-    — API pública e gratuita &nbsp;|&nbsp; validadorcep.com.br
-  </p>
-  <p style="margin-top:6px">
     <a href="privacidade.html">Privacidade</a> |
     <a href="sobre.html">Sobre</a> |
     <a href="contato.html">Contato</a>
@@ -323,232 +350,294 @@
 </footer>
 
 <script>
-  let res = [];
+var res = [];
+var inp    = document.getElementById('cepInput');
+var cnt    = document.getElementById('cepHint');
+var prog   = document.getElementById('prog');
+var pFill  = document.getElementById('pFill');
+var pLbl   = document.getElementById('pLbl');
+var sT     = document.getElementById('sTotal');
+var sO     = document.getElementById('sOk');
+var sE     = document.getElementById('sErr');
+var hInfo  = document.getElementById('hInfo');
+var expR   = document.getElementById('exportRow');
+var scrl   = document.getElementById('tableScroll');
+var upName = document.getElementById('uploadName');
+var upArea = document.getElementById('uploadArea');
 
-  const inp    = document.getElementById('cepInput');
-  const cnt    = document.getElementById('cepHint');
-  const prog   = document.getElementById('prog');
-  const pFill  = document.getElementById('pFill');
-  const pLbl   = document.getElementById('pLbl');
-  const sT     = document.getElementById('sTotal');
-  const sO     = document.getElementById('sOk');
-  const sE     = document.getElementById('sErr');
-  const hInfo  = document.getElementById('hInfo');
-  const expR   = document.getElementById('exportRow');
-  const scrl   = document.getElementById('tableScroll');
-  const upName = document.getElementById('uploadName');
-  const upArea = document.getElementById('uploadArea');
+upArea.addEventListener('dragover', function(e) { e.preventDefault(); upArea.classList.add('drag'); });
+upArea.addEventListener('dragleave', function() { upArea.classList.remove('drag'); });
+upArea.addEventListener('drop', function(e) {
+  e.preventDefault(); upArea.classList.remove('drag');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
 
-  // ── ABAS ──
-  function switchTab(id) {
-    document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('btn-' + id).classList.add('active');
-    document.getElementById('btn-' + id).setAttribute('aria-selected','true');
-    document.getElementById('tab-' + id).classList.add('active');
+inp.addEventListener('input', atualizarCount);
+
+function switchTab(id) {
+  var btns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); btns[i].setAttribute('aria-selected','false'); }
+  for (var i = 0; i < panels.length; i++) { panels[i].classList.remove('active'); }
+  document.getElementById('btn-' + id).classList.add('active');
+  document.getElementById('btn-' + id).setAttribute('aria-selected','true');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function atualizarCount() {
+  var n = parseTxt().length;
+  cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' . max. 500';
+}
+
+function parseTxt() {
+  var raw = inp.value.split(/[\n,;\s]+/).map(function(t){ return t.replace(/\D/g,''); }).filter(function(t){ return t.length > 0; });
+  var seen = {};
+  var uniq = [];
+  for (var i = 0; i < raw.length; i++) { if (!seen[raw[i]]) { seen[raw[i]] = true; uniq.push(raw[i]); } }
+  return uniq.slice(0, 500);
+}
+
+function handleFile(file) {
+  if (!file) return;
+  upName.textContent = 'Carregando...';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var wb = XLSX.read(e.target.result, { type: 'array' });
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      var ceps = rows.map(function(r){ return String(r[0] || '').replace(/\D/g,''); }).filter(function(c){ return c.length > 0; });
+      inp.value = ceps.join('\n');
+      upName.textContent = file.name + ' - ' + ceps.length + ' linha(s)';
+      atualizarCount();
+    } catch(err) { upName.textContent = 'Erro ao ler o arquivo.'; }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function baixarModelo() {
+  var ws = XLSX.utils.aoa_to_sheet([['01310-100'],['22070-900'],['30112-020'],['70040-020']]);
+  ws['!cols'] = [{ wch: 16 }];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
+  XLSX.writeFile(wb, 'modelo_ceps.xlsx');
+}
+
+function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function setLoading(on) {
+  if (on) { prog.classList.add('show'); expR.style.display = 'none'; scrl.innerHTML = ''; }
+  else { prog.classList.remove('show'); }
+}
+
+async function consultarCeps() {
+  var ceps = parseTxt();
+  if (!ceps.length) return;
+  res = [];
+  setLoading(true);
+  for (var i = 0; i < ceps.length; i++) {
+    pFill.style.width = (i / ceps.length * 100) + '%';
+    pLbl.textContent = (i + 1) + ' / ' + ceps.length;
+    res.push(await fetchCep(ceps[i]));
+    renderTabela();
+    await sleep(60);
   }
+  pFill.style.width = '100%';
+  pLbl.textContent = 'Concluido.';
+  setLoading(false);
+  expR.style.display = 'flex';
+}
 
-  // ── DRAG & DROP ──
-  upArea.addEventListener('dragover', e => { e.preventDefault(); upArea.classList.add('drag'); });
-  upArea.addEventListener('dragleave', () => upArea.classList.remove('drag'));
-  upArea.addEventListener('drop', e => {
-    e.preventDefault(); upArea.classList.remove('drag');
-    if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
-  });
-
-  inp.addEventListener('input', atualizarCount);
-
-  function atualizarCount() {
-    const n = parseTxt().length;
-    cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' · máx. 500';
-  }
-
-  function parseTxt() {
-    return [...new Set(
-      inp.value.split(/[\n,;\s]+/)
-        .map(t => t.replace(/\D/g, ''))
-        .filter(t => t.length > 0)
-    )].slice(0, 500);
-  }
-
-  // ── IMPORTAR ARQUIVO ──
-  function handleFile(file) {
-    if (!file) return;
-    upName.textContent = 'Carregando...';
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      try {
-        const wb = XLSX.read(e.target.result, { type: 'array' });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-        const ceps = rows.map(r => String(r[0] || '').replace(/\D/g, '')).filter(c => c.length > 0);
-        inp.value = ceps.join('\n');
-        upName.textContent = file.name + ' · ' + ceps.length + ' linha(s)';
-        atualizarCount();
-      } catch { upName.textContent = 'Erro ao ler o arquivo.'; }
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  function baixarModelo() {
-    const ws = XLSX.utils.aoa_to_sheet([['01310-100'],['22070-900'],['30112-020'],['70040-020']]);
-    ws['!cols'] = [{ wch: 16 }];
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
-    XLSX.writeFile(wb, 'modelo_ceps.xlsx');
-  }
-
-  // ── VALIDAR CEPs ──
-  async function consultarCeps() {
-    const ceps = parseTxt();
-    if (!ceps.length) return;
-    res = [];
-    setLoading(true);
-    for (let i = 0; i < ceps.length; i++) {
-      pFill.style.width = (i / ceps.length * 100) + '%';
-      pLbl.textContent = (i + 1) + ' / ' + ceps.length;
-      res.push(await fetchCep(ceps[i]));
-      renderTabela();
-      await sleep(60);
+async function fetchCep(cep) {
+  if (!/^\d{8}$/.test(cep)) return { cep: cep, ok: false, motivo: 'Formato invalido' };
+  var tentativas = 3;
+  for (var t = 0; t < tentativas; t++) {
+    try {
+      var resp = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+      if (!resp.ok) { await sleep(500); continue; }
+      var d = await resp.json();
+      if (d.erro) return { cep: cep, ok: false, motivo: 'Nao encontrado na base' };
+      return { cep: d.cep || cep, ok: true, end: d.logradouro || '-', bairro: d.bairro || '-', cidade: d.localidade || '-', uf: d.uf || '-', ibge: d.ibge || '-' };
+    } catch(e) {
+      if (t < tentativas - 1) { await sleep(600); } else { return { cep: cep, ok: false, motivo: 'Erro na consulta (verifique sua conexao)' }; }
     }
+  }
+  return { cep: cep, ok: false, motivo: 'Erro na consulta (verifique sua conexao)' };
+}
+
+async function buscarPorEndereco() {
+  var rua    = document.getElementById('inputRua').value.trim();
+  var cidade = document.getElementById('inputCidade').value.trim();
+  var uf     = document.getElementById('inputUF').value.trim();
+  var hint   = document.getElementById('endHint');
+  if (!rua || !cidade || !uf) { hint.textContent = 'Preencha a rua, a cidade e o estado.'; return; }
+  hint.textContent = 'Buscando...';
+  res = [];
+  setLoading(true);
+  pLbl.textContent = 'Buscando...';
+  pFill.style.width = '50%';
+  try {
+    var url = 'https://viacep.com.br/ws/' + uf + '/' + encodeURIComponent(cidade) + '/' + encodeURIComponent(rua) + '/json/';
+    var data = await (await fetch(url)).json();
     pFill.style.width = '100%';
-    pLbl.textContent = 'Concluído.';
-    setLoading(false);
-    expR.style.display = 'flex';
-  }
-
-  // ── BUSCAR POR ENDEREÇO ──
-  async function buscarPorEndereco() {
-    const rua    = document.getElementById('inputRua').value.trim();
-    const cidade = document.getElementById('inputCidade').value.trim();
-    const uf     = document.getElementById('inputUF').value.trim();
-
-    if (!rua || !cidade || !uf) {
-      document.getElementById('endHint').textContent = '⚠ Preencha a rua, a cidade e o estado.';
-      return;
+    pLbl.textContent = 'Concluido.';
+    if (!Array.isArray(data) || data.length === 0) {
+      res = [{ cep: rua + ', ' + cidade + ' - ' + uf, ok: false, motivo: 'Nenhum CEP encontrado para este endereco' }];
+    } else {
+      res = data.map(function(d) {
+        return { cep: d.cep || '-', ok: true, end: d.logradouro || '-', bairro: d.bairro || '-', cidade: d.localidade || '-', uf: d.uf || '-', ibge: d.ibge || '-' };
+      });
     }
-    document.getElementById('endHint').textContent = 'Informe a rua, cidade e estado para encontrar o CEP.';
+    renderTabela();
+  } catch(e) {
+    pLbl.textContent = 'Erro.';
+    res = [{ cep: '-', ok: false, motivo: 'Erro ao consultar o endereco' }];
+    renderTabela();
+  }
+  setLoading(false);
+  expR.style.display = 'flex';
+  hint.textContent = 'Informe a rua, cidade e estado.';
+}
 
-    res = [];
-    setLoading(true);
-    pLbl.textContent = 'Buscando...';
-    pFill.style.width = '50%';
-
-    try {
-      const ruaEnc    = encodeURIComponent(rua);
-      const cidadeEnc = encodeURIComponent(cidade);
-      const url = 'https://viacep.com.br/ws/' + uf + '/' + cidadeEnc + '/' + ruaEnc + '/json/';
-      const data = await (await fetch(url)).json();
-
-      pFill.style.width = '100%';
-      pLbl.textContent = 'Concluído.';
-
-      if (!Array.isArray(data) || data.length === 0) {
-        res = [{ cep: rua + ', ' + cidade + ' - ' + uf, ok: false, motivo: 'Nenhum CEP encontrado para este endereço' }];
-      } else {
-        res = data.map(d => ({
-          cep: d.cep || '—', ok: true,
-          end: d.logradouro || '—',
-          bairro: d.bairro || '—',
-          cidade: d.localidade || '—',
-          uf: d.uf || '—',
-          ibge: d.ibge || '—'
-        }));
-      }
-      renderTabela();
-    } catch {
-      pLbl.textContent = 'Erro na consulta.';
-      res = [{ cep: '—', ok: false, motivo: 'Erro ao consultar o endereço' }];
-      renderTabela();
+function renderTabela() {
+  var ok = 0;
+  for (var i = 0; i < res.length; i++) { if (res[i].ok) ok++; }
+  sT.textContent = res.length;
+  sO.textContent = ok;
+  sE.textContent = res.length - ok;
+  hInfo.textContent = '- ' + res.length + ' registro' + (res.length !== 1 ? 's' : '');
+  var rows = '';
+  for (var i = 0; i < res.length; i++) {
+    var r = res[i];
+    if (r.ok) {
+      rows += '<tr><td class="td-m">'+(i+1)+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td class="td-m">'+r.ibge+'</td></tr>';
+    } else {
+      rows += '<tr><td class="td-m">'+(i+1)+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
     }
-
-    setLoading(false);
-    expR.style.display = 'flex';
   }
+  scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Logradouro</th><th scope="col">Bairro</th><th scope="col">Cidade / UF</th><th scope="col">IBGE</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
 
-  // ── HELPERS ──
-  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function limpar() {
+  inp.value = ''; res = [];
+  upName.textContent = '';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('inputRua').value = '';
+  document.getElementById('inputCidade').value = '';
+  document.getElementById('endHint').textContent = 'Informe a rua, cidade e estado.';
+  atualizarCount();
+  sT.textContent = sO.textContent = sE.textContent = '-';
+  hInfo.textContent = '';
+  expR.style.display = 'none';
+  prog.classList.remove('show');
+  pFill.style.width = '0%';
+  scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Informe os CEPs, importe um arquivo<br>ou busque por endereco ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p></div></div>';
+}
 
-  function setLoading(on) {
-    prog.classList.toggle('show', on);
-    expR.style.display = 'none';
-    if (!on) return;
-    scrl.innerHTML = '';
+function fmt(c) { return c.length === 8 ? c.slice(0,5)+'-'+c.slice(5) : c; }
+
+function exportXLSX() {
+  var header = ['CEP','Status','Logradouro','Bairro','Cidade','UF','IBGE'];
+  var rows = res.map(function(r){ return r.ok ? [r.cep,'Valido',r.end,r.bairro,r.cidade,r.uf,r.ibge] : [r.cep,'Invalido',r.motivo,'','','','']; });
+  var ws = XLSX.utils.aoa_to_sheet([header].concat(rows));
+  ws['!cols'] = [14,10,32,24,20,6,10].map(function(w){ return { wch: w }; });
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Resultados');
+  XLSX.writeFile(wb, 'ceps_validados.xlsx');
+}
+
+function exportCSV() {
+  var rows = res.map(function(r){
+    return r.ok
+      ? '"'+r.cep+'","Valido","'+r.end+'","'+r.bairro+'","'+r.cidade+'","'+r.uf+'","'+r.ibge+'"'
+      : '"'+r.cep+'","Invalido","'+r.motivo+'","","","",""';
+  });
+  var b = new Blob(['CEP,Status,Logradouro,Bairro,Cidade,UF,IBGE\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'ceps_validados.csv';
+  a.click();
+}
+
+function copiar() {
+  var lines = ['CEP\tStatus\tLogradouro\tBairro\tCidade\tUF\tIBGE'];
+  for (var i = 0; i < res.length; i++) {
+    var r = res[i];
+    lines.push(r.ok ? r.cep+'\tValido\t'+r.end+'\t'+r.bairro+'\t'+r.cidade+'\t'+r.uf+'\t'+r.ibge : r.cep+'\tInvalido\t'+r.motivo+'\t\t\t\t');
   }
+  navigator.clipboard.writeText(lines.join('\n'));
+}
 
-  async function fetchCep(cep) {
-    if (!/^\d{8}$/.test(cep)) return { cep, ok: false, motivo: 'Formato inválido' };
-    try {
-      const d = await (await fetch('https://viacep.com.br/ws/' + cep + '/json/')).json();
-      if (d.erro) return { cep, ok: false, motivo: 'Não encontrado na base' };
-      return { cep: d.cep || cep, ok: true, end: d.logradouro || '—', bairro: d.bairro || '—', cidade: d.localidade || '—', uf: d.uf || '—', ibge: d.ibge || '—' };
-    } catch { return { cep, ok: false, motivo: 'Erro na consulta' }; }
+var faixasUF = {
+  AC:[69900],AL:[57000],AP:[68900],AM:[69000],
+  BA:[40000,41000,42000,43000,44000,45000,46000,47000,48000],
+  CE:[60000,61000,62000,63000],DF:[70000,71000,72000,73000],ES:[29000],
+  GO:[72800,73000,74000,75000,76000],MA:[65000],MT:[78000],MS:[79000],
+  MG:[30000,31000,32000,33000,34000,35000,36000,37000,38000,39000],
+  PA:[66000,67000,68000],PB:[58000],
+  PR:[80000,81000,82000,83000,84000,85000,86000,87000],
+  PE:[50000,51000,52000,53000,54000,55000,56000],PI:[64000],
+  RJ:[20000,21000,22000,23000,24000,25000,26000,27000,28000],
+  RN:[59000],RS:[90000,91000,92000,93000,94000,95000,96000,97000,98000,99000],
+  RO:[76800,78900],RR:[69300],SC:[88000,89000],
+  SP:[1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000],
+  SE:[49000],TO:[77000]
+};
+
+function gerarCeps() {
+  var qtd = Math.min(500, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
+  var uf  = document.getElementById('selectEstado').value;
+  var ceps = [];
+  for (var i = 0; i < qtd; i++) {
+    var base;
+    if (uf && faixasUF[uf]) {
+      var faixas = faixasUF[uf];
+      base = faixas[Math.floor(Math.random() * faixas.length)];
+    } else {
+      base = Math.floor(Math.random() * 99) * 1000 + 1000;
+    }
+    var sufixo = String(Math.floor(Math.random() * 900) + 100);
+    ceps.push(String(base).padStart(5, '0') + sufixo);
   }
+  document.getElementById('geradoOutput').value = ceps.join('\n');
+  document.getElementById('geradoCount').textContent = ceps.length + ' CEPs gerados';
+  document.getElementById('geradoWrap').style.display = 'flex';
+}
 
-  function renderTabela() {
-    const ok = res.filter(r => r.ok).length;
-    sT.textContent = res.length;
-    sO.textContent = ok;
-    sE.textContent = res.length - ok;
-    hInfo.textContent = '— ' + res.length + ' registro' + (res.length !== 1 ? 's' : '');
+function copiarGerados() {
+  navigator.clipboard.writeText(document.getElementById('geradoOutput').value);
+}
 
-    const rows = res.map((r, i) => r.ok
-      ? '<tr><td class="td-m">'+(i+1)+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Válido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td class="td-m">'+r.ibge+'</td></tr>'
-      : '<tr><td class="td-m">'+(i+1)+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Inválido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>'
-    ).join('');
+function baixarGeradosTxt() {
+  var b = new Blob([document.getElementById('geradoOutput').value],{type:'text/plain;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'ceps_gerados.txt';
+  a.click();
+}
 
-    scrl.innerHTML = '<table><caption class="sr-only">Resultados da validação de CEPs</caption>' +
-      '<thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th>' +
-      '<th scope="col">Logradouro</th><th scope="col">Bairro</th>' +
-      '<th scope="col">Cidade / UF</th><th scope="col">IBGE</th></tr></thead>' +
-      '<tbody>' + rows + '</tbody></table>';
-  }
+function baixarGeradosXLSX() {
+  var ceps = document.getElementById('geradoOutput').value.split('\n').filter(Boolean);
+  var ws = XLSX.utils.aoa_to_sheet(ceps.map(function(c){ return [c]; }));
+  ws['!cols'] = [{ wch: 12 }];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
+  XLSX.writeFile(wb, 'ceps_gerados.xlsx');
+}
 
-  function limpar() {
-    inp.value = ''; res = [];
-    upName.textContent = '';
-    document.getElementById('fileInput').value = '';
-    document.getElementById('inputRua').value = '';
-    document.getElementById('inputCidade').value = '';
-    document.getElementById('endHint').textContent = 'Informe a rua, cidade e estado para encontrar o CEP.';
-    atualizarCount();
-    sT.textContent = sO.textContent = sE.textContent = '—';
-    hInfo.textContent = '';
-    expR.style.display = 'none';
-    prog.classList.remove('show');
-    pFill.style.width = '0%';
-    scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Informe os CEPs, importe um arquivo<br>ou busque por endereço ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p></div></div>';
-  }
+function enviarParaValidar() {
+  inp.value = document.getElementById('geradoOutput').value;
+  atualizarCount();
+  switchTab('ceps');
+}
 
-  function fmt(c) { return c.length === 8 ? c.slice(0,5)+'-'+c.slice(5) : c; }
-
-  function exportXLSX() {
-    const header = ['CEP','Status','Logradouro','Bairro','Cidade','UF','IBGE'];
-    const rows = res.map(r => r.ok ? [r.cep,'Válido',r.end,r.bairro,r.cidade,r.uf,r.ibge] : [r.cep,'Inválido',r.motivo,'','','','']);
-    const ws = XLSX.utils.aoa_to_sheet([header,...rows]);
-    ws['!cols'] = [14,10,32,24,20,6,10].map(w => ({ wch: w }));
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Resultados');
-    XLSX.writeFile(wb, 'ceps_validados.xlsx');
-  }
-
-  function exportCSV() {
-    const rows = res.map(r => r.ok
-      ? '"'+r.cep+'","Válido","'+r.end+'","'+r.bairro+'","'+r.cidade+'","'+r.uf+'","'+r.ibge+'"'
-      : '"'+r.cep+'","Inválido","'+r.motivo+'","","","",""'
-    );
-    const b = new Blob(['CEP,Status,Logradouro,Bairro,Cidade,UF,IBGE\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
-    Object.assign(document.createElement('a'),{href:URL.createObjectURL(b),download:'ceps_validados.csv'}).click();
-  }
-
-  function copiar() {
-    const lines = ['CEP\tStatus\tLogradouro\tBairro\tCidade\tUF\tIBGE'].concat(
-      res.map(r => r.ok
-        ? r.cep+'\tVálido\t'+r.end+'\t'+r.bairro+'\t'+r.cidade+'\t'+r.uf+'\t'+r.ibge
-        : r.cep+'\tInválido\t'+r.motivo+'\t\t\t\t')
-    );
-    navigator.clipboard.writeText(lines.join('\n'));
-  }
+function limparGerador() {
+  document.getElementById('inputQtd').value = '10';
+  document.getElementById('selectEstado').value = '';
+  document.getElementById('geradoOutput').value = '';
+  document.getElementById('geradoCount').textContent = '';
+  document.getElementById('geradoWrap').style.display = 'none';
+}
 </script>
 </body>
 </html>
