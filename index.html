@@ -204,6 +204,10 @@
         <button class="btn-primary" id="btnConsultar" onclick="consultarCeps()" aria-label="Iniciar valida&#231;&#227;o dos CEPs informados">
           &#9654; Validar CEPs
         </button>
+        <div id="pausaControles" style="display:none;gap:8px;flex-direction:row">
+          <button class="btn-clear" style="flex:1" onclick="pausarConsulta()" id="btnPausa">&#9646;&#9646; Pausar</button>
+          <button class="btn-clear" style="flex:1;color:#e74c3c;border-color:#e74c3c" onclick="pararConsulta()">&#9632; Parar</button>
+        </div>
         <button class="btn-clear" onclick="limpar()">Limpar tudo</button>
       </div>
 
@@ -223,6 +227,10 @@
         </div>
         <button class="btn-modelo" onclick="baixarModelo()">&#8659; Baixar modelo Excel</button>
         <button class="btn-primary" onclick="consultarCeps()">&#9654; Validar CEPs</button>
+        <div id="pausaControles2" style="display:none;gap:8px;flex-direction:row">
+          <button class="btn-clear" style="flex:1" onclick="pausarConsulta()" id="btnPausa2">&#9646;&#9646; Pausar</button>
+          <button class="btn-clear" style="flex:1;color:#e74c3c;border-color:#e74c3c" onclick="pararConsulta()">&#9632; Parar</button>
+        </div>
         <button class="btn-clear" onclick="limpar()">Limpar tudo</button>
       </div>
 
@@ -258,8 +266,8 @@
       <div class="tab-panel" id="tab-gerar" role="tabpanel" aria-labelledby="btn-gerar">
         <div>
           <label class="field-label" for="inputQtd">Quantidade</label>
-          <input type="number" id="inputQtd" class="input-field" value="10" min="1" max="500"/>
-          <div class="input-hint" style="margin-top:3px">M&#237;nimo 1 &middot; m&#225;ximo 500</div>
+          <input type="number" id="inputQtd" class="input-field" value="10" min="1" max="100"/>
+          <div class="input-hint" style="margin-top:3px">M&#237;nimo 1 &middot; m&#225;ximo 100</div>
         </div>
         <div>
           <label class="field-label" for="selectEstado">Estado (opcional)</label>
@@ -439,22 +447,75 @@ function setLoading(on) {
   else { prog.classList.remove('show'); }
 }
 
+var _pausado = false;
+var _parar   = false;
+var _rodando = false;
+
+function pausarConsulta() {
+  _pausado = !_pausado;
+  var label = _pausado ? '&#9654; Retomar' : '&#9646;&#9646; Pausar';
+  document.getElementById('btnPausa').innerHTML  = label;
+  if (document.getElementById('btnPausa2')) document.getElementById('btnPausa2').innerHTML = label;
+  pLbl.textContent = _pausado ? 'Pausado.' : 'Retomando...';
+}
+
+function pararConsulta() {
+  _parar = true;
+  _pausado = false;
+}
+
+function mostrarControles(show) {
+  var el  = document.getElementById('pausaControles');
+  var el2 = document.getElementById('pausaControles2');
+  if (el)  el.style.display  = show ? 'flex' : 'none';
+  if (el2) el2.style.display = show ? 'flex' : 'none';
+}
+
 async function consultarCeps() {
   var ceps = parseTxt();
   if (!ceps.length) return;
-  res = [];
+  res = new Array(ceps.length).fill(null);
+  _pausado = false;
+  _parar   = false;
+  _rodando = true;
   setLoading(true);
-  for (var i = 0; i < ceps.length; i++) {
-    pFill.style.width = (i / ceps.length * 100) + '%';
-    pLbl.textContent = (i + 1) + ' / ' + ceps.length;
-    res.push(await fetchCep(ceps[i]));
-    renderTabela();
-    await sleep(60);
+  mostrarControles(true);
+
+  var LOTE = 10;
+  var done = 0;
+
+  for (var i = 0; i < ceps.length; i += LOTE) {
+    if (_parar) break;
+
+    while (_pausado) {
+      await sleep(200);
+      if (_parar) break;
+    }
+    if (_parar) break;
+
+    var grupo   = ceps.slice(i, i + LOTE);
+    var idxBase = i;
+
+    var promessas = grupo.map(function(cep, j) {
+      return fetchCep(cep).then(function(r) {
+        res[idxBase + j] = r;
+        done++;
+        pFill.style.width = (done / ceps.length * 100) + '%';
+        pLbl.textContent = done + ' / ' + ceps.length;
+        renderTabela();
+      });
+    });
+
+    await Promise.all(promessas);
+    await sleep(80);
   }
-  pFill.style.width = '100%';
-  pLbl.textContent = 'Concluido.';
+
+  _rodando = false;
+  mostrarControles(false);
+  pFill.style.width = _parar ? pFill.style.width : '100%';
+  pLbl.textContent = _parar ? 'Interrompido.' : 'Concluido.';
   setLoading(false);
-  expR.style.display = 'flex';
+  if (res.filter(function(r){ return r; }).length > 0) expR.style.display = 'flex';
 }
 
 async function fetchCep(cep) {
@@ -509,19 +570,23 @@ async function buscarPorEndereco() {
 }
 
 function renderTabela() {
-  var ok = 0;
-  for (var i = 0; i < res.length; i++) { if (res[i].ok) ok++; }
-  sT.textContent = res.length;
-  sO.textContent = ok;
-  sE.textContent = res.length - ok;
-  hInfo.textContent = '- ' + res.length + ' registro' + (res.length !== 1 ? 's' : '');
+  var validos = res.filter(function(r){ return r && r.ok; });
+  var invalidos = res.filter(function(r){ return r && !r.ok; });
+  var total = validos.length + invalidos.length;
+  sT.textContent = total;
+  sO.textContent = validos.length;
+  sE.textContent = invalidos.length;
+  hInfo.textContent = '- ' + total + ' registro' + (total !== 1 ? 's' : '');
   var rows = '';
+  var num = 0;
   for (var i = 0; i < res.length; i++) {
     var r = res[i];
+    if (!r) continue;
+    num++;
     if (r.ok) {
-      rows += '<tr><td class="td-m">'+(i+1)+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td class="td-m">'+r.ibge+'</td></tr>';
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td class="td-m">'+r.ibge+'</td></tr>';
     } else {
-      rows += '<tr><td class="td-m">'+(i+1)+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
     }
   }
   scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Logradouro</th><th scope="col">Bairro</th><th scope="col">Cidade / UF</th><th scope="col">IBGE</th></tr></thead><tbody>'+rows+'</tbody></table>';
@@ -577,41 +642,69 @@ function copiar() {
   navigator.clipboard.writeText(lines.join('\n'));
 }
 
-var faixasUF = {
-  AC:[69900],AL:[57000],AP:[68900],AM:[69000],
-  BA:[40000,41000,42000,43000,44000,45000,46000,47000,48000],
-  CE:[60000,61000,62000,63000],DF:[70000,71000,72000,73000],ES:[29000],
-  GO:[72800,73000,74000,75000,76000],MA:[65000],MT:[78000],MS:[79000],
-  MG:[30000,31000,32000,33000,34000,35000,36000,37000,38000,39000],
-  PA:[66000,67000,68000],PB:[58000],
-  PR:[80000,81000,82000,83000,84000,85000,86000,87000],
-  PE:[50000,51000,52000,53000,54000,55000,56000],PI:[64000],
-  RJ:[20000,21000,22000,23000,24000,25000,26000,27000,28000],
-  RN:[59000],RS:[90000,91000,92000,93000,94000,95000,96000,97000,98000,99000],
-  RO:[76800,78900],RR:[69300],SC:[88000,89000],
-  SP:[1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000,16000,17000,18000,19000],
-  SE:[49000],TO:[77000]
-};
+var CEP_LISTA = ["04458060", "07064151", "02415900", "04356070", "02610110", "02993230", "06463110", "04895057", "03025005", "06657850", "07170350", "07243502", "03357005", "04960195", "08215700", "02809120", "06844305", "04438120", "04904060", "05592060", "07764335", "06524020", "06226437", "07114311", "01241010", "08022100", "05568135", "05187938", "05515030", "04917030", "03986110", "04430190", "05127110", "02354470", "06070150", "02078050", "07636155", "02955015", "05182330", "04292070", "06846720", "05025011", "04330901", "04622050", "07145200", "04127020", "04154100", "06550990", "04602902", "04534000", "03281904", "03414000", "07714580", "06364640", "02532010", "04850250", "06325040", "04013041", "03876140", "06786130", "04660006", "06851390", "02318300", "04414000", "01134030", "03371015", "06381200", "04775100", "06866130", "07861210", "03380110", "08072110", "06263290", "06701212", "07179480", "07181242", "04763050", "06663350", "04935050", "03977160", "01333905", "01225020", "07747255", "05528260", "07144237", "07438500", "06713040", "03304120", "07600348", "02205230", "03103070", "04719904", "05786050", "04886000", "04689080", "03389070", "03510030", "07270340", "07140285", "04342010", "05215020", "06810868", "05367120", "06755350", "03249150", "06535300", "04543907", "07134170", "04319040", "06449060", "02324103", "07131380", "02968050", "03590150", "06720080", "08320646", "07609230", "04386090", "02248050", "05469010", "01255020", "05850130", "08265340", "05307010", "05777080", "07159670", "06250060", "04849025", "04026020", "06540055", "06532015", "01037905", "02019050", "08310594", "05794335", "03072005", "05625140", "06455930", "06727175", "08120110", "04177210", "07813080", "02919060", "04649110", "04043300", "04186170", "07177035", "06114030", "05866090", "08051650", "04891380", "04201010", "07626400", "06053080", "06703450", "08042480", "06503133", "01548020", "07807250", "02064010", "04005070", "05381010", "06317300", "06172030", "06680600", "06341810", "04256290", "04858020", "07092140", "07151540", "04805130", "04854420", "07262550", "01449050", "02673010", "03050025", "06152200", "02329090", "07124385", "07992120", "05712050", "04637042", "04928125", "08121810", "07273255", "02934030", "03472000", "08151780", "03435030", "04842370", "06700148", "06216070", "06513300", "07934080", "03934070", "05442060", "02363158", "02831020", "04820075", "07407040", "05843260", "05641010", "07075100", "08412160", "05171580", "08390330", "03713000", "02040050", "05042971", "03813020", "06818300", "07081220", "07664320", "06270190", "08373650", "07022200", "05425030", "07791180", "07659360", "02217170", "05083010", "08081440", "03262080", "06807567", "03563160", "08230205", "02180100", "06402050", "04477280", "07840160", "08150265", "07194230", "05101270", "07252003", "03580000", "06853615", "03320003", "07856330", "04514040", "05413000", "07161560", "02468075", "03572140", "04877288", "05542130", "04852025", "02851060", "08180140", "04233250", "04216001", "05159460", "07401370", "08255070", "08344020", "07850190", "03644090", "06283110", "07718145", "03906150", "05832190", "04524908", "07051970", "02280150", "05857520", "02237065", "07155062", "08011310", "06764115", "07060000", "01318909", "04563060", "06705360", "03733020", "06815150", "02842050", "05269230", "05814190", "05138200", "06442000", "06774090", "04405250", "03551060", "06422005", "06857172", "06710435", "06685375", "06824154", "03224130", "06126240", "05453050", "02881100", "02873340", "05885430", "07417565", "05551010", "02370060", "07261151", "06870335", "03925030", "02228000", "03919070", "04372070", "06766361", "06642385", "01309900", "05578000", "04468060", "06395250", "01001000", "05879460", "06038410", "03187010", "04813170", "06717122", "08140125", "07152786", "06519027", "04307100", "02634070", "05755140", "03337060", "05684901", "07619396", "01017903", "07957070", "03158040", "05114130", "07622275", "08430040", "07906000", "06622007", "07173055", "07662020", "02762060", "01202900", "06147010", "03978530", "05872060", "05397180", "07175190", "04837050", "04844590", "02258005", "06386110", "08290490", "07945020", "07613700", "03125010", "02723020", "02161110", "02431130", "05613000", "05763400", "02982000", "07084190", "07605195", "04861040", "06330010", "05059110", "06333395", "04061000", "06030195", "08142017", "03964020", "08347685", "07739225", "03002010", "05327000", "06626230", "04856350", "05663000", "06670490", "06877152", "07041130", "06840005", "06236835", "03627200", "02270010", "04106001", "04870025", "04423000", "08235800", "03806003", "02223361", "04474430", "06725400", "08062500", "06162015", "06729235", "08431530", "04117040", "08031400", "05360090", "07190100", "08382420", "07703010", "05890250", "03273150", "07210130", "06434020", "02311180", "06654220", "06722315", "08110340", "04086011", "06708250", "03616040", "04674140", "04786010", "03206040", "04747100", "06543001", "05280000", "07865450", "07793635", "02543110", "08191370", "07776445", "04242150", "07142500", "03738170", "06694250", "02132150", "02301140", "06804440", "03450001", "06298030", "04730901", "06475080", "06528327", "07432685", "04276090", "06142120", "02344060", "04826150", "02862110", "06018120", "05343030", "06863275", "02120001", "07231280", "04077003", "06414070", "04613010", "07629506", "04707910", "02510040", "04830306", "08223320", "08340092", "04552901", "07122141", "03661040", "03139030", "08040430", "04571918", "08246050", "06783450", "03173901", "07223380", "07097310", "01050906", "07786880", "07241470", "04164130", "06350260", "05206280", "03691160", "04944090", "08275770", "06790250", "06655620", "06830904", "03530030", "06186077", "01430020", "06410070", "05735030", "03819290", "03677190", "02450045", "01503010", "01529020", "05002050", "06361170", "02402003", "06086060", "07914110", "08395265", "06716020", "02559080", "06950992", "02988140", "03721210", "03945130", "04141100", "07031190", "01416003", "02737080", "06606325"];
+
+function embaralhar(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
 
 function gerarCeps() {
-  var qtd = Math.min(500, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
+  var qtd = Math.min(CEP_LISTA.length, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
   var uf  = document.getElementById('selectEstado').value;
-  var ceps = [];
-  for (var i = 0; i < qtd; i++) {
-    var base;
-    if (uf && faixasUF[uf]) {
-      var faixas = faixasUF[uf];
-      base = faixas[Math.floor(Math.random() * faixas.length)];
-    } else {
-      base = Math.floor(Math.random() * 99) * 1000 + 1000;
+
+  var lista = CEP_LISTA.slice();
+  if (uf) {
+    var prefixosPorUF = {
+      AC:["699"],AL:["570"],AP:["689"],AM:["690","691","692","693","694","695","696","697","698"],
+      BA:["400","401","402","403","404","405","406","407","408","409","410","411","412","413","414","415","416","417","418","419","420","421","422","423","424","430","431","440","441","450","451","460","461","470","471","480","481","482"],
+      CE:["600","601","602","603","604","605","606","607","608","609","610","611","612","613","614","615","620","621","630","631"],
+      DF:["700","701","702","703","704","705","706","707","708","709","710","711","712","713","714","715","716","717","718","719","720","721","730","731"],
+      ES:["290","291","292","293","294","295","296","297","298","299"],
+      GO:["728","729","737","740","741","742","743","744","745","746","747","748","749","750","751","760","761"],
+      MA:["650","651","652","653","654","655","656","657","658","659"],
+      MT:["780","781","782","783","784","785","786","787","788","789"],
+      MS:["790","791","792","793","794","795","796","797","798","799"],
+      MG:["300","301","302","303","304","305","306","307","308","309","310","311","312","313","314","320","321","330","331","340","341","350","351","360","361","370","371","380","381","390","391"],
+      PA:["660","661","662","663","664","665","666","667","668","669","670","671","680","681"],
+      PB:["580","581","582","583","584","585","586","587","588","589"],
+      PR:["800","801","802","803","804","805","806","807","808","809","810","811","820","821","830","831","840","841","850","851","860","861","870","871","872","873","874","875","876","877","878","879"],
+      PE:["500","501","502","503","504","505","506","507","508","509","510","511","520","521","530","531","540","541","550","551","560","561","562","563","564","565","566","567","568","569"],
+      PI:["640","641","642","643","644","645","646","647","648","649"],
+      RJ:["200","201","202","203","204","205","206","207","208","209","210","211","220","221","222","223","224","225","226","227","230","231","240","241","250","251","260","261","270","271","280","281","282","283","284","285","286","287","288","289"],
+      RN:["590","591","592","593","594","595","596","597","598","599"],
+      RS:["900","901","902","903","904","905","906","907","908","909","910","911","920","921","930","931","940","941","950","951","960","961","970","971","980","981","990","991","992","993"],
+      RO:["768","769","789"],
+      RR:["693","694"],
+      SC:["880","881","882","883","884","885","886","887","888","889","890","891","892","893"],
+      SP:["010","011","012","013","014","015","016","017","018","019","020","021","022","023","030","031","040","041","050","051","060","061","070","071","080","081","090","091","092","093","100","101","110","111","120","121","130","131","140","141","150","151","160","161","170","171","180","181","190","191"],
+      SE:["490","491","492","493","494","495","496","497","498","499"],
+      TO:["770","771","772","773","774","775","776","777","778","779"]
+    };
+    var prefixos = prefixosPorUF[uf] || [];
+    if (prefixos.length > 0) {
+      lista = lista.filter(function(c){
+        return prefixos.some(function(p){ return c.startsWith(p); });
+      });
     }
-    var sufixo = String(Math.floor(Math.random() * 900) + 100);
-    ceps.push(String(base).padStart(5, '0') + sufixo);
   }
-  document.getElementById('geradoOutput').value = ceps.join('\n');
-  document.getElementById('geradoCount').textContent = ceps.length + ' CEPs gerados';
+
+  if (lista.length === 0) {
+    document.getElementById('geradoCount').textContent = 'Nenhum CEP disponivel para este estado.';
+    document.getElementById('geradoWrap').style.display = 'flex';
+    return;
+  }
+
+  lista = embaralhar(lista).slice(0, qtd);
+  document.getElementById('geradoOutput').value = lista.join('\n');
+  document.getElementById('geradoCount').textContent = lista.length + ' CEPs gerados';
   document.getElementById('geradoWrap').style.display = 'flex';
 }
+
 
 function copiarGerados() {
   navigator.clipboard.writeText(document.getElementById('geradoOutput').value);
