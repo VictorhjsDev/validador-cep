@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://validadorcep.com.br/sitemap.xml
