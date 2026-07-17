@@ -50,7 +50,7 @@
     .sidebar-title{background:var(--navy-d);color:var(--label);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.12)}
     .sidebar-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto}
     .tab-header{display:flex;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:2px}
-    .tab-btn{flex:1;padding:8px 6px;font-family:'Roboto',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--side-muted);cursor:pointer;transition:color .15s,border-color .15s;margin-bottom:-1px}
+    .tab-btn{flex:1;padding:8px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--side-muted);cursor:pointer;transition:color .15s,border-color .15s;margin-bottom:-1px}
     .tab-btn:hover{color:var(--side-text)}
     .tab-btn.active{color:#fff;border-bottom-color:#5dade2}
     .tab-btn:focus{outline:2px solid #5dade2;outline-offset:-2px}
@@ -60,7 +60,7 @@
     .tab-panel{display:none;flex-direction:column;gap:10px}
     .tab-panel.active{display:flex}
     .field-label{display:block;color:var(--side-text);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-    textarea{width:100%;height:200px;resize:vertical;font-family:'Roboto',sans-serif;font-size:13px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
+    textarea{width:100%;height:200px;resize:vertical;font-size:13px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
     textarea::placeholder{color:#888}
     textarea:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
     .count{font-size:11px;color:var(--side-muted);text-align:right;margin-top:3px}
@@ -73,19 +73,19 @@
     .upload-area strong{color:#fff}
     .upload-sub{font-size:11px;color:var(--side-muted);display:block;margin-top:2px}
     .upload-name{font-size:11px;color:#58d68d;margin-top:6px;min-height:16px;font-weight:500}
-    .btn-modelo{width:100%;padding:7px;background:transparent;color:var(--side-text);font-size:11px;font-family:'Roboto',sans-serif;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
+    .btn-modelo{width:100%;padding:7px;background:transparent;color:var(--side-text);font-size:11px;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
     .btn-modelo:hover{background:rgba(255,255,255,.08);color:#fff}
     .btn-modelo:focus{outline:2px solid #5dade2;outline-offset:2px}
-    .input-field{width:100%;font-family:'Roboto',sans-serif;font-size:13px;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
+    .input-field{width:100%;font-size:13px;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
     .input-field::placeholder{color:#888}
     .input-field:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
     .input-hint{font-size:11px;color:var(--side-muted);margin-top:3px}
-    .btn-primary{width:100%;padding:10px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;border-radius:3px;cursor:pointer}
+    .btn-primary{width:100%;padding:10px;background:var(--blue-btn);color:#fff;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;border-radius:3px;cursor:pointer}
     .btn-primary:hover{background:var(--blue-btn-h)}
     .btn-primary:focus{outline:2px solid #fff;outline-offset:2px}
     .btn-primary:active{filter:brightness(.9)}
     .btn-primary:disabled{opacity:.4;cursor:not-allowed}
-    .btn-clear{width:100%;padding:8px;background:transparent;color:var(--side-text);font-size:12px;font-family:'Roboto',sans-serif;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+    .btn-clear{width:100%;padding:8px;background:transparent;color:var(--side-text);font-size:12px;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
     .btn-clear:hover{background:rgba(255,255,255,.08);color:#fff}
     .btn-clear:focus{outline:2px solid #5dade2;outline-offset:2px}
     .prog{display:none;flex-direction:column;gap:5px}
@@ -189,7 +189,7 @@
 
       <div class="tab-header" role="tablist">
         <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-ceps"     id="btn-ceps"     onclick="switchTab('ceps')">CEPs</button>
-        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-importar" id="btn-importar" onclick="switchTab('importar')">Importar</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-importar" id="btn-importar" onclick="switchTab('importar')">Importar lista</button>
         <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-endereco" id="btn-endereco" onclick="switchTab('endereco')">Endere&#231;o</button>
         <button class="tab-btn gerar"  role="tab" aria-selected="false" aria-controls="tab-gerar"    id="btn-gerar"    onclick="switchTab('gerar')">Gerar CEPs</button>
       </div>
@@ -393,7 +393,7 @@ function switchTab(id) {
 
 function atualizarCount() {
   var n = parseTxt().length;
-  cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' . max. 500';
+  cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detectado' + (n !== 1 ? 's' : '') + ' . max. 1000';
 }
 
 function parseTxt() {
@@ -401,7 +401,7 @@ function parseTxt() {
   var seen = {};
   var uniq = [];
   for (var i = 0; i < raw.length; i++) { if (!seen[raw[i]]) { seen[raw[i]] = true; uniq.push(raw[i]); } }
-  return uniq.slice(0, 500);
+  return uniq.slice(0, 1000);
 }
 
 function handleFile(file) {
@@ -574,12 +574,12 @@ function renderTabela() {
     if (!r) continue;
     num++;
     if (r.ok) {
-      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td class="td-m">'+r.ibge+'</td></tr>';
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.end+', '+r.bairro+', '+r.cidade+' - '+r.uf)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;background:#2980b9;padding:3px 10px;border-radius:4px;text-decoration:none;white-space:nowrap;letter-spacing:.02em">&#128205; Maps</a></td></tr>';
     } else {
       rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
     }
   }
-  scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Logradouro</th><th scope="col">Bairro</th><th scope="col">Cidade / UF</th><th scope="col">IBGE</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Logradouro</th><th scope="col">Bairro</th><th scope="col">Cidade / UF</th><th scope="col">Mapa</th></tr></thead><tbody>'+rows+'</tbody></table>';
 }
 
 function limpar() {
