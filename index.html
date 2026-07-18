@@ -60,7 +60,7 @@
     .tab-panel{display:none;flex-direction:column;gap:10px}
     .tab-panel.active{display:flex}
     .field-label{display:block;color:var(--side-text);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-    textarea{width:100%;height:200px;resize:vertical;font-size:13px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
+    textarea{width:100%;height:200px;resize:vertical;font-size:16px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
     textarea::placeholder{color:#888}
     textarea:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
     .count{font-size:11px;color:var(--side-muted);text-align:right;margin-top:3px}
@@ -124,6 +124,52 @@
     .seo-block p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:8px}
     .seo-block ul{margin:8px 0 0 18px;font-size:13px;color:var(--muted);line-height:1.8}
     .empty{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem}
+    /* MODAL AVALIACAO */
+    @keyframes overlayIn{from{opacity:0}to{opacity:1}}
+    @keyframes overlayOut{from{opacity:1}to{opacity:0}}
+    @keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes modalOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(16px) scale(.97)}}
+    .modal-overlay{position:fixed;inset:0;background:rgba(16,32,56,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px);animation:overlayIn .25s ease forwards}
+    .modal-overlay.fechando{animation:overlayOut .22s ease forwards}
+    .modal-box{background:#fff;border-radius:12px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22),0 4px 16px rgba(0,0,0,.1);overflow:hidden;animation:modalIn .3s cubic-bezier(.22,.8,.36,1) forwards}
+    .modal-overlay.fechando .modal-box{animation:modalOut .22s ease forwards}
+    .modal-header{background:linear-gradient(135deg,#162d4a 0%,#1e3a5f 100%);padding:20px 22px 18px;position:relative}
+    .modal-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2980b9,#5dade2)}
+    .modal-icon{font-size:32px;margin-bottom:8px;display:block;line-height:1}
+    .modal-header h3{color:#fff;font-size:16px;font-weight:700;margin:0 0 3px}
+    .modal-header p{color:#a9cce3;font-size:12px;margin:0}
+    .modal-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border:none;color:#b8d4e8;font-size:16px;cursor:pointer;line-height:1;padding:4px 7px;border-radius:4px;transition:background .15s}
+    .modal-close:hover{background:rgba(255,255,255,.2);color:#fff}
+    .modal-body{padding:22px}
+    .modal-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:block}
+    .stars{display:flex;gap:4px;margin-bottom:20px}
+    .star{font-size:32px;cursor:pointer;color:#e0e0e0;transition:color .15s,transform .1s;line-height:1;background:none;border:none;padding:2px}
+    .star.on{color:#f4b400}
+    .star:hover{color:#f4b400;transform:scale(1.15)}
+    .star-hint{font-size:12px;color:var(--muted);margin-top:-12px;margin-bottom:16px;min-height:16px;transition:opacity .15s}
+    .modal-textarea{width:100%;height:88px;resize:none;font-family:'Roboto',sans-serif;font-size:13px;border:1.5px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);outline:none;line-height:1.6;transition:border-color .2s;background:#fafafa}
+    .modal-textarea:focus{border-color:#2980b9;background:#fff}
+    .modal-footer{display:flex;gap:8px;margin-top:18px}
+    .btn-modal-send{flex:1;padding:11px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:6px;cursor:pointer;transition:background .15s,transform .1s}
+    .btn-modal-send:hover{background:var(--blue-btn-h)}
+    .btn-modal-send:active{transform:scale(.98)}
+    .btn-modal-later{padding:11px 16px;background:transparent;color:var(--muted);font-family:'Roboto',sans-serif;font-size:13px;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:background .15s,color .15s}
+    .btn-modal-later:hover{background:var(--bg);color:var(--text)}
+    .modal-success{text-align:center;padding:16px 0 4px;display:none}
+    .modal-success-icon{font-size:40px;display:block;margin-bottom:8px}
+    .modal-success-text{font-size:14px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px}
+    .modal-success-sub{font-size:12px;color:var(--muted)}
+    .toggle-hifen{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;font-family:'Roboto',sans-serif}
+    .toggle-hifen input{display:none}
+    .toggle-track{width:32px;height:18px;background:#d5d8dc;border-radius:99px;position:relative;transition:background .2s;flex-shrink:0}
+    .toggle-track::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .toggle-hifen input:checked + .toggle-track{background:#2980b9}
+    .toggle-hifen input:checked + .toggle-track::after{transform:translateX(14px)}
+    .table-overlay{position:absolute;inset:0;background:rgba(242,243,244,.75);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:10;backdrop-filter:blur(1px)}
+    .spinner{width:36px;height:36px;border:3px solid #d5d8dc;border-top-color:#2980b9;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spinner-label{font-size:13px;font-weight:500;color:#2c3e50;font-family:'Roboto',sans-serif}
+    .table-pos{position:relative}
     .empty-box{text-align:center;color:var(--muted)}
     .empty-box p{font-size:13px;line-height:1.8;margin-top:6px}
     footer{background:var(--navy-d);color:#b8d4e8;font-size:11px;padding:8px 20px;border-top:2px solid var(--blue-btn);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -199,7 +245,7 @@
         <div>
           <label class="field-label" for="cepInput">Cole os CEPs abaixo</label>
           <textarea id="cepInput" name="cepInput" aria-describedby="cepHint"
-            placeholder="01310-100&#10;22070-900&#10;30112-020&#10;&#10;Um por linha, v&#237;rgula&#10;ou espa&#231;o."></textarea>
+            placeholder="01310100&#10;22070900&#10;30112020&#10;&#10;Um por linha, v&#237;rgula&#10;ou espa&#231;o."></textarea>
           <div class="count" id="cepHint" aria-live="polite">0 CEPs &middot; m&#225;x. 500</div>
         </div>
         <button class="btn-primary" id="btnConsultar" onclick="consultarCeps()" aria-label="Iniciar valida&#231;&#227;o dos CEPs informados">
@@ -280,6 +326,11 @@
             <label class="field-label">CEPs gerados</label>
             <textarea id="geradoOutput" readonly style="height:140px;background:#f0f7ff;font-size:12px;cursor:default"></textarea>
             <div class="count" id="geradoCount"></div>
+          <label class="toggle-hifen" id="toggleHifenGerador" style="display:none;margin-top:2px">
+            <input type="checkbox" id="toggleHifenGer" onchange="aplicarHifenGerador()"/>
+            <span class="toggle-track"></span>
+            Com hífen
+          </label>
           </div>
           <div style="display:flex;gap:8px;flex-wrap:wrap">
             <button class="btn-modelo" style="flex:1" onclick="copiarGerados()">&#8663; Copiar</button>
@@ -313,14 +364,21 @@
       <h1 style="font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em">
         Resultados <span id="hInfo" style="font-weight:400;color:var(--muted);font-size:12px;text-transform:none;letter-spacing:0" aria-live="polite"></span>
       </h1>
-      <div class="export-row" id="exportRow" style="display:none" role="group" aria-label="Exportar">
-        <button class="btn-exp green" onclick="exportXLSX()">&#8659; Excel</button>
-        <button class="btn-exp" onclick="exportCSV()">&#8659; CSV</button>
-        <button class="btn-exp" onclick="copiar()">&#8663; Copiar</button>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label class="toggle-hifen" id="toggleHifenLabel" style="display:none">
+          <input type="checkbox" id="toggleHifen" onchange="aplicarHifen()"/>
+          <span class="toggle-track"></span>
+          Com hífen
+        </label>
+        <div class="export-row" id="exportRow" style="display:none" role="group" aria-label="Exportar">
+          <button class="btn-exp green" onclick="exportXLSX()">&#8659; Excel</button>
+          <button class="btn-exp" onclick="exportCSV()">&#8659; CSV</button>
+          <button class="btn-exp" onclick="copiar()">&#8663; Copiar</button>
+        </div>
       </div>
     </div>
 
-    <div class="table-scroll" id="tableScroll" role="region" aria-label="Tabela de resultados" aria-live="polite">
+    <div class="table-scroll table-pos" id="tableScroll" role="region" aria-label="Tabela de resultados" aria-live="polite">
       <div class="empty">
         <div class="empty-box">
           <p>Informe os CEPs, importe um arquivo<br>ou busque por endere&#231;o ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p>
@@ -355,6 +413,41 @@
     <a href="contato.html">Contato</a>
   </p>
 </footer>
+
+<!-- MODAL AVALIACAO -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Avalie o site">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">&#10005;</button>
+      <span class="modal-icon">&#127775;</span>
+      <h3>Como foi sua experi&#234;ncia?</h3>
+      <p>Sua opini&#227;o nos ajuda a melhorar</p>
+    </div>
+    <div class="modal-body">
+      <span class="modal-label">Sua avalia&#231;&#227;o</span>
+      <div class="stars" role="group" aria-label="Estrelas de avaliacao"
+           onmouseleave="atualizarStars(_starSelecionada)">
+        <button class="star" onclick="setStar(1)" onmouseover="atualizarStars(1)" aria-label="1 estrela">&#9733;</button>
+        <button class="star" onclick="setStar(2)" onmouseover="atualizarStars(2)" aria-label="2 estrelas">&#9733;</button>
+        <button class="star" onclick="setStar(3)" onmouseover="atualizarStars(3)" aria-label="3 estrelas">&#9733;</button>
+        <button class="star" onclick="setStar(4)" onmouseover="atualizarStars(4)" aria-label="4 estrelas">&#9733;</button>
+        <button class="star" onclick="setStar(5)" onmouseover="atualizarStars(5)" aria-label="5 estrelas">&#9733;</button>
+      </div>
+      <div class="star-hint" id="starHint"></div>
+      <span class="modal-label">Sugest&#245;es <span style="font-weight:400;text-transform:none">(opcional)</span></span>
+      <textarea class="modal-textarea" id="modalSugestao" placeholder="O que poderia ser melhor?"></textarea>
+      <div class="modal-success" id="modalSuccess">
+        <span class="modal-success-icon">&#127881;</span>
+        <span class="modal-success-text">Obrigado pelo feedback!</span>
+        <span class="modal-success-sub">Sua opini&#227;o &#233; muito importante para n&#243;s.</span>
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <button class="btn-modal-later" onclick="fecharModal()">Agora n&#227;o</button>
+        <button class="btn-modal-send" onclick="enviarFeedback()">Enviar &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 var res = [];
@@ -423,7 +516,7 @@ function handleFile(file) {
 }
 
 function baixarModelo() {
-  var ws = XLSX.utils.aoa_to_sheet([['01310-100'],['22070-900'],['30112-020'],['70040-020']]);
+  var ws = XLSX.utils.aoa_to_sheet([['01310100'],['22070900'],['30112020'],['70040020']]);
   ws['!cols'] = [{ wch: 16 }];
   var wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
@@ -433,8 +526,29 @@ function baixarModelo() {
 function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
 
 function setLoading(on) {
-  if (on) { prog.classList.add('show'); expR.style.display = 'none'; scrl.innerHTML = ''; }
-  else { prog.classList.remove('show'); }
+  if (on) {
+    prog.classList.add('show');
+    expR.style.display = 'none';
+    mostrarOverlay(true);
+  } else {
+    prog.classList.remove('show');
+    mostrarOverlay(false);
+  }
+}
+
+function mostrarOverlay(show) {
+  var existing = document.getElementById('tableOverlay');
+  if (show) {
+    if (!existing) {
+      var el = document.createElement('div');
+      el.id = 'tableOverlay';
+      el.className = 'table-overlay';
+      el.innerHTML = '<div class="spinner"></div><div class="spinner-label" id="overlayLabel">Consultando...</div>';
+      scrl.appendChild(el);
+    }
+  } else {
+    if (existing) existing.remove();
+  }
 }
 
 var _pausado = false;
@@ -492,6 +606,8 @@ async function consultarCeps() {
         done++;
         pFill.style.width = (done / ceps.length * 100) + '%';
         pLbl.textContent = done + ' / ' + ceps.length;
+        var ol = document.getElementById('overlayLabel');
+        if (ol) ol.textContent = done + ' de ' + ceps.length + ' consultados...';
         renderTabela();
       });
     });
@@ -505,7 +621,16 @@ async function consultarCeps() {
   pFill.style.width = _parar ? pFill.style.width : '100%';
   pLbl.textContent = _parar ? 'Interrompido.' : 'Concluido.';
   setLoading(false);
-  if (res.filter(function(r){ return r; }).length > 0) expR.style.display = 'flex';
+  if (res.filter(function(r){ return r; }).length > 0) {
+    expR.style.display = 'flex';
+    document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
+    // Abre modal se usuario ainda nao avaliou e nao clicou "Agora nao" nessa sessao
+    try {
+      var jaAvaliou = localStorage.getItem('cep_ja_avaliou') === '1';
+      var vistoHoje = sessionStorage.getItem('cep_modal_visto') === '1';
+      if (!jaAvaliou && !vistoHoje) setTimeout(abrirModal, 800);
+    } catch(e) { setTimeout(abrirModal, 800); }
+  }
 }
 
 async function fetchCep(cep) {
@@ -574,9 +699,11 @@ function renderTabela() {
     if (!r) continue;
     num++;
     if (r.ok) {
-      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+r.cep+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.end+', '+r.bairro+', '+r.cidade+' - '+r.uf)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;background:#2980b9;padding:3px 10px;border-radius:4px;text-decoration:none;white-space:nowrap;letter-spacing:.02em">&#128205; Maps</a></td></tr>';
+      var cepFmt = comHifen ? fmt(r.cep.replace(/\D/g,'')) : r.cep.replace(/\D/g,'');
+    rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+cepFmt+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.end+', '+r.bairro+', '+r.cidade+' - '+r.uf)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;background:#2980b9;padding:3px 10px;border-radius:4px;text-decoration:none;white-space:nowrap;letter-spacing:.02em">&#128205; Maps</a></td></tr>';
     } else {
-      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
+      var cepErrFmt = comHifen ? fmt(r.cep.replace(/\D/g,'')) : r.cep.replace(/\D/g,'');
+    rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+cepErrFmt+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
     }
   }
   scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Logradouro</th><th scope="col">Bairro</th><th scope="col">Cidade / UF</th><th scope="col">Mapa</th></tr></thead><tbody>'+rows+'</tbody></table>';
@@ -591,6 +718,9 @@ function limpar() {
   document.getElementById('endHint').textContent = 'Informe a rua, cidade e estado.';
   atualizarCount();
   sT.textContent = sO.textContent = sE.textContent = '-';
+  comHifen = false;
+  document.getElementById('toggleHifen').checked = false;
+  document.getElementById('toggleHifenLabel').style.display = 'none';
   hInfo.textContent = '';
   expR.style.display = 'none';
   prog.classList.remove('show');
@@ -598,11 +728,108 @@ function limpar() {
   scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Informe os CEPs, importe um arquivo<br>ou busque por endereco ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p></div></div>';
 }
 
+// MODAL
+var _starSelecionada = 0;
+var _avaliacoes = JSON.parse(localStorage.getItem('cep_avaliacoes') || '[]');
+
+function abrirModal() {
+  // Se já avaliou alguma vez, não mostra mais
+  try {
+    if (localStorage.getItem('cep_ja_avaliou') === '1') return;
+  } catch(e) {}
+  _starSelecionada = 0;
+  document.getElementById('modalSugestao').value = '';
+  document.getElementById('modalSuccess').style.display = 'none';
+  document.getElementById('modalFooter').style.display = 'flex';
+  atualizarStars(0);
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function fecharModal() {
+  var overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('fechando');
+  setTimeout(function() {
+    overlay.style.display = 'none';
+    overlay.classList.remove('fechando');
+  }, 220);
+  try { sessionStorage.setItem('cep_modal_visto', '1'); } catch(e) {}
+}
+
+var _starHints = ['','Ruim','Regular','Bom','&#211;timo','Excelente!'];
+function setStar(n) {
+  _starSelecionada = n;
+  atualizarStars(n);
+  var hint = document.getElementById('starHint');
+  if (hint) hint.innerHTML = n ? _starHints[n] : '';
+}
+
+function atualizarStars(n) {
+  var stars = document.querySelectorAll('.star');
+  for (var i = 0; i < stars.length; i++) {
+    stars[i].classList.toggle('on', i < n);
+  }
+}
+
+async function enviarFeedback() {
+  var sugestao = document.getElementById('modalSugestao').value.trim();
+  if (!_starSelecionada && !sugestao) { fecharModal(); return; }
+
+  // Salva estrelas localmente e marca como já avaliou
+  if (_starSelecionada) {
+    _avaliacoes.push({ nota: _starSelecionada, data: new Date().toISOString() });
+    try { localStorage.setItem('cep_avaliacoes', JSON.stringify(_avaliacoes)); } catch(e){}
+  }
+  // Marca que já avaliou — não aparece mais nunca
+  try { localStorage.setItem('cep_ja_avaliou', '1'); } catch(e){}
+
+  // Envia por email via Formspree se tiver sugestao ou estrela
+  try {
+    await fetch('https://formspree.io/f/SEU_ENDPOINT', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        nota: _starSelecionada ? _starSelecionada + ' estrela(s)' : 'Nao avaliou',
+        sugestao: sugestao || 'Sem sugestao',
+        data: new Date().toLocaleString('pt-BR')
+      })
+    });
+  } catch(e) {}
+
+  document.getElementById('modalSuccess').style.display = 'block';
+  document.getElementById('modalFooter').style.display = 'none';
+  setTimeout(fecharModal, 1800);
+}
+
+// Fecha ao clicar fora
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) fecharModal();
+});
+
 function fmt(c) { return c.length === 8 ? c.slice(0,5)+'-'+c.slice(5) : c; }
+
+var comHifen = false;
+function aplicarHifen() {
+  comHifen = document.getElementById('toggleHifen').checked;
+  renderTabela();
+}
+
+function aplicarHifenGerador() {
+  var checked = document.getElementById('toggleHifenGer').checked;
+  var output  = document.getElementById('geradoOutput');
+  var ceps    = output.value.split('\n').filter(Boolean);
+  output.value = ceps.map(function(c) {
+    var raw = c.replace(/\D/g, '');
+    return checked && raw.length === 8 ? raw.slice(0,5)+'-'+raw.slice(5) : raw;
+  }).join('\n');
+}
 
 function exportXLSX() {
   var header = ['CEP','Status','Logradouro','Bairro','Cidade','UF','IBGE'];
-  var rows = res.map(function(r){ return r.ok ? [r.cep,'Valido',r.end,r.bairro,r.cidade,r.uf,r.ibge] : [r.cep,'Invalido',r.motivo,'','','','']; });
+  var rows = res.map(function(r){
+    var c = r.cep ? r.cep.replace(/\D/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    return r.ok ? [cFmt,'Valido',r.end,r.bairro,r.cidade,r.uf,r.ibge] : [cFmt,'Invalido',r.motivo,'','','',''];
+  });
   var ws = XLSX.utils.aoa_to_sheet([header].concat(rows));
   ws['!cols'] = [14,10,32,24,20,6,10].map(function(w){ return { wch: w }; });
   var wb = XLSX.utils.book_new();
@@ -612,9 +839,11 @@ function exportXLSX() {
 
 function exportCSV() {
   var rows = res.map(function(r){
+    var c = r.cep ? r.cep.replace(/\D/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
     return r.ok
-      ? '"'+r.cep+'","Valido","'+r.end+'","'+r.bairro+'","'+r.cidade+'","'+r.uf+'","'+r.ibge+'"'
-      : '"'+r.cep+'","Invalido","'+r.motivo+'","","","",""';
+      ? '"'+cFmt+'","Valido","'+r.end+'","'+r.bairro+'","'+r.cidade+'","'+r.uf+'","'+r.ibge+'"'
+      : '"'+cFmt+'","Invalido","'+r.motivo+'","","","",""';
   });
   var b = new Blob(['CEP,Status,Logradouro,Bairro,Cidade,UF,IBGE\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
   var a = document.createElement('a');
@@ -627,7 +856,9 @@ function copiar() {
   var lines = ['CEP\tStatus\tLogradouro\tBairro\tCidade\tUF\tIBGE'];
   for (var i = 0; i < res.length; i++) {
     var r = res[i];
-    lines.push(r.ok ? r.cep+'\tValido\t'+r.end+'\t'+r.bairro+'\t'+r.cidade+'\t'+r.uf+'\t'+r.ibge : r.cep+'\tInvalido\t'+r.motivo+'\t\t\t\t');
+    var c = r.cep ? r.cep.replace(/\D/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    lines.push(r.ok ? cFmt+'\tValido\t'+r.end+'\t'+r.bairro+'\t'+r.cidade+'\t'+r.uf+'\t'+r.ibge : cFmt+'\tInvalido\t'+r.motivo+'\t\t\t\t');
   }
   navigator.clipboard.writeText(lines.join('\n'));
 }
@@ -648,6 +879,8 @@ function gerarCeps() {
   var lista = embaralhar(CEP_LISTA.slice()).slice(0, qtd);
   document.getElementById('geradoOutput').value = lista.join('\n');
   document.getElementById('geradoCount').textContent = lista.length + ' CEPs gerados';
+  document.getElementById('toggleHifenGerador').style.display = 'inline-flex';
+  document.getElementById('toggleHifenGer').checked = false;
   document.getElementById('geradoWrap').style.display = 'flex';
 }
 
