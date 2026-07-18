@@ -19,6 +19,7 @@
   <!-- Google AdSense -->
   <meta name="google-adsense-account" content="ca-pub-1578934872428684">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578934872428684" crossorigin="anonymous"></script>
+  <link rel="manifest" href="/manifest.json"/>
   <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"/>
   <meta property="og:title" content="Validador de CEP em Massa"/>
@@ -46,7 +47,7 @@
     .logo span{color:#5dade2}
     header p{color:#b8d4e8;font-size:12px}
     .wrap{display:flex;flex:1;min-height:0}
-    .sidebar{width:25%;min-width:280px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column}
+    .sidebar{width:25%;min-width:280px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
     .sidebar-title{background:var(--navy-d);color:var(--label);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.12)}
     .sidebar-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto}
     .tab-header{display:flex;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:2px}
@@ -176,8 +177,9 @@
     footer a{color:#5dade2;text-decoration:underline}
     footer a:hover{color:#85c1e9}
     @media(max-width:768px){
+      #btnInstalar{display:none !important}
       .wrap{flex-direction:column}
-      .sidebar{width:100%;min-width:unset}
+      .sidebar{width:100%;min-width:unset;position:static;height:auto}
       header{padding:8px 14px;gap:6px}
       .logo{font-size:14px}
       header p{font-size:11px}
@@ -226,6 +228,7 @@
     <div class="logo" aria-label="Validador de CEP em Massa">Validador de <span>CEP</span> em Massa</div>
     <p>Ferramenta gratuita para consultar e validar m&#250;ltiplos CEPs de uma vez</p>
   </div>
+
 </header>
 
 <div class="wrap">
@@ -356,6 +359,9 @@
         <div class="stat"><span class="stat-n r" id="sErr">&#8212;</span><span class="stat-l">Inv&#225;lidos</span></div>
       </div>
 
+      <button id="btnInstalar" onclick="instalarPWA()" style="display:none;width:100%;align-items:center;justify-content:center;gap:7px;padding:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#b8d4e8;font-family:Roboto,sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:background .15s;white-space:nowrap;margin-top:4px">
+        &#10515; Adicionar &#224; &#225;rea de trabalho
+      </button>
     </div>
   </aside>
 
@@ -419,7 +425,6 @@
   <div class="modal-box">
     <div class="modal-header">
       <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">&#10005;</button>
-      <span class="modal-icon">&#127775;</span>
       <h3>Como foi sua experi&#234;ncia?</h3>
       <p>Sua opini&#227;o nos ajuda a melhorar</p>
     </div>
@@ -728,6 +733,33 @@ function limpar() {
   scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Informe os CEPs, importe um arquivo<br>ou busque por endereco ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p></div></div>';
 }
 
+// PWA INSTALL
+var _pwaPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  _pwaPrompt = e;
+  var btn = document.getElementById('btnInstalar');
+  if (btn) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', function() {
+  var btn = document.getElementById('btnInstalar');
+  if (btn) btn.style.display = 'none';
+  _pwaPrompt = null;
+});
+
+function instalarPWA() {
+  if (!_pwaPrompt) return;
+  _pwaPrompt.prompt();
+  _pwaPrompt.userChoice.then(function(result) {
+    if (result.outcome === 'accepted') {
+      var btn = document.getElementById('btnInstalar');
+      if (btn) btn.style.display = 'none';
+    }
+    _pwaPrompt = null;
+  });
+}
+
 // MODAL
 var _starSelecionada = 0;
 var _avaliacoes = JSON.parse(localStorage.getItem('cep_avaliacoes') || '[]');
@@ -774,24 +806,42 @@ async function enviarFeedback() {
   var sugestao = document.getElementById('modalSugestao').value.trim();
   if (!_starSelecionada && !sugestao) { fecharModal(); return; }
 
-  // Salva estrelas localmente e marca como já avaliou
+  // Salva estrelas localmente e marca como ja avaliou
   if (_starSelecionada) {
     _avaliacoes.push({ nota: _starSelecionada, data: new Date().toISOString() });
     try { localStorage.setItem('cep_avaliacoes', JSON.stringify(_avaliacoes)); } catch(e){}
   }
-  // Marca que já avaliou — não aparece mais nunca
+  // Marca que ja avaliou -- nao aparece mais nunca
   try { localStorage.setItem('cep_ja_avaliou', '1'); } catch(e){}
 
-  // Envia por email via Formspree se tiver sugestao ou estrela
+  // Salva no JSONBin acumulando todas as avaliacoes
   try {
-    await fetch('https://formspree.io/f/SEU_ENDPOINT', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        nota: _starSelecionada ? _starSelecionada + ' estrela(s)' : 'Nao avaliou',
-        sugestao: sugestao || 'Sem sugestao',
-        data: new Date().toLocaleString('pt-BR')
-      })
+    var BIN_ID = '6a5b9512da38895dfe6f5d84';
+    var API_KEY = '$2a$10$8B/3ZfiP7IGgPko3X/xFUecpr5nMZRepDIVZ4gbicS56SYshDsya2';
+    var BASE = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
+    // Le o JSON atual
+    var getResp = await fetch(BASE + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    var getData = await getResp.json();
+    var lista = Array.isArray(getData.record) ? getData.record : [];
+
+    // Adiciona nova avaliacao
+    lista.push({
+      nota: _starSelecionada || null,
+      sugestao: sugestao || '',
+      data: new Date().toLocaleString('pt-BR')
+    });
+
+    // Salva de volta
+    await fetch(BASE, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
+      body: JSON.stringify(lista)
     });
   } catch(e) {}
 
