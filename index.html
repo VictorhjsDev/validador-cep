@@ -733,6 +733,13 @@ function limpar() {
   scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Informe os CEPs, importe um arquivo<br>ou busque por endereco ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p></div></div>';
 }
 
+// SERVICE WORKER
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+
 // PWA INSTALL
 var _pwaPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e) {
