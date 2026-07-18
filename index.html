@@ -188,7 +188,7 @@
       .tab-header{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
       .tab-header::-webkit-scrollbar{display:none}
       .tab-btn{font-size:10px;padding:8px 10px;white-space:nowrap;flex:none}
-      textarea{height:130px}
+      textarea{height:130px;font-size:16px}
       .upload-area{padding:10px 8px}
       .upload-icon{font-size:18px;margin-bottom:4px}
       .upload-area p{font-size:11px}
@@ -327,7 +327,7 @@
         <div id="geradoWrap" style="display:none;flex-direction:column;gap:8px">
           <div>
             <label class="field-label">CEPs gerados</label>
-            <textarea id="geradoOutput" readonly style="height:140px;background:#f0f7ff;font-size:12px;cursor:default"></textarea>
+            <textarea id="geradoOutput" readonly style="height:140px;background:#f0f7ff;font-size:13px;cursor:default"></textarea>
             <div class="count" id="geradoCount"></div>
           <label class="toggle-hifen" id="toggleHifenGerador" style="display:none;margin-top:2px">
             <input type="checkbox" id="toggleHifenGer" onchange="aplicarHifenGerador()"/>
@@ -359,8 +359,8 @@
         <div class="stat"><span class="stat-n r" id="sErr">&#8212;</span><span class="stat-l">Inv&#225;lidos</span></div>
       </div>
 
-      <button id="btnInstalar" onclick="instalarPWA()" style="display:none;width:100%;align-items:center;justify-content:center;gap:7px;padding:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#b8d4e8;font-family:Roboto,sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:background .15s;white-space:nowrap;margin-top:4px">
-        &#10515; Adicionar &#224; &#225;rea de trabalho
+      <button id="btnInstalar" onclick="instalarPWA()" style="display:flex;width:100%;align-items:center;justify-content:center;gap:7px;padding:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#b8d4e8;font-family:Roboto,sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:background .15s;white-space:nowrap;margin-top:4px">
+        &#10515; Adicionar validador na &#225;rea de trabalho
       </button>
     </div>
   </aside>
@@ -749,15 +749,28 @@ window.addEventListener('appinstalled', function() {
 });
 
 function instalarPWA() {
-  if (!_pwaPrompt) return;
-  _pwaPrompt.prompt();
-  _pwaPrompt.userChoice.then(function(result) {
-    if (result.outcome === 'accepted') {
-      var btn = document.getElementById('btnInstalar');
-      if (btn) btn.style.display = 'none';
+  if (_pwaPrompt) {
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(function(result) {
+      if (result.outcome === 'accepted') {
+        var btn = document.getElementById('btnInstalar');
+        if (btn) btn.style.display = 'none';
+      }
+      _pwaPrompt = null;
+    });
+  } else {
+    // Fallback: instrucoes manuais para Chrome/Edge
+    var ua = navigator.userAgent;
+    var msg = '';
+    if (ua.indexOf('Edg') !== -1) {
+      msg = 'No Edge: clique nos 3 pontos (...) no canto superior direito > Aplicativos > Instalar este site como aplicativo.';
+    } else if (ua.indexOf('Chrome') !== -1) {
+      msg = 'No Chrome: clique nos 3 pontos no canto superior direito > Mais ferramentas > Criar atalho... > marque "Abrir como janela" e clique em Criar.';
+    } else {
+      msg = 'No seu navegador: procure a opcao de instalar ou criar atalho para este site nas configuracoes do navegador.';
     }
-    _pwaPrompt = null;
-  });
+    alert(msg);
+  }
 }
 
 // MODAL
