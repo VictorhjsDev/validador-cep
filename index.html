@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Validador de CEP Gr&#225;tis | Valide, Consulte e Gere CEPs Online</title>
-  <meta name="description" content="Valide CEP online, em massa ou individualmente. Importe Excel, busque por endere&#231;o, gere CEPs por estado e baixe os resultados. Gratuito e sem cadastro."/>
+  <meta name="description" content="Valide até 1.000 CEPs de uma vez, sem cadastro e sem limite. Importe Excel ou CSV, veja logradouro, cidade e estado em tempo real e exporte o resultado. 100% gratuito."/>
   <meta name="keywords" content="validador de cep, valida cep, validar cep, validar cep online, cep em lote, buscar cep por endereco, gerador de cep, cep excel download, validar cep em massa"/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://validadorcep.com.br/"/>
@@ -22,8 +22,8 @@
   <link rel="manifest" href="/manifest.json"/>
   <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"/>
-  <meta property="og:title" content="Validador de CEP em Massa"/>
-  <meta property="og:description" content="Valide centenas de CEPs de uma vez. Importe Excel, exporte resultados com logradouro, bairro, cidade e IBGE."/>
+  <meta property="og:title" content="Validador de CEP em Massa | Valide 1000 CEPs de Uma Vez"/>
+  <meta property="og:description" content="Cole até 1.000 CEPs de uma vez, importe Excel ou CSV e exporte o resultado com logradouro, bairro, cidade e estado. Grátis e sem cadastro."/>
   <meta property="og:url" content="https://validadorcep.com.br/"/>
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="pt_BR"/>
@@ -100,7 +100,7 @@
     .stat-n.g{color:#58d68d}
     .stat-n.r{color:#e74c3c}
     .stat-l{font-size:10px;color:var(--side-muted);text-transform:uppercase;letter-spacing:.04em}
-    .content{flex:1;display:flex;flex-direction:column;min-width:0}
+    .content{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
     .content-head{background:#fff;border-bottom:2px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .export-row{display:flex;gap:6px}
     .btn-exp{padding:5px 12px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:none;border-radius:3px;cursor:pointer}
@@ -108,7 +108,7 @@
     .btn-exp:focus{outline:2px solid var(--navy);outline-offset:2px}
     .btn-exp.green{background:var(--green)}
     .btn-exp.green:hover{background:#219a52}
-    .table-scroll{flex:1;overflow:auto;padding-bottom:60px}
+    .table-scroll{flex:1;overflow:auto;padding-bottom:60px;min-height:300px}
     table{width:100%;border-collapse:collapse;font-size:13px}
     thead th{position:sticky;top:0;background:var(--navy);color:#fff;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
     thead th:last-child{border-right:none}
@@ -166,11 +166,13 @@
     .toggle-track::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
     .toggle-hifen input:checked + .toggle-track{background:#2980b9}
     .toggle-hifen input:checked + .toggle-track::after{transform:translateX(14px)}
-    .table-overlay{position:absolute;inset:0;background:rgba(242,243,244,.75);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:10;backdrop-filter:blur(1px)}
-    .spinner{width:36px;height:36px;border:3px solid #d5d8dc;border-top-color:#2980b9;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes overlayFadeIn{from{opacity:0}to{opacity:1}}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .spinner-label{font-size:13px;font-weight:500;color:#2c3e50;font-family:'Roboto',sans-serif}
-    .table-pos{position:relative}
+    .spinner-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;background:#fff;padding:28px 36px;border-radius:12px;box-shadow:0 8px 32px rgba(30,58,95,.12);border:1px solid var(--border)}
+    .spinner{width:44px;height:44px;border:3px solid #d5d8dc;border-top-color:#2980b9;border-radius:50%;animation:spin .75s cubic-bezier(.5,.1,.5,.9) infinite}
+    .spinner-label{font-size:13px;font-weight:500;color:#2c3e50;font-family:'Roboto',sans-serif;text-align:center;line-height:1.5}
+    .spinner-sub{font-size:11px;color:var(--muted);font-family:'Roboto',sans-serif;text-align:center}
+    #tableOverlayWrap{position:absolute;inset:0;background:rgba(242,243,244,.9);z-index:20;backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;animation:overlayFadeIn .2s ease}
     .empty-box{text-align:center;color:var(--muted)}
     .empty-box p{font-size:13px;line-height:1.8;margin-top:6px}
     footer{background:var(--navy-d);color:#b8d4e8;font-size:11px;padding:8px 20px;border-top:2px solid var(--blue-btn);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -249,7 +251,7 @@
           <label class="field-label" for="cepInput">Cole os CEPs abaixo</label>
           <textarea id="cepInput" name="cepInput" aria-describedby="cepHint"
             placeholder="01310100&#10;22070900&#10;30112020&#10;&#10;Um por linha, v&#237;rgula&#10;ou espa&#231;o."></textarea>
-          <div class="count" id="cepHint" aria-live="polite">0 CEPs &middot; m&#225;x. 500</div>
+          <div class="count" id="cepHint" aria-live="polite">0 CEPs &middot; m&#225;x. 1000</div>
         </div>
         <button class="btn-primary" id="btnConsultar" onclick="consultarCeps()" aria-label="Iniciar valida&#231;&#227;o dos CEPs informados">
           &#9654; Validar CEPs
@@ -316,8 +318,8 @@
       <div class="tab-panel" id="tab-gerar" role="tabpanel" aria-labelledby="btn-gerar">
         <div>
           <label class="field-label" for="inputQtd">Quantidade</label>
-          <input type="number" id="inputQtd" class="input-field" value="10" min="1" max="100"/>
-          <div class="input-hint" style="margin-top:3px">M&#237;nimo 1 &middot; m&#225;ximo 100</div>
+          <input type="number" id="inputQtd" class="input-field" value="10" min="1" max="1000"/>
+          <div class="input-hint" style="margin-top:3px">M&#237;nimo 1 &middot; m&#225;ximo 1000</div>
         </div>
 
         <button class="btn-primary" style="background:#27ae60" onclick="gerarCeps()"
@@ -384,7 +386,14 @@
       </div>
     </div>
 
-    <div class="table-scroll table-pos" id="tableScroll" role="region" aria-label="Tabela de resultados" aria-live="polite">
+    <div id="tableOverlayWrap" style="display:none;position:absolute;inset:0;background:rgba(242,243,244,.82);z-index:20;backdrop-filter:blur(3px);align-items:center;justify-content:center;animation:overlayFadeIn .2s ease">
+      <div class="spinner-wrap">
+        <div class="spinner"></div>
+        <div class="spinner-label" id="overlayLabel">Consultando CEPs...</div>
+        <div class="spinner-sub" id="overlayPct">Aguarde um momento</div>
+      </div>
+    </div>
+    <div class="table-scroll" id="tableScroll" role="region" aria-label="Tabela de resultados" aria-live="polite">
       <div class="empty">
         <div class="empty-box">
           <p>Informe os CEPs, importe um arquivo<br>ou busque por endere&#231;o ao lado,<br>depois clique em <strong>Validar CEPs</strong>.</p>
@@ -397,7 +406,7 @@
       <p>Precisa <strong>validar CEP</strong>, usar um <strong>verificador de CEP</strong> ou conferir uma lista inteira de uma vez? Este <strong>validador de CEP</strong> online e gratuito funciona tamb&#233;m como <strong>simulador de CEP</strong> e permite consultar desde um &#250;nico CEP at&#233; centenas simultaneamente. Cole os CEPs no campo ao lado &#8212; separados por linha, v&#237;rgula ou espa&#231;o &#8212; ou importe uma planilha Excel com os CEPs na primeira coluna. A ferramenta consulta cada CEP na base do <strong>ViaCEP</strong> e retorna logradouro, bairro, cidade, estado e c&#243;digo IBGE em segundos.</p>
       <p>Diferente de outros <strong>validadores de CEP</strong>, aqui voc&#234; n&#227;o precisa checar um por um. Cole a lista inteira, <strong>valide CEPs</strong> em massa e baixe os resultados em Excel com um clique &#8212; sem cadastro, sem limite. A <strong>valida&#231;&#227;o do CEP</strong> acontece em tempo real: CEPs inv&#225;lidos s&#227;o identificados antes mesmo de consultar a API. Tamb&#233;m &#233; poss&#237;vel buscar o CEP pelo nome da rua e cidade, ou gerar CEPs para testes.</p>
       <ul>
-        <li><strong>Valida CEP</strong> individualmente ou em lote &#8212; at&#233; 500 de uma vez</li>
+        <li><strong>Valida CEP</strong> individualmente ou em lote &#8212; at&#233; 1.000 de uma vez</li>
         <li><strong>Verificador de CEP</strong> online &#8212; confira se o CEP existe e obt&#233;m o endere&#231;o completo</li>
         <li><strong>Simulador de CEP</strong> &#8212; gere CEPs reais para usar em testes e sistemas</li>
         <li>CEPs com formato incorreto s&#227;o identificados na hora, sem consumir requisi&#231;&#245;es</li>
@@ -495,7 +504,7 @@ function atualizarCount() {
 }
 
 function parseTxt() {
-  var raw = inp.value.split(/[\n,;\s]+/).map(function(t){ return t.replace(/\D/g,''); }).filter(function(t){ return t.length > 0; });
+  var raw = inp.value.split(/[\n,;\s]+/).map(function(t){ var v = t.replace(/\D/g,''); return v.length > 0 ? v.padStart(8,'0') : ''; }).filter(function(t){ return t.length > 0; });
   var seen = {};
   var uniq = [];
   for (var i = 0; i < raw.length; i++) { if (!seen[raw[i]]) { seen[raw[i]] = true; uniq.push(raw[i]); } }
@@ -511,7 +520,7 @@ function handleFile(file) {
       var wb = XLSX.read(e.target.result, { type: 'array' });
       var ws = wb.Sheets[wb.SheetNames[0]];
       var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-      var ceps = rows.map(function(r){ return String(r[0] || '').replace(/\D/g,''); }).filter(function(c){ return c.length > 0; });
+      var ceps = rows.map(function(r){ var v = String(r[0] || '').replace(/\D/g,''); return v.length > 0 ? v.padStart(8,'0') : ''; }).filter(function(c){ return c.length > 0; });
       inp.value = ceps.join('\n');
       upName.textContent = file.name + ' - ' + ceps.length + ' linha(s)';
       atualizarCount();
@@ -542,17 +551,14 @@ function setLoading(on) {
 }
 
 function mostrarOverlay(show) {
-  var existing = document.getElementById('tableOverlay');
+  var wrap = document.getElementById('tableOverlayWrap');
+  if (!wrap) return;
   if (show) {
-    if (!existing) {
-      var el = document.createElement('div');
-      el.id = 'tableOverlay';
-      el.className = 'table-overlay';
-      el.innerHTML = '<div class="spinner"></div><div class="spinner-label" id="overlayLabel">Consultando...</div>';
-      scrl.appendChild(el);
-    }
+    wrap.style.display = 'flex';
+    document.getElementById('overlayLabel').textContent = 'Consultando CEPs...';
+    document.getElementById('overlayPct').textContent = 'Aguarde um momento';
   } else {
-    if (existing) existing.remove();
+    wrap.style.display = 'none';
   }
 }
 
@@ -583,6 +589,17 @@ function mostrarControles(show) {
 async function consultarCeps() {
   var ceps = parseTxt();
   if (!ceps.length) return;
+  // Limpa resultado anterior antes de começar
+  res = [];
+  sT.textContent = sO.textContent = sE.textContent = '-';
+  hInfo.textContent = '';
+  expR.style.display = 'none';
+  document.getElementById('toggleHifenLabel').style.display = 'none';
+  document.getElementById('toggleHifen').checked = false;
+  comHifen = false;
+  scrl.innerHTML = '';
+  // Scrolla para a area de resultados automaticamente
+  scrl.scrollIntoView({ behavior: 'smooth', block: 'start' });
   res = new Array(ceps.length).fill(null);
   _pausado = false;
   _parar   = false;
@@ -590,7 +607,7 @@ async function consultarCeps() {
   setLoading(true);
   mostrarControles(true);
 
-  var LOTE = 10;
+  var LOTE = 40;
   var done = 0;
 
   for (var i = 0; i < ceps.length; i += LOTE) {
@@ -612,16 +629,59 @@ async function consultarCeps() {
         pFill.style.width = (done / ceps.length * 100) + '%';
         pLbl.textContent = done + ' / ' + ceps.length;
         var ol = document.getElementById('overlayLabel');
-        if (ol) ol.textContent = done + ' de ' + ceps.length + ' consultados...';
-        renderTabela();
+        var os = document.getElementById('overlayPct');
+        if (ol) ol.textContent = done + ' de ' + ceps.length + ' consultados';
+        if (os) {
+          var pct = Math.round(done / ceps.length * 100);
+          os.textContent = pct + '% concluido';
+        }
+        // Atualiza stats em tempo real sem renderizar a tabela
+        var okCount = 0;
+        for (var k = 0; k < res.length; k++) { if (res[k] && res[k].ok) okCount++; }
+        var totalCount = res.filter(function(x){ return x; }).length;
+        sT.textContent = totalCount;
+        sO.textContent = okCount;
+        sE.textContent = totalCount - okCount;
       });
     });
 
     await Promise.all(promessas);
-    await sleep(80);
+    await sleep(50);
   }
 
   _rodando = false;
+  mostrarControles(false);
+  pFill.style.width = '100%';
+  pLbl.textContent = _parar ? 'Interrompido.' : 'Concluido.';
+  _parar = false;
+  setLoading(false);
+  // Renderiza tabela completa só ao terminar
+  var rows = '';
+  var num = 0;
+  for (var i = 0; i < res.length; i++) {
+    var r = res[i];
+    if (!r) continue;
+    num++;
+    var cepFmt = comHifen ? fmt(r.cep ? r.cep.replace(/[^0-9]/g,'') : '') : (r.cep ? r.cep.replace(/[^0-9]/g,'') : '');
+    var c = r.cep ? r.cep.replace(/[^0-9]/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    if (r.ok) {
+      var maps = 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.end+', '+r.bairro+', '+r.cidade+' - '+r.uf);
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+cFmt+'</td><td><span class="badge badge-ok">Valido</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td><a href="'+maps+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;background:#2980b9;padding:3px 10px;border-radius:4px;text-decoration:none;white-space:nowrap;letter-spacing:.02em">&#128205; Maps</a></td></tr>';
+    } else {
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalido</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
+    }
+  }
+  scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Logradouro</th><th scope="col">Bairro</th><th scope="col">Cidade / UF</th><th scope="col">Mapa</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  if (res.filter(function(r){ return r; }).length > 0) {
+    expR.style.display = 'flex';
+    document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
+    try {
+      var jaAvaliou = localStorage.getItem('cep_ja_avaliou') === '1';
+      var vistoHoje = sessionStorage.getItem('cep_modal_visto') === '1';
+      if (!jaAvaliou && !vistoHoje) setTimeout(abrirModal, 800);
+    } catch(e) { setTimeout(abrirModal, 800); }
+  }
   mostrarControles(false);
   pFill.style.width = _parar ? pFill.style.width : '100%';
   pLbl.textContent = _parar ? 'Interrompido.' : 'Concluido.';
@@ -644,12 +704,12 @@ async function fetchCep(cep) {
   for (var t = 0; t < tentativas; t++) {
     try {
       var resp = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
-      if (!resp.ok) { await sleep(500); continue; }
+      if (!resp.ok) { await sleep(200); continue; }
       var d = await resp.json();
       if (d.erro) return { cep: cep, ok: false, motivo: 'Nao encontrado na base' };
       return { cep: d.cep || cep, ok: true, end: d.logradouro || '-', bairro: d.bairro || '-', cidade: d.localidade || '-', uf: d.uf || '-', ibge: d.ibge || '-' };
     } catch(e) {
-      if (t < tentativas - 1) { await sleep(600); } else { return { cep: cep, ok: false, motivo: 'Erro na consulta (verifique sua conexao)' }; }
+      if (t < tentativas - 1) { await sleep(300); } else { return { cep: cep, ok: false, motivo: 'Erro na consulta (verifique sua conexao)' }; }
     }
   }
   return { cep: cep, ok: false, motivo: 'Erro na consulta (verifique sua conexao)' };
@@ -933,7 +993,7 @@ function copiar() {
   navigator.clipboard.writeText(lines.join('\n'));
 }
 
-var CEP_LISTA = ["04458060", "07064151", "02415900", "04356070", "02610110", "02993230", "06463110", "04895057", "03025005", "06657850", "07170350", "07243502", "03357005", "04960195", "08215700", "02809120", "06844305", "04438120", "04904060", "05592060", "07764335", "06524020", "06226437", "07114311", "01241010", "08022100", "05568135", "05187938", "05515030", "04917030", "03986110", "04430190", "05127110", "02354470", "06070150", "02078050", "07636155", "02955015", "05182330", "04292070", "06846720", "05025011", "04330901", "04622050", "07145200", "04127020", "04154100", "06550990", "04602902", "04534000", "03281904", "03414000", "07714580", "06364640", "02532010", "04850250", "06325040", "04013041", "03876140", "06786130", "04660006", "06851390", "02318300", "04414000", "01134030", "03371015", "06381200", "04775100", "06866130", "07861210", "03380110", "08072110", "06263290", "06701212", "07179480", "07181242", "04763050", "06663350", "04935050", "03977160", "01333905", "01225020", "07747255", "05528260", "07144237", "07438500", "06713040", "03304120", "07600348", "02205230", "03103070", "04719904", "05786050", "04886000", "04689080", "03389070", "03510030", "07270340", "07140285", "04342010", "05215020", "06810868", "05367120", "06755350", "03249150", "06535300", "04543907", "07134170", "04319040", "06449060", "02324103", "07131380", "02968050", "03590150", "06720080", "08320646", "07609230", "04386090", "02248050", "05469010", "01255020", "05850130", "08265340", "05307010", "05777080", "07159670", "06250060", "04849025", "04026020", "06540055", "06532015", "01037905", "02019050", "08310594", "05794335", "03072005", "05625140", "06455930", "06727175", "08120110", "04177210", "07813080", "02919060", "04649110", "04043300", "04186170", "07177035", "06114030", "05866090", "08051650", "04891380", "04201010", "07626400", "06053080", "06703450", "08042480", "06503133", "01548020", "07807250", "02064010", "04005070", "05381010", "06317300", "06172030", "06680600", "06341810", "04256290", "04858020", "07092140", "07151540", "04805130", "04854420", "07262550", "01449050", "02673010", "03050025", "06152200", "02329090", "07124385", "07992120", "05712050", "04637042", "04928125", "08121810", "07273255", "02934030", "03472000", "08151780", "03435030", "04842370", "06700148", "06216070", "06513300", "07934080", "03934070", "05442060", "02363158", "02831020", "04820075", "07407040", "05843260", "05641010", "07075100", "08412160", "05171580", "08390330", "03713000", "02040050", "05042971", "03813020", "06818300", "07081220", "07664320", "06270190", "08373650", "07022200", "05425030", "07791180", "07659360", "02217170", "05083010", "08081440", "03262080", "06807567", "03563160", "08230205", "02180100", "06402050", "04477280", "07840160", "08150265", "07194230", "05101270", "07252003", "03580000", "06853615", "03320003", "07856330", "04514040", "05413000", "07161560", "02468075", "03572140", "04877288", "05542130", "04852025", "02851060", "08180140", "04233250", "04216001", "05159460", "07401370", "08255070", "08344020", "07850190", "03644090", "06283110", "07718145", "03906150", "05832190", "04524908", "07051970", "02280150", "05857520", "02237065", "07155062", "08011310", "06764115", "07060000", "01318909", "04563060", "06705360", "03733020", "06815150", "02842050", "05269230", "05814190", "05138200", "06442000", "06774090", "04405250", "03551060", "06422005", "06857172", "06710435", "06685375", "06824154", "03224130", "06126240", "05453050", "02881100", "02873340", "05885430", "07417565", "05551010", "02370060", "07261151", "06870335", "03925030", "02228000", "03919070", "04372070", "06766361", "06642385", "01309900", "05578000", "04468060", "06395250", "01001000", "05879460", "06038410", "03187010", "04813170", "06717122", "08140125", "07152786", "06519027", "04307100", "02634070", "05755140", "03337060", "05684901", "07619396", "01017903", "07957070", "03158040", "05114130", "07622275", "08430040", "07906000", "06622007", "07173055", "07662020", "02762060", "01202900", "06147010", "03978530", "05872060", "05397180", "07175190", "04837050", "04844590", "02258005", "06386110", "08290490", "07945020", "07613700", "03125010", "02723020", "02161110", "02431130", "05613000", "05763400", "02982000", "07084190", "07605195", "04861040", "06330010", "05059110", "06333395", "04061000", "06030195", "08142017", "03964020", "08347685", "07739225", "03002010", "05327000", "06626230", "04856350", "05663000", "06670490", "06877152", "07041130", "06840005", "06236835", "03627200", "02270010", "04106001", "04870025", "04423000", "08235800", "03806003", "02223361", "04474430", "06725400", "08062500", "06162015", "06729235", "08431530", "04117040", "08031400", "05360090", "07190100", "08382420", "07703010", "05890250", "03273150", "07210130", "06434020", "02311180", "06654220", "06722315", "08110340", "04086011", "06708250", "03616040", "04674140", "04786010", "03206040", "04747100", "06543001", "05280000", "07865450", "07793635", "02543110", "08191370", "07776445", "04242150", "07142500", "03738170", "06694250", "02132150", "02301140", "06804440", "03450001", "06298030", "04730901", "06475080", "06528327", "07432685", "04276090", "06142120", "02344060", "04826150", "02862110", "06018120", "05343030", "06863275", "02120001", "07231280", "04077003", "06414070", "04613010", "07629506", "04707910", "02510040", "04830306", "08223320", "08340092", "04552901", "07122141", "03661040", "03139030", "08040430", "04571918", "08246050", "06783450", "03173901", "07223380", "07097310", "01050906", "07786880", "07241470", "04164130", "06350260", "05206280", "03691160", "04944090", "08275770", "06790250", "06655620", "06830904", "03530030", "06186077", "01430020", "06410070", "05735030", "03819290", "03677190", "02450045", "01503010", "01529020", "05002050", "06361170", "02402003", "06086060", "07914110", "08395265", "06716020", "02559080", "06950992", "02988140", "03721210", "03945130", "04141100", "07031190", "01416003", "02737080", "06606325"];
+var CEP_LISTA = ["07429815", "06786110", "06280090", "02732040", "03268020", "03389010", "06268192", "05415010", "05210050", "07864090", "07786880", "07133360", "06636090", "04890230", "08130020", "06523015", "06511001", "04747000", "05398160", "02140030", "07991160", "03931000", "07111140", "06719045", "06331110", "04822200", "05048070", "04268005", "07083310", "04109030", "08141570", "06695620", "07252180", "05202120", "04532000", "06716663", "05508190", "04193315", "06852490", "05546210", "05038000", "04602905", "06655806", "06345740", "07434430", "07097041", "05735110", "06810252", "05361000", "02188100", "04464040", "06861600", "06537095", "03728050", "06122060", "08311150", "07161220", "06070030", "03904100", "06764130", "07134640", "02367090", "06288130", "03690040", "06693295", "08090250", "04087917", "07600111", "04645000", "05603070", "02652161", "06075230", "06243000", "04844420", "04637042", "08040260", "03821150", "06804385", "07932020", "07152507", "06709330", "08372202", "08051360", "05093903", "06132380", "06435170", "04852001", "08225030", "05275010", "01439020", "04678001", "05760060", "03434050", "02278060", "06396230", "02561060", "07600448", "05727200", "07145415", "04244000", "03140050", "04863620", "06704505", "04965180", "03717001", "03331000", "01501904", "06702804", "07631590", "05693000", "04653100", "02240000", "06755380", "04455190", "05850130", "03909090", "06807540", "03951070", "06192080", "06524280", "05579060", "07230440", "04860130", "07626530", "04627050", "04560030", "06362032", "07790480", "07865250", "07243140", "05208000", "05756210", "07124750", "05786100", "04469107", "07270550", "06648040", "02288027", "08151550", "06727182", "02236300", "02340145", "06296170", "06703590", "08344620", "07131080", "02273060", "01254060", "07663235", "04785120", "04810080", "01428040", "03943105", "05374120", "04851430", "02460082", "04151090", "04367010", "05407001", "02636020", "06351380", "07162020", "07910090", "08270350", "03642120", "05085020", "05018040", "07151830", "02178060", "04813040", "02373190", "06653430", "05365150", "05821050", "06213100", "05302970", "04842200", "08150740", "06026120", "03927310", "02423020", "04079900", "03509030", "06706210", "04303100", "04343070", "05794370", "08121540", "06814080", "06045060", "04332080", "05782390", "06722360", "06824100", "05887370", "08295070", "05551190", "07435615", "08030400", "06317040", "05572200", "03922000", "06423210", "08080160", "06753400", "08161400", "04956005", "04770080", "06126110", "05565240", "03152020", "05174400", "06855732", "04374070", "04850070", "07175470", "02982130", "07124210", "06449420", "03304120", "07251061", "06420240", "03682060", "06343230", "08132480", "06333050", "06886040", "02839040", "02256020", "06867420", "04894435", "07144020", "04753210", "05614010", "02550000", "04157000", "06038323", "04349020", "04514103", "06327040", "05077110", "07224190", "01333021", "07024141", "07143210", "07743450", "02987107", "03579145", "02117006", "02334050", "06539120", "07940080", "05861390", "04920010", "06454904", "04476260", "05855250", "07901095", "04022030", "06616050", "01017902", "07142223", "04429010", "03758010", "06033220", "02124090", "08110130", "05240005", "05281120", "08280390", "03254400", "07747270", "06184300", "08120620", "05517050", "07792440", "06680055", "05857510", "06683380", "08346500", "06226330", "04003909", "03215010", "08290130", "07033020", "02993310", "06528079", "06380150", "04187240", "04209030", "07727555", "03720250", "05117090", "06716100", "04434050", "06030140", "03017970", "02260001", "03478005", "03884070", "06784490", "08321082", "06413140", "02251070", "08260410", "07986110", "05422060", "08215400", "04055090", "05267300", "04713000", "05368078", "07661410", "03607100", "05271120", "03132010", "02209080", "06715365", "04902010", "04414150", "02281203", "07656140", "06870172", "03652000", "01050903", "04856710", "02556061", "02678011", "07056041", "04696220", "08020280", "08031210", "04235150", "07662100", "04852505", "07629626", "03572020", "02266080", "06501100", "02077005", "04177480", "01415902", "01202002", "08111790", "04294050", "06701262", "03938030", "06142040", "02990000", "06233200", "01547030", "02566060", "03527902", "07845140", "06390600", "04083004", "04618010", "04326110", "05750080", "08142390", "06401065", "03634050", "04762030", "05477902", "06826530", "02991070", "04962130", "05868760", "03443030", "05543050", "08226022", "04320160", "01133100", "06630040", "03711010", "04530001", "03694900", "04896040", "07810150", "04403160", "07179155", "03125900", "02963090", "08032180", "06872085", "03192210", "08380051", "07914000", "01301911", "06790220", "02848000", "05713460", "06622210", "06787240", "05142040", "04674110", "08320307", "07180380", "04877140", "04166001", "04840530", "05634040", "04163005", "07776450", "05656025", "03380060", "04730030", "04613030", "06180112", "08210535", "06726600", "07768385", "03668040", "01001000", "04459000", "06053007", "08410165", "06355635", "06851240", "06774090", "08245350", "07601325", "02410060", "01240901", "06246200", "06858075", "04849337", "02327180", "08111010", "02855000", "06384000", "06263221", "06365347", "01141901", "03425010", "07085290", "02056080", "04337170", "06655080", "02805180", "07621245", "01232907", "01448070", "07182230", "02535210", "06724810", "05187120", "03113080", "04622060", "06502255", "07082350", "07605715", "02347140", "07853105", "03362075", "08072002", "02522110", "03052000", "06728018", "06112140", "07813050", "07140000", "06665325", "05205220", "06542015", "07241100", "07619020", "04520910", "01422003", "02470090", "03159020", "01514010", "07173380", "01311922", "06690050", "07174470", "06276016", "02168150", "05894240", "03962000", "06846595", "07121320", "08240305", "06322190", "06445110", "05529070", "06600190", "04174150", "05525040", "06473079", "03614900", "04649105", "05626080", "06447510", "04047002", "02842330", "07439025", "02046060", "04119010", "07856250", "05790390", "05311000", "03980070", "06093090", "07076021", "04016002", "04473000", "02365000", "07176391", "04582002", "04942160", "06729260", "08382000", "05436110", "02956035", "07094150", "08141002", "08390550", "07053171", "03589170", "06519300", "05798110", "07123200", "05675090", "06783440", "02434120", "05454160", "06850365", "05890210", "04568003", "03814075", "06624235", "02320150", "05181095", "04855210", "07144842", "02018010", "06864360", "03063040", "05055050", "03371007", "04001000", "02246090", "06766365", "03348000", "07703045", "03556080", "01453000", "06660762", "05103020", "02466020", "07611610", "04031080", "03924045", "08220290", "02220170", "04884050", "05846390", "07622405", "03737210", "05767520", "07861115", "06865815", "04226009", "01308080", "07659615", "06083909", "03735045", "04114100", "06341480", "02010405", "04475100", "04534013", "04424015", "03207020", "06409000", "02068973", "07417230", "05030010", "05587070", "02859080", "07196240", "06765305", "06145170", "04204001", "07402010", "02936010", "06535055", "04316000", "01318020", "06604160", "02131094", "04406100", "03984080", "08235510", "07400715", "06815080", "03188000", "07152884", "06844220", "08160370", "03828180", "02515020", "04814340", "07669270", "06654470", "05832210", "05618010", "03035050", "02725055", "08223110", "06806170", "03406030", "05109260", "06543135", "02216020", "04563090", "08011160", "03812035", "07832165", "03239030", "07081000", "05777130", "01538000", "07850151", "07750978", "03073040", "02977100", "02871030", "02756150", "07859070", "07244060", "07722010", "03282000", "06160004", "07074150", "07664360", "02310090", "04741040", "04144080", "04124170", "07031009", "05540000", "02812080", "03413000", "06540205", "04929390", "02227250", "05132150", "03164902", "04254000", "06144260", "07193060", "06845250", "04571923", "06608150", "07918090", "04856180", "07274020", "06770060", "07802140", "03225040", "07022031", "04909160", "07609400", "06321010", "01224040", "06532301", "04137070", "05879445", "06236730", "07064002", "07183500", "04537908", "02314050", "05593040", "07807210", "02764090", "01247010", "07793620", "05323002", "03917100", "06857025", "02323290", "03263020", "07040280", "07714630", "06514315", "06710550", "05466020", "03376015", "04835170", "06253200", "05356030", "04130060", "07615500", "03977417", "04707903", "08310268", "06170454", "04932350", "04849005", "05184300", "02920120", "02883020", "04477410", "05329030", "04072080", "03277025", "07210460", "04854110", "02541190", "03460140", "07051001", "06266020", "08255540", "08150060", "06149314", "04774070", "04310110", "07179720", "02232000", "01527050", "06310395", "02325526", "04358030", "02613055", "01324900", "07791175", "07404050", "08041325", "06529185", "06465080", "06516090", "08340440", "06160382", "05386090", "06906560", "04065010", "03575060", "07194550", "05763470", "03250020", "06705490", "07840140", "05836140", "01011100", "03563030", "05874286", "07411220", "02750030", "01028010", "04858530", "07013142", "07072071", "07636345", "03807375", "06803290", "04926040", "06663565", "04041001", "07782195", "07904190", "07154230", "06694420", "03449040", "04280010", "07717225", "04664145", "06700539", "01037903", "04607901", "08042280", "07262206", "07115360", "03471070", "05135360", "06816320", "06700193", "06462220", "06404326", "07172190", "07428005", "04826010", "04184010", "03174060", "06429305", "06673060", "07619472", "04236310", "05065120", "07151200", "02878010", "05882430", "05448090", "04438250", "06721110", "04257140", "08050350", "02307000", "04007005", "08275370", "07155280", "08062190", "07061043", "05124901", "07625015", "08342140", "03976195", "08248020", "06708370", "06810856", "07739245", "03676090", "04411000", "07222170", "06726040", "02618170", "07191080", "06835090", "06657266", "03732010", "06660160", "04387140", "08382635", "05170220", "07606456", "07260296", "06835675", "04792070", "02038060", "03356970", "02442010", "08070270", "04781000", "07242120", "04915040", "04843450", "07263053", "07232075", "04544050", "04857590", "04816070", "08021600", "04547130", "02151070", "06329130", "01215000", "04218050", "05663130", "02318020", "06713200", "03385005", "04719060", "08230650", "02815010", "07764345", "03819020", "07178080", "05641110", "07132263", "04430330", "06162320", "03583110", "03027006", "04893060", "07951100", "03286190", "04287100", "03005020", "02833010", "02474100", "02864000", "04891150", "06416090", "03087090", "07998000", "07144474", "06386660", "06825100", "06874357", "02929130", "02225260", "05443090", "06757310", "04660004", "02873590", "07114080", "07272490", "08411310", "06060050", "04012010", "05162000", "03621100", "06544072", "02223090", "07159205", "03550030", "04880600", "05843270", "02969070", "04508902", "04830180", "01045000", "06458275", "04382080", "02996250", "08370380", "06530555", "08081270", "02356130", "04938130", "07261455", "08330560", "05427030", "03273300", "01406900", "02714000", "02030000", "03313010", "08191100", "05685900", "03320002", "06364130", "05158400", "07170030", "07043130", "03180002", "06817365", "08253450", "02913060", "04689040", "02205002", "08061020", "06411110", "03518010", "07944080", "05814210", "05346904", "02353040", "05885370", "04726160", "03568080", "05007060", "01121030", "06152050", "04103000", "02083100", "04866090", "04417070", "05396190", "02405001", "07141120", "06711275", "05866070", "06820510", "02362010", "04552908", "06220240", "07628145", "08390246", "06680675", "05338010", "03105000", "03626150", "06717160", "07713147", "04846120", "07263665", "04805000", "07160180", "07956020", "07170971", "03659150", "06340110", "06437130", "06843200", "04948970", "08391594", "05569030", "06505030", "08180640", "02418050", "06018060", "06775970", "06720135", "05872030", "04836530", "06853505", "03978140", "02377280", "07091190", "02945120", "03970050", "03804190", "03337050", "06385720", "03542000", "04828050", "04870510"];
 
 function embaralhar(arr) {
   var a = arr.slice();
@@ -945,7 +1005,7 @@ function embaralhar(arr) {
 }
 
 function gerarCeps() {
-  var qtd = Math.min(CEP_LISTA.length, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
+  var qtd = Math.min(1000, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
   var lista = embaralhar(CEP_LISTA.slice()).slice(0, qtd);
   document.getElementById('geradoOutput').value = lista.join('\n');
   document.getElementById('geradoCount').textContent = lista.length + ' CEPs gerados';
