@@ -8,6 +8,9 @@
   <meta name="keywords" content="validador de cep, valida cep, validar cep, validar cep online, cep em lote, buscar cep por endereco, gerador de cep, cep excel download, validar cep em massa"/>
   <meta name="robots" content="index, follow"/>
   <link rel="canonical" href="https://validadorcep.com.br/"/>
+  <link rel="alternate" hreflang="pt-BR" href="https://validadorcep.com.br/"/>
+  <link rel="alternate" hreflang="en" href="https://validadorcep.com.br/en/"/>
+  <link rel="alternate" hreflang="x-default" href="https://validadorcep.com.br/"/>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-B77903MZHW"></script>
   <script>
@@ -40,6 +43,7 @@
       --side-text:#c8dff0;--side-muted:#8fb8d8;
     }
     body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+    .lang-flag{font-size:16px;line-height:1}
     .skip-link{position:absolute;top:-40px;left:0;background:var(--navy);color:#fff;padding:8px 16px;font-size:13px;text-decoration:none;border-radius:0 0 4px 0;z-index:999}
     .skip-link:focus{top:0}
     header{background:var(--navy-d);padding:10px 20px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--blue-btn)}
@@ -219,7 +223,31 @@
       .tab-btn{font-size:9px;padding:7px 8px}
       header p{display:none}
     }
-  </style>
+      .cafe-box{max-width:440px;background:linear-gradient(180deg,#eef6fc 0%,#f7fbfe 100%);position:relative;border:1px solid #d6e6f3}
+    .cafe-art{position:absolute;top:-52px;right:-52px;width:190px;height:190px;border-radius:50%;background:#d9eaf6;opacity:.9}
+    .cafe-ill{position:absolute;top:14px;right:44px;width:112px;height:88px}
+    .cafe-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;line-height:1;color:var(--muted);cursor:pointer;padding:4px 6px;z-index:2}
+    .cafe-x:hover{color:var(--navy)}
+    .cafe-body{position:relative;padding:30px 30px 24px}
+    .cafe-body h3{color:var(--navy);font-size:25px;line-height:1.25;font-weight:700;margin:0 0 16px;max-width:260px}
+    .cafe-msg{font-size:15px;color:var(--text);line-height:1.65;margin:0 0 22px}
+    .cafe-msg strong{color:var(--navy)}
+    .cafe-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:16px;font-weight:500;border:none;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(30,90,140,.22);transition:background .15s,transform .15s,box-shadow .15s}
+    .cafe-cta:hover{background:var(--blue-btn-h);transform:translateY(-1px);box-shadow:0 6px 16px rgba(30,90,140,.3)}
+    .cafe-cta:active{transform:scale(.98)}
+    .cafe-cta svg{width:20px;height:20px;flex:none}
+    .cafe-later{display:block;margin:16px auto 0;background:none;border:none;color:var(--muted);font-family:'Roboto',sans-serif;font-size:14px;cursor:pointer;padding:4px 10px}
+    .cafe-later:hover{color:var(--navy);text-decoration:underline}
+    .cafe-pix{display:none;margin-top:18px;padding-top:16px;border-top:1px solid #d6e6f3;text-align:center}
+    .cafe-pix small{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .cafe-pix code{display:block;background:#fff;border:1.5px dashed #b9d3e8;border-radius:6px;padding:9px 10px;font-size:12px;word-break:break-all;color:var(--navy);margin-bottom:8px}
+    .cafe-pix button{background:#fff;border:1.5px solid #b9d3e8;border-radius:6px;padding:7px 14px;font-family:'Roboto',sans-serif;font-size:12px;font-weight:500;color:var(--navy);cursor:pointer}
+    .cafe-pix button:hover{background:#eef6fc}
+    @media(max-width:420px){.cafe-body{padding:26px 22px 20px}.cafe-body h3{margin-bottom:34px}.cafe-body h3{font-size:22px;max-width:200px}.cafe-ill{width:90px;right:36px}}
+    .lang-btn{display:flex;align-items:center;gap:9px;padding:8px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:7px;color:#fff;font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:.03em;cursor:pointer;text-decoration:none;transition:background .15s,transform .15s}
+    .lang-btn:hover{background:rgba(255,255,255,.24);transform:translateY(-1px)}
+    .lang-btn .flag{width:26px;height:18px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.25);flex:none}
+</style>
 </head>
 <body>
 
@@ -230,7 +258,7 @@
     <div class="logo" aria-label="Validador de CEP em Massa">Validador de <span>CEP</span> em Massa</div>
     <p>Ferramenta gratuita para consultar e validar m&#250;ltiplos CEPs de uma vez</p>
   </div>
-
+  <a class="lang-btn" style="margin-left:auto;text-decoration:none" href="/en/" hreflang="en" title="Read this page in English"><svg class="flag" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="2" fill="#fff"/><rect y="0.00" width="28" height="1.54" fill="#b22234"/><rect y="3.08" width="28" height="1.54" fill="#b22234"/><rect y="6.15" width="28" height="1.54" fill="#b22234"/><rect y="9.23" width="28" height="1.54" fill="#b22234"/><rect y="12.31" width="28" height="1.54" fill="#b22234"/><rect y="15.38" width="28" height="1.54" fill="#b22234"/><rect y="18.46" width="28" height="1.54" fill="#b22234"/><rect width="12" height="10.800" rx="1" fill="#3c3b6e"/><circle cx="1.6" cy="2.2" r=".55" fill="#fff"/><circle cx="3.6" cy="2.2" r=".55" fill="#fff"/><circle cx="5.6" cy="2.2" r=".55" fill="#fff"/><circle cx="7.6" cy="2.2" r=".55" fill="#fff"/><circle cx="9.6" cy="2.2" r=".55" fill="#fff"/><circle cx="1.6" cy="4.4" r=".55" fill="#fff"/><circle cx="3.6" cy="4.4" r=".55" fill="#fff"/><circle cx="5.6" cy="4.4" r=".55" fill="#fff"/><circle cx="7.6" cy="4.4" r=".55" fill="#fff"/><circle cx="9.6" cy="4.4" r=".55" fill="#fff"/><circle cx="1.6" cy="6.6" r=".55" fill="#fff"/><circle cx="3.6" cy="6.6" r=".55" fill="#fff"/><circle cx="5.6" cy="6.6" r=".55" fill="#fff"/><circle cx="7.6" cy="6.6" r=".55" fill="#fff"/><circle cx="9.6" cy="6.6" r=".55" fill="#fff"/></svg><span>EN</span></a>
 </header>
 
 <div class="wrap">
@@ -416,6 +444,11 @@
         <li>Baixa os resultados em Excel ou CSV &#8212; pronto para usar no seu sistema</li>
         <li>100% gratuito, sem cadastro e sem limite de uso</li>
       </ul>
+      <p style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-style:italic">
+        <strong>For international users:</strong> This tool validates Brazilian postal codes (CEPs).
+        If you work with Brazilian e-commerce, logistics or customer databases,
+        simply paste your CEP list or import an Excel file — free, no sign-up required.
+      </p>
     </section>
   </main>
 </div>
@@ -428,6 +461,35 @@
     <a href="contato.html">Contato</a>
   </p>
 </footer>
+
+<!-- MODAL CAFE -->
+<div class="modal-overlay" id="cafeOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Apoie o site">
+  <div class="modal-box cafe-box">
+    <div class="cafe-art"></div>
+    <svg class="cafe-ill" viewBox="0 0 112 88" fill="none" aria-hidden="true">
+        <path d="M64 6c-5.5 0-10 4.3-10 9.6 0 7 10 15.4 10 15.4s10-8.400 10-15.400C74 10.300 69.500 6 64 6z" fill="#2e86c1"/><circle cx="64" cy="15.500" r="3.600" fill="#fff"/>
+        <path d="M92 14c-1.500-2.600-5.400-1.800-5.400 1.200 0 2.400 5.400 5.800 5.400 5.800s5.400-3.400 5.400-5.800c0-3-3.900-3.800-5.400-1.200z" fill="#f08a8a"/>
+        <path d="M102 30c-1.200-2-4.200-1.400-4.200.9 0 1.900 4.200 4.500 4.200 4.500s4.200-2.600 4.200-4.500c0-2.300-3-2.900-4.200-.9z" fill="#f4a3a3"/>
+        <path d="M46 24c-3 3 3 6 0 9M56 26c-3 3 3 6 0 9" stroke="#8fb6d6" stroke-width="2.200" stroke-linecap="round"/>
+        <path d="M22 40h56v18c0 12-10 20-28 20S22 70 22 58V40z" fill="#fff" stroke="#1e3a5f" stroke-width="3"/>
+        <path d="M78 46h6c7 0 11 4 11 9s-4 9-11 9h-6" stroke="#1e3a5f" stroke-width="3" fill="none"/>
+        <path d="M50 51c-3.600-4.600-9-1-6.200 3.600 2 3.200 6.200 6 6.200 6s4.200-2.800 6.200-6c2.800-4.600-2.600-8.200-6.200-3.600z" fill="#f5b942"/>
+        <ellipse cx="50" cy="82" rx="34" ry="4.500" fill="#fff" stroke="#1e3a5f" stroke-width="3"/>
+      </svg>
+    <button class="cafe-x" onclick="fecharCafe()" aria-label="Fechar">&#10005;</button>
+    <div class="cafe-body">
+      <h3>Obrigado por usar nosso Validador de CEP!</h3>
+      <p class="cafe-msg">Se nossa ferramenta te ajudou hoje a economizar tempo e encontrar o endere&#231;o certo, considere me apoiar! Qualquer valor ajuda a manter este servi&#231;o <strong>gratuito</strong> e a trazer <strong>novas ferramentas para a comunidade</strong>.</p>
+      <button class="cafe-cta" id="cafeBtnLink" onclick="abrirLinkCafe()"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 8h11l-1.200 11a2 2 0 0 1-2 1.800h-5.600a2 2 0 0 1-2-1.800L6 8z" fill="#ffdd00" stroke="#fff" stroke-width="1.200"/><path d="M5 4.500h13l-1 3.500H6l-1-3.500z" fill="#fff"/></svg><span>Apoie com um caf&#233;</span></button>
+      <div class="cafe-pix" id="cafePix">
+        <small>Do Brasil? Voc&#234; tamb&#233;m pode usar Pix:</small>
+        <code id="cafePixChave"></code>
+        <button onclick="copiarPixCafe()" id="cafePixBtn">Copiar chave Pix</button>
+      </div>
+      <button class="cafe-later" onclick="fecharCafe()">Talvez mais tarde</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL AVALIACAO -->
 <div class="modal-overlay" id="modalOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Avalie o site">
@@ -676,11 +738,7 @@ async function consultarCeps() {
   if (res.filter(function(r){ return r; }).length > 0) {
     expR.style.display = 'flex';
     document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
-    try {
-      var jaAvaliou = localStorage.getItem('cep_ja_avaliou') === '1';
-      var vistoHoje = sessionStorage.getItem('cep_modal_visto') === '1';
-      if (!jaAvaliou && !vistoHoje) setTimeout(abrirModal, 800);
-    } catch(e) { setTimeout(abrirModal, 800); }
+    posValidacaoModais();
   }
   mostrarControles(false);
   pFill.style.width = _parar ? pFill.style.width : '100%';
@@ -690,11 +748,7 @@ async function consultarCeps() {
     expR.style.display = 'flex';
     document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
     // Abre modal se usuario ainda nao avaliou e nao clicou "Agora nao" nessa sessao
-    try {
-      var jaAvaliou = localStorage.getItem('cep_ja_avaliou') === '1';
-      var vistoHoje = sessionStorage.getItem('cep_modal_visto') === '1';
-      if (!jaAvaliou && !vistoHoje) setTimeout(abrirModal, 800);
-    } catch(e) { setTimeout(abrirModal, 800); }
+    posValidacaoModais();
   }
 }
 
@@ -865,6 +919,7 @@ function fecharModal() {
     overlay.classList.remove('fechando');
   }, 220);
   try { sessionStorage.setItem('cep_modal_visto', '1'); } catch(e) {}
+  setTimeout(abrirCafe, 700);
 }
 
 var _starHints = ['','Ruim','Regular','Bom','&#211;timo','Excelente!'];
@@ -1048,6 +1103,68 @@ function limparGerador() {
   document.getElementById('geradoCount').textContent = '';
   document.getElementById('geradoWrap').style.display = 'none';
 }
+
+// ===== Modal "Me pague um cafe" =====
+// Preencha UM (ou os dois): link de pagamento (Mercado Pago, Pix copia e cola, Buy Me a Coffee...) e/ou chave Pix.
+// Enquanto os dois estiverem vazios, o modal NAO aparece.
+var CAFE_LINK = 'https://buymeacoffee.com/victorhjsg';
+var CAFE_PIX  = '';
+
+function cafeConfigurado() { return !!(CAFE_LINK || CAFE_PIX); }
+function cafeRecente(chave, dias) {
+  try {
+    var t = parseInt(localStorage.getItem(chave) || '0', 10);
+    return t && (Date.now() - t) < dias * 86400000;
+  } catch(e) { return false; }
+}
+function posValidacaoModais() {
+  var jaAvaliou = false, vistoHoje = false;
+  try {
+    jaAvaliou = localStorage.getItem('cep_ja_avaliou') === '1';
+    vistoHoje = sessionStorage.getItem('cep_modal_visto') === '1';
+  } catch(e) {}
+  // Avaliacao tem prioridade; o cafe abre logo depois que ela for fechada (nunca os dois juntos)
+  if (!jaAvaliou && !vistoHoje) { setTimeout(abrirModal, 800); return; }
+  // Cafe: toda vez que uma busca termina, mas so 1x por visita (reabre apos fechar e abrir o site)
+  setTimeout(abrirCafe, 800);
+}
+function abrirCafe() {
+  if (!cafeConfigurado()) return;
+  try { if (sessionStorage.getItem('cep_cafe_sessao') === '1') return; } catch(e) {}
+  if (document.getElementById('modalOverlay').style.display === 'flex') return;
+  var pix = document.getElementById('cafePix');
+  if (CAFE_PIX) {
+    document.getElementById('cafePixChave').textContent = CAFE_PIX;
+    pix.style.display = 'block';
+  }
+  if (!CAFE_LINK) document.getElementById('cafeBtnLink').style.display = 'none';
+  document.getElementById('cafeOverlay').style.display = 'flex';
+  try { sessionStorage.setItem('cep_cafe_sessao', '1'); } catch(e) {}
+}
+function fecharCafe() {
+  var o = document.getElementById('cafeOverlay');
+  o.classList.add('fechando');
+  setTimeout(function(){ o.style.display = 'none'; o.classList.remove('fechando'); }, 220);
+}
+function abrirLinkCafe() {
+  if (typeof gtag === 'function') gtag('event', 'cafe_click');
+  window.open(CAFE_LINK, '_blank', 'noopener');
+  fecharCafe();
+}
+function copiarPixCafe() {
+  var b = document.getElementById('cafePixBtn');
+  function ok() { b.textContent = 'Chave copiada! Obrigado \u2615'; if (typeof gtag === 'function') gtag('event', 'cafe_pix_copiado'); }
+  if (navigator.clipboard) navigator.clipboard.writeText(CAFE_PIX).then(ok, ok); else ok();
+}
+document.getElementById('cafeOverlay').addEventListener('click', function(e){ if (e.target === this) fecharCafe(); });
+
+// Em teste local (file://) os links /en/ e / nao existem: aponta direto para os arquivos
+(function(){
+  if (location.protocol !== 'file:') return;
+  var a = document.querySelector('.lang-btn');
+  if (!a) return;
+  a.setAttribute('href', a.getAttribute('href') === '/en/' ? 'en/index.html' : '../index.html');
+})();
 </script>
 </body>
 </html>

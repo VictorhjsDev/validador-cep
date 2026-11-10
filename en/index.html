@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bulk Brazilian CEP Validator | Validate 1,000 CEPs at Once</title>
+  <meta name="description" content="Validate up to 1,000 Brazilian CEPs (postal codes) at once. Import Excel or CSV, see street, city and state in real time and export the results. 100% free, no sign-up."/>
+  <meta name="keywords" content="brazilian cep validator, validate cep, brazil postal code validator, bulk cep checker, cep lookup by address, cep generator, brazil zip code validator, cep excel"/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://validadorcep.com.br/en/"/>
+  <link rel="alternate" hreflang="pt-BR" href="https://validadorcep.com.br/"/>
+  <link rel="alternate" hreflang="en" href="https://validadorcep.com.br/en/"/>
+  <link rel="alternate" hreflang="x-default" href="https://validadorcep.com.br/"/>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B77903MZHW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-B77903MZHW');
+  </script>
+  <!-- Google AdSense -->
+  <meta name="google-adsense-account" content="ca-pub-1578934872428684">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1578934872428684" crossorigin="anonymous"></script>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon"/>
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png"/>
+  <meta property="og:title" content="Bulk Brazilian CEP Validator | Validate 1,000 CEPs at Once"/>
+  <meta property="og:description" content="Paste up to 1,000 CEPs at once, import Excel or CSV and export results with street, district, city and state. Free, no sign-up."/>
+  <meta property="og:url" content="https://validadorcep.com.br/en/"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:locale" content="en_US"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --navy:#1e3a5f;--navy-d:#162d4a;--navy-l:#2a4f7c;
+      --blue-btn:#2980b9;--blue-btn-h:#2471a3;
+      --green:#27ae60;--green-bg:#eafaf1;
+      --red:#c0392b;--red-bg:#fdf3f2;
+      --border:#d5d8dc;--bg:#f2f3f4;--text:#2c3e50;--muted:#5d6d7e;--label:#ecf0f1;
+      --side-text:#c8dff0;--side-muted:#8fb8d8;
+    }
+    body{font-family:'Roboto',sans-serif;background:var(--bg);color:var(--text);font-size:14px;min-height:100vh;display:flex;flex-direction:column}
+    .lang-flag{font-size:16px;line-height:1}
+    .skip-link{position:absolute;top:-40px;left:0;background:var(--navy);color:#fff;padding:8px 16px;font-size:13px;text-decoration:none;border-radius:0 0 4px 0;z-index:999}
+    .skip-link:focus{top:0}
+    header{background:var(--navy-d);padding:10px 20px;display:flex;align-items:center;gap:10px;border-bottom:3px solid var(--blue-btn)}
+    .logo{color:#fff;font-size:16px;font-weight:700;letter-spacing:.01em}
+    .logo span{color:#5dade2}
+    header p{color:#b8d4e8;font-size:12px}
+    .wrap{display:flex;flex:1;min-height:0}
+    .sidebar{width:25%;min-width:280px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+    .sidebar-title{background:var(--navy-d);color:var(--label);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.12)}
+    .sidebar-body{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1;overflow-y:auto}
+    .tab-header{display:flex;border-bottom:1px solid rgba(255,255,255,.15);margin-bottom:2px}
+    .tab-btn{flex:1;padding:8px 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--side-muted);cursor:pointer;transition:color .15s,border-color .15s;margin-bottom:-1px}
+    .tab-btn:hover{color:var(--side-text)}
+    .tab-btn.active{color:#fff;border-bottom-color:#5dade2}
+    .tab-btn:focus{outline:2px solid #5dade2;outline-offset:-2px}
+    .tab-btn.gerar{background:rgba(39,174,96,.18);color:#7dcea0}
+    .tab-btn.gerar:hover{background:rgba(39,174,96,.28);color:#a9dfb8}
+    .tab-btn.gerar.active{background:rgba(39,174,96,.28);color:#a9dfb8;border-bottom-color:#27ae60}
+    .tab-panel{display:none;flex-direction:column;gap:10px}
+    .tab-panel.active{display:flex}
+    .field-label{display:block;color:var(--side-text);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+    textarea{width:100%;height:200px;resize:vertical;font-size:16px;line-height:1.7;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
+    textarea::placeholder{color:#888}
+    textarea:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
+    .count{font-size:11px;color:var(--side-muted);text-align:right;margin-top:3px}
+    .upload-area{border:1px dashed rgba(255,255,255,.3);border-radius:3px;padding:14px 10px;text-align:center;cursor:pointer;transition:background .15s;position:relative}
+    .upload-area:hover,.upload-area:focus-within{background:rgba(255,255,255,.07);border-color:#5dade2}
+    .upload-area.drag{background:rgba(93,173,226,.15);border-color:#5dade2}
+    .file-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .upload-icon{font-size:22px;margin-bottom:6px;line-height:1}
+    .upload-area p{font-size:12px;color:var(--side-text);line-height:1.6}
+    .upload-area strong{color:#fff}
+    .upload-sub{font-size:11px;color:var(--side-muted);display:block;margin-top:2px}
+    .upload-name{font-size:11px;color:#58d68d;margin-top:6px;min-height:16px;font-weight:500}
+    .btn-modelo{width:100%;padding:7px;background:transparent;color:var(--side-text);font-size:11px;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;justify-content:center;gap:6px;font-weight:500}
+    .btn-modelo:hover{background:rgba(255,255,255,.08);color:#fff}
+    .btn-modelo:focus{outline:2px solid #5dade2;outline-offset:2px}
+    .input-field{width:100%;font-size:13px;background:#fff;border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:8px 10px;color:var(--text);outline:none}
+    .input-field::placeholder{color:#888}
+    .input-field:focus{border-color:#5dade2;outline:2px solid rgba(93,173,226,.4)}
+    .input-hint{font-size:11px;color:var(--side-muted);margin-top:3px}
+    .btn-primary{width:100%;padding:10px;background:var(--blue-btn);color:#fff;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border:none;border-radius:3px;cursor:pointer}
+    .btn-primary:hover{background:var(--blue-btn-h)}
+    .btn-primary:focus{outline:2px solid #fff;outline-offset:2px}
+    .btn-primary:active{filter:brightness(.9)}
+    .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+    .btn-clear{width:100%;padding:8px;background:transparent;color:var(--side-text);font-size:12px;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;font-weight:500}
+    .btn-clear:hover{background:rgba(255,255,255,.08);color:#fff}
+    .btn-clear:focus{outline:2px solid #5dade2;outline-offset:2px}
+    .prog{display:none;flex-direction:column;gap:5px}
+    .prog.show{display:flex}
+    .prog-bar{height:3px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden}
+    .prog-fill{height:100%;background:#5dade2;width:0%;transition:width .2s}
+    .prog-lbl{font-size:11px;color:var(--side-muted)}
+    .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:3px;overflow:hidden}
+    .stat{background:var(--navy-d);padding:10px 6px;text-align:center}
+    .stat-n{display:block;font-size:22px;font-weight:700;color:#fff;line-height:1}
+    .stat-n.g{color:#58d68d}
+    .stat-n.r{color:#e74c3c}
+    .stat-l{font-size:10px;color:var(--side-muted);text-transform:uppercase;letter-spacing:.04em}
+    .content{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+    .content-head{background:#fff;border-bottom:2px solid var(--border);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .export-row{display:flex;gap:6px}
+    .btn-exp{padding:5px 12px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;border:none;border-radius:3px;cursor:pointer}
+    .btn-exp:hover{background:var(--navy-l)}
+    .btn-exp:focus{outline:2px solid var(--navy);outline-offset:2px}
+    .btn-exp.green{background:var(--green)}
+    .btn-exp.green:hover{background:#219a52}
+    .table-scroll{flex:1;overflow:auto;padding-bottom:60px;min-height:300px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    thead th{position:sticky;top:0;background:var(--navy);color:#fff;padding:9px 14px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;border-right:1px solid rgba(255,255,255,.08)}
+    thead th:last-child{border-right:none}
+    tbody tr:nth-child(even) td{background:#f8f9fa}
+    tbody tr:hover td{background:#eaf4fb}
+    td{padding:8px 14px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+    .td-cep{font-weight:700;font-size:13px;color:var(--navy)}
+    .badge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;display:inline-block}
+    .badge-ok{background:var(--green-bg);color:#1e8449;border:1px solid #a9dfbf}
+    .badge-err{background:var(--red-bg);color:#922b21;border:1px solid #f5b7b1}
+    .td-m{color:var(--muted);font-size:12px}
+    .seo-block{background:#fff;border-top:1px solid var(--border);padding:20px 24px;margin-top:auto}
+    .seo-block h2{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
+    .seo-block p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:8px}
+    .seo-block ul{margin:8px 0 0 18px;font-size:13px;color:var(--muted);line-height:1.8}
+    .empty{flex:1;display:flex;align-items:center;justify-content:center;padding:3rem}
+    /* MODAL AVALIACAO */
+    @keyframes overlayIn{from{opacity:0}to{opacity:1}}
+    @keyframes overlayOut{from{opacity:1}to{opacity:0}}
+    @keyframes modalIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes modalOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(16px) scale(.97)}}
+    .modal-overlay{position:fixed;inset:0;background:rgba(16,32,56,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px);animation:overlayIn .25s ease forwards}
+    .modal-overlay.fechando{animation:overlayOut .22s ease forwards}
+    .modal-box{background:#fff;border-radius:12px;width:100%;max-width:400px;box-shadow:0 24px 64px rgba(0,0,0,.22),0 4px 16px rgba(0,0,0,.1);overflow:hidden;animation:modalIn .3s cubic-bezier(.22,.8,.36,1) forwards}
+    .modal-overlay.fechando .modal-box{animation:modalOut .22s ease forwards}
+    .modal-header{background:linear-gradient(135deg,#162d4a 0%,#1e3a5f 100%);padding:20px 22px 18px;position:relative}
+    .modal-header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2980b9,#5dade2)}
+    .modal-icon{font-size:32px;margin-bottom:8px;display:block;line-height:1}
+    .modal-header h3{color:#fff;font-size:16px;font-weight:700;margin:0 0 3px}
+    .modal-header p{color:#a9cce3;font-size:12px;margin:0}
+    .modal-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border:none;color:#b8d4e8;font-size:16px;cursor:pointer;line-height:1;padding:4px 7px;border-radius:4px;transition:background .15s}
+    .modal-close:hover{background:rgba(255,255,255,.2);color:#fff}
+    .modal-body{padding:22px}
+    .modal-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:block}
+    .stars{display:flex;gap:4px;margin-bottom:20px}
+    .star{font-size:32px;cursor:pointer;color:#e0e0e0;transition:color .15s,transform .1s;line-height:1;background:none;border:none;padding:2px}
+    .star.on{color:#f4b400}
+    .star:hover{color:#f4b400;transform:scale(1.15)}
+    .star-hint{font-size:12px;color:var(--muted);margin-top:-12px;margin-bottom:16px;min-height:16px;transition:opacity .15s}
+    .modal-textarea{width:100%;height:88px;resize:none;font-family:'Roboto',sans-serif;font-size:13px;border:1.5px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);outline:none;line-height:1.6;transition:border-color .2s;background:#fafafa}
+    .modal-textarea:focus{border-color:#2980b9;background:#fff}
+    .modal-footer{display:flex;gap:8px;margin-top:18px}
+    .btn-modal-send{flex:1;padding:11px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:13px;font-weight:700;border:none;border-radius:6px;cursor:pointer;transition:background .15s,transform .1s}
+    .btn-modal-send:hover{background:var(--blue-btn-h)}
+    .btn-modal-send:active{transform:scale(.98)}
+    .btn-modal-later{padding:11px 16px;background:transparent;color:var(--muted);font-family:'Roboto',sans-serif;font-size:13px;border:1.5px solid var(--border);border-radius:6px;cursor:pointer;transition:background .15s,color .15s}
+    .btn-modal-later:hover{background:var(--bg);color:var(--text)}
+    .modal-success{text-align:center;padding:16px 0 4px;display:none}
+    .modal-success-icon{font-size:40px;display:block;margin-bottom:8px}
+    .modal-success-text{font-size:14px;font-weight:700;color:var(--navy);display:block;margin-bottom:4px}
+    .modal-success-sub{font-size:12px;color:var(--muted)}
+    .toggle-hifen{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;font-family:'Roboto',sans-serif}
+    .toggle-hifen input{display:none}
+    .toggle-track{width:32px;height:18px;background:#d5d8dc;border-radius:99px;position:relative;transition:background .2s;flex-shrink:0}
+    .toggle-track::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+    .toggle-hifen input:checked + .toggle-track{background:#2980b9}
+    .toggle-hifen input:checked + .toggle-track::after{transform:translateX(14px)}
+    @keyframes overlayFadeIn{from{opacity:0}to{opacity:1}}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .spinner-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;background:#fff;padding:28px 36px;border-radius:12px;box-shadow:0 8px 32px rgba(30,58,95,.12);border:1px solid var(--border)}
+    .spinner{width:44px;height:44px;border:3px solid #d5d8dc;border-top-color:#2980b9;border-radius:50%;animation:spin .75s cubic-bezier(.5,.1,.5,.9) infinite}
+    .spinner-label{font-size:13px;font-weight:500;color:#2c3e50;font-family:'Roboto',sans-serif;text-align:center;line-height:1.5}
+    .spinner-sub{font-size:11px;color:var(--muted);font-family:'Roboto',sans-serif;text-align:center}
+    #tableOverlayWrap{position:absolute;inset:0;background:rgba(242,243,244,.9);z-index:20;backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;animation:overlayFadeIn .2s ease}
+    .empty-box{text-align:center;color:var(--muted)}
+    .empty-box p{font-size:13px;line-height:1.8;margin-top:6px}
+    footer{background:var(--navy-d);color:#b8d4e8;font-size:11px;padding:8px 20px;border-top:2px solid var(--blue-btn);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    footer a{color:#5dade2;text-decoration:underline}
+    footer a:hover{color:#85c1e9}
+    @media(max-width:768px){
+      #btnInstalar{display:none !important}
+      .wrap{flex-direction:column}
+      .sidebar{width:100%;min-width:unset;position:static;height:auto}
+      header{padding:8px 14px;gap:6px}
+      .logo{font-size:14px}
+      header p{font-size:11px}
+      .sidebar-body{padding:12px;gap:8px}
+      .sidebar-title{padding:8px 12px}
+      .tab-header{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+      .tab-header::-webkit-scrollbar{display:none}
+      .tab-btn{font-size:10px;padding:8px 10px;white-space:nowrap;flex:none}
+      textarea{height:130px;font-size:16px}
+      .upload-area{padding:10px 8px}
+      .upload-icon{font-size:18px;margin-bottom:4px}
+      .upload-area p{font-size:11px}
+      .btn-primary{padding:11px;font-size:13px}
+      .btn-clear{padding:8px;font-size:12px}
+      .btn-modelo{font-size:11px;padding:7px}
+      .input-field{font-size:13px;padding:8px 10px}
+      .content-head{padding:8px 12px;gap:8px}
+      .content-head h1{font-size:13px}
+      .export-row{gap:5px}
+      .btn-exp{padding:5px 10px;font-size:10px}
+      .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+      table{font-size:12px;min-width:480px}
+      thead th{padding:8px 10px;font-size:10px}
+      td{padding:7px 10px}
+      .seo-block{padding:14px}
+      .seo-block h2{font-size:13px}
+      .seo-block p,.seo-block ul{font-size:12px}
+      .stat-n{font-size:18px}
+      .stat-l{font-size:9px}
+      .stat{padding:8px 4px}
+      footer{padding:8px 14px;flex-direction:column;text-align:center;gap:4px}
+      footer p{line-height:1.8}
+    }
+    @media(max-width:360px){
+      .tab-btn{font-size:9px;padding:7px 8px}
+      header p{display:none}
+    }
+      .cafe-box{max-width:440px;background:linear-gradient(180deg,#eef6fc 0%,#f7fbfe 100%);position:relative;border:1px solid #d6e6f3}
+    .cafe-art{position:absolute;top:-52px;right:-52px;width:190px;height:190px;border-radius:50%;background:#d9eaf6;opacity:.9}
+    .cafe-ill{position:absolute;top:14px;right:44px;width:112px;height:88px}
+    .cafe-x{position:absolute;top:12px;right:14px;background:none;border:none;font-size:20px;line-height:1;color:var(--muted);cursor:pointer;padding:4px 6px;z-index:2}
+    .cafe-x:hover{color:var(--navy)}
+    .cafe-body{position:relative;padding:30px 30px 24px}
+    .cafe-body h3{color:var(--navy);font-size:25px;line-height:1.25;font-weight:700;margin:0 0 16px;max-width:260px}
+    .cafe-msg{font-size:15px;color:var(--text);line-height:1.65;margin:0 0 22px}
+    .cafe-msg strong{color:var(--navy)}
+    .cafe-cta{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:16px;font-weight:500;border:none;border-radius:8px;cursor:pointer;box-shadow:0 4px 12px rgba(30,90,140,.22);transition:background .15s,transform .15s,box-shadow .15s}
+    .cafe-cta:hover{background:var(--blue-btn-h);transform:translateY(-1px);box-shadow:0 6px 16px rgba(30,90,140,.3)}
+    .cafe-cta:active{transform:scale(.98)}
+    .cafe-cta svg{width:20px;height:20px;flex:none}
+    .cafe-later{display:block;margin:16px auto 0;background:none;border:none;color:var(--muted);font-family:'Roboto',sans-serif;font-size:14px;cursor:pointer;padding:4px 10px}
+    .cafe-later:hover{color:var(--navy);text-decoration:underline}
+    .cafe-pix{display:none;margin-top:18px;padding-top:16px;border-top:1px solid #d6e6f3;text-align:center}
+    .cafe-pix small{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .cafe-pix code{display:block;background:#fff;border:1.5px dashed #b9d3e8;border-radius:6px;padding:9px 10px;font-size:12px;word-break:break-all;color:var(--navy);margin-bottom:8px}
+    .cafe-pix button{background:#fff;border:1.5px solid #b9d3e8;border-radius:6px;padding:7px 14px;font-family:'Roboto',sans-serif;font-size:12px;font-weight:500;color:var(--navy);cursor:pointer}
+    .cafe-pix button:hover{background:#eef6fc}
+    @media(max-width:420px){.cafe-body{padding:26px 22px 20px}.cafe-body h3{margin-bottom:34px}.cafe-body h3{font-size:22px;max-width:200px}.cafe-ill{width:90px;right:36px}}
+    .lang-btn{display:flex;align-items:center;gap:9px;padding:8px 16px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:7px;color:#fff;font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;letter-spacing:.03em;cursor:pointer;text-decoration:none;transition:background .15s,transform .15s}
+    .lang-btn:hover{background:rgba(255,255,255,.24);transform:translateY(-1px)}
+    .lang-btn .flag{width:26px;height:18px;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.25);flex:none}
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header>
+  <div>
+    <div class="logo" aria-label="Brazilian CEP Validator">Brazilian <span>CEP</span> Validator</div>
+    <p>Free tool to validate Brazilian postal codes (CEPs) in bulk</p>
+  </div>
+  <a class="lang-btn" style="margin-left:auto;text-decoration:none" href="/" hreflang="pt-BR" title="Ler esta página em português"><svg class="flag" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="2" fill="#009c3b"/><path d="M14 3.200 25 10 14 16.800 3 10z" fill="#ffdf00"/><circle cx="14" cy="10" r="4.200" fill="#002776"/><path d="M10 9.100c2.800-.7 5.600-.3 8 1.100" stroke="#fff" stroke-width=".9" fill="none"/></svg><span>PT</span></a>
+</header>
+
+<div class="wrap">
+  <aside class="sidebar" aria-label="Painel de entrada">
+    <div class="sidebar-title" aria-hidden="true">Search</div>
+    <div class="sidebar-body">
+
+      <div class="tab-header" role="tablist">
+        <button class="tab-btn active" role="tab" aria-selected="true"  aria-controls="tab-ceps"     id="btn-ceps"     onclick="switchTab('ceps')">CEPs</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-importar" id="btn-importar" onclick="switchTab('importar')">Import list</button>
+        <button class="tab-btn"        role="tab" aria-selected="false" aria-controls="tab-endereco" id="btn-endereco" onclick="switchTab('endereco')">Address</button>
+        <button class="tab-btn gerar"  role="tab" aria-selected="false" aria-controls="tab-gerar"    id="btn-gerar"    onclick="switchTab('gerar')">Generate CEPs</button>
+      </div>
+
+      <!-- ABA 1: CEPs -->
+      <div class="tab-panel active" id="tab-ceps" role="tabpanel" aria-labelledby="btn-ceps">
+        <div>
+          <label class="field-label" for="cepInput">Paste CEPs below</label>
+          <textarea id="cepInput" name="cepInput" aria-describedby="cepHint"
+            placeholder="01310100&#10;22070900&#10;30112020&#10;&#10;One per line, comma&#10;or space separated."></textarea>
+          <div class="count" id="cepHint" aria-live="polite">0 CEPs &middot; max. 1000</div>
+        </div>
+        <button class="btn-primary" id="btnConsultar" onclick="consultarCeps()" aria-label="Start CEP validation">
+          &#9654; Validate CEPs
+        </button>
+        <div id="pausaControles" style="display:none;gap:8px;flex-direction:row">
+          <button class="btn-clear" style="flex:1" onclick="pausarConsulta()" id="btnPausa">&#9646;&#9646; Pause</button>
+          <button class="btn-clear" style="flex:1;color:#e74c3c;border-color:#e74c3c" onclick="pararConsulta()">&#9632; Stop</button>
+        </div>
+        <button class="btn-clear" onclick="limpar()">Clear all</button>
+      </div>
+
+      <!-- ABA 2: Importar -->
+      <div class="tab-panel" id="tab-importar" role="tabpanel" aria-labelledby="btn-importar">
+        <div>
+          <label class="field-label">Excel or CSV file</label>
+          <div class="upload-area" id="uploadArea" role="region" aria-label="Area de upload">
+            <input type="file" id="fileInput" class="file-input" accept=".xlsx,.xls,.csv"
+              aria-label="Select Excel or CSV file with CEPs"
+              onchange="handleFile(this.files[0])"/>
+            <div class="upload-icon" aria-hidden="true">&#128196;</div>
+            <p><strong>Click to select</strong><br>or drag and drop<br><span class="upload-sub">.xlsx &middot; .xls &middot; .csv</span></p>
+            <div class="upload-name" id="uploadName" aria-live="polite"></div>
+          </div>
+          <div class="input-hint" style="margin-top:6px">CEPs in the first column, no header.</div>
+        </div>
+        <button class="btn-modelo" onclick="baixarModelo()">&#8659; Download template</button>
+        <button class="btn-primary" onclick="consultarCeps()">&#9654; Validate CEPs</button>
+        <div id="pausaControles2" style="display:none;gap:8px;flex-direction:row">
+          <button class="btn-clear" style="flex:1" onclick="pausarConsulta()" id="btnPausa2">&#9646;&#9646; Pause</button>
+          <button class="btn-clear" style="flex:1;color:#e74c3c;border-color:#e74c3c" onclick="pararConsulta()">&#9632; Stop</button>
+        </div>
+        <button class="btn-clear" onclick="limpar()">Clear all</button>
+      </div>
+
+      <!-- ABA 3: Endere&#231;o -->
+      <div class="tab-panel" id="tab-endereco" role="tabpanel" aria-labelledby="btn-endereco">
+        <div>
+          <label class="field-label" for="inputRua">Street name</label>
+          <input type="text" id="inputRua" class="input-field" placeholder="Ex: Avenida Paulista"/>
+        </div>
+        <div>
+          <label class="field-label" for="inputCidade">City</label>
+          <input type="text" id="inputCidade" class="input-field" placeholder="Ex: Sao Paulo"/>
+        </div>
+        <div>
+          <label class="field-label" for="inputUF">State (UF)</label>
+          <select id="inputUF" class="input-field">
+            <option value="">Selecione...</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+            <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+            <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+            <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+            <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+            <option selected>SP</option><option>SE</option><option>TO</option>
+          </select>
+        </div>
+        <div class="input-hint" id="endHint">Enter street, city and state.</div>
+        <button class="btn-primary" onclick="buscarPorEndereco()">&#9654; Find CEP</button>
+        <button class="btn-clear" onclick="limpar()">Clear all</button>
+      </div>
+
+      <!-- ABA 4: Gerar CEPs -->
+      <div class="tab-panel" id="tab-gerar" role="tabpanel" aria-labelledby="btn-gerar">
+        <div>
+          <label class="field-label" for="inputQtd">Quantity</label>
+          <input type="number" id="inputQtd" class="input-field" value="10" min="1" max="1000"/>
+          <div class="input-hint" style="margin-top:3px">Minimum 1 &middot; maximum 1000</div>
+        </div>
+
+        <button class="btn-primary" style="background:#27ae60" onclick="gerarCeps()"
+          onmouseover="this.style.background='#219a52'" onmouseout="this.style.background='#27ae60'">
+          &#9654; Generate CEPs
+        </button>
+        <div id="geradoWrap" style="display:none;flex-direction:column;gap:8px">
+          <div>
+            <label class="field-label">CEPs gerados</label>
+            <textarea id="geradoOutput" readonly style="height:140px;background:#f0f7ff;font-size:13px;cursor:default"></textarea>
+            <div class="count" id="geradoCount"></div>
+          <label class="toggle-hifen" id="toggleHifenGerador" style="display:none;margin-top:2px">
+            <input type="checkbox" id="toggleHifenGer" onchange="aplicarHifenGerador()"/>
+            <span class="toggle-track"></span>
+            Com hífen
+          </label>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn-modelo" style="flex:1" onclick="copiarGerados()">&#8663; Copy</button>
+            <button class="btn-modelo" style="flex:1" onclick="baixarGeradosTxt()">&#8659; .txt</button>
+            <button class="btn-modelo" style="flex:1" onclick="baixarGeradosXLSX()">&#8659; Excel</button>
+          </div>
+          <button class="btn-modelo" style="border-color:rgba(93,173,226,.5);color:#5dade2" onclick="enviarParaValidar()">
+            &#8594; Send to validation
+          </button>
+        </div>
+        <button class="btn-clear" onclick="limparGerador()">Clear</button>
+      </div>
+
+      <!-- PROGRESS e STATS -->
+      <div class="prog" id="prog" role="status" aria-live="polite">
+        <div class="prog-bar"><div class="prog-fill" id="pFill"></div></div>
+        <div class="prog-lbl" id="pLbl">0 / 0</div>
+      </div>
+
+      <div class="stats" role="region" aria-label="Resumo dos resultados">
+        <div class="stat"><span class="stat-n" id="sTotal">&#8212;</span><span class="stat-l">Total</span></div>
+        <div class="stat"><span class="stat-n g" id="sOk">&#8212;</span><span class="stat-l">Valid</span></div>
+        <div class="stat"><span class="stat-n r" id="sErr">&#8212;</span><span class="stat-l">Invalid</span></div>
+      </div>
+
+      <button id="btnInstalar" onclick="instalarPWA()" style="display:flex;width:100%;align-items:center;justify-content:center;gap:7px;padding:9px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:4px;color:#b8d4e8;font-family:Roboto,sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:background .15s;white-space:nowrap;margin-top:4px">
+        &#10515; Adicionar validador na &#225;rea de trabalho
+      </button>
+    </div>
+  </aside>
+
+  <main class="content" id="main-content">
+    <div class="content-head">
+      <h1 style="font-size:14px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.06em">
+        Results <span id="hInfo" style="font-weight:400;color:var(--muted);font-size:12px;text-transform:none;letter-spacing:0" aria-live="polite"></span>
+      </h1>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <label class="toggle-hifen" id="toggleHifenLabel" style="display:none">
+          <input type="checkbox" id="toggleHifen" onchange="aplicarHifen()"/>
+          <span class="toggle-track"></span>
+          Com hífen
+        </label>
+        <div class="export-row" id="exportRow" style="display:none" role="group" aria-label="Exportar">
+          <button class="btn-exp green" onclick="exportXLSX()">&#8659; Excel</button>
+          <button class="btn-exp" onclick="exportCSV()">&#8659; CSV</button>
+          <button class="btn-exp" onclick="copiar()">&#8663; Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="tableOverlayWrap" style="display:none;position:absolute;inset:0;background:rgba(242,243,244,.82);z-index:20;backdrop-filter:blur(3px);align-items:center;justify-content:center;animation:overlayFadeIn .2s ease">
+      <div class="spinner-wrap">
+        <div class="spinner"></div>
+        <div class="spinner-label" id="overlayLabel">Checking CEPs...</div>
+        <div class="spinner-sub" id="overlayPct">Please wait a moment</div>
+      </div>
+    </div>
+    <div class="table-scroll" id="tableScroll" role="region" aria-label="Tabela de resultados" aria-live="polite">
+      <div class="empty">
+        <div class="empty-box">
+          <p>Paste CEPs, import a file<br>or search by address,<br>then click <strong>Validate CEPs</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="seo-block" aria-label="About the tool">
+      <h2>Free Brazilian CEP Validator &#8212; one or in bulk</h2>
+      <p>Need to <strong>validate Brazilian CEPs</strong> or check an entire list at once? This free online <strong>CEP validator</strong> also works as a <strong>CEP checker</strong> and allows you to query from a single CEP to hundreds simultaneously. Paste CEPs in the field &#8212; separated by line, comma or space &#8212; or import an Excel spreadsheet with CEPs in the first column. The tool queries each CEP against the <strong>ViaCEP</strong> database and returns street, neighborhood, city, state and IBGE code in seconds.</p>
+      <p>Unlike other <strong>Brazilian ZIP code validators</strong>, you don&#39;t need to check them one by one. Paste the entire list, <strong>validate CEPs</strong> in bulk and download the results in Excel with one click &#8212; no sign-up, no limits. Invalid CEPs are identified instantly before hitting the API. You can also search for a CEP by street name and city, or generate CEPs for testing.</p>
+      <ul>
+        <li><strong>Validate CEPs</strong> individually or in bulk &#8212; up to 1,000 at once</li>
+        <li><strong>Brazilian CEP checker</strong> &#8212; verify if a CEP exists and get the full address</li>
+        <li><strong>CEP generator</strong> &#8212; generate real CEPs for testing and development</li>
+        <li>Incorrectly formatted CEPs are flagged instantly, without wasting API requests</li>
+        <li>Shows whether a CEP is invalid, not found or has a connection error</li>
+        <li>Import Excel and CSV spreadsheets with hundreds of CEPs</li>
+        <li>Search for a CEP by street name and city</li>
+        <li>Download results in Excel or CSV &#8212; ready to use in your system</li>
+        <li>100% free, no sign-up and no usage limits</li>
+      </ul>
+      <p style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-style:italic">
+        <strong>For international users:</strong> This tool validates Brazilian postal codes (CEPs).
+        If you work with Brazilian e-commerce, logistics or customer databases,
+        simply paste your CEP list or import an Excel file — free, no sign-up required.
+      </p>
+    </section>
+  </main>
+</div>
+
+<footer>
+  <p>Data provided by <a href="https://viacep.com.br" target="_blank" rel="noopener noreferrer">ViaCEP</a> &#8212; free public API &nbsp;|&nbsp; validadorcep.com.br</p>
+  <p>
+    <a href="privacidade.html">Privacy</a> |
+    <a href="sobre.html">About</a> |
+    <a href="contato.html">Contact</a>
+  </p>
+</footer>
+
+<!-- COFFEE MODAL -->
+<div class="modal-overlay" id="cafeOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Support the site">
+  <div class="modal-box cafe-box">
+    <div class="cafe-art"></div>
+    <svg class="cafe-ill" viewBox="0 0 112 88" fill="none" aria-hidden="true">
+        <path d="M64 6c-5.5 0-10 4.3-10 9.6 0 7 10 15.4 10 15.4s10-8.400 10-15.400C74 10.300 69.500 6 64 6z" fill="#2e86c1"/><circle cx="64" cy="15.500" r="3.600" fill="#fff"/>
+        <path d="M92 14c-1.500-2.600-5.400-1.800-5.400 1.200 0 2.400 5.400 5.800 5.400 5.800s5.400-3.400 5.400-5.800c0-3-3.900-3.800-5.400-1.200z" fill="#f08a8a"/>
+        <path d="M102 30c-1.200-2-4.200-1.400-4.200.9 0 1.900 4.200 4.500 4.200 4.500s4.200-2.600 4.200-4.500c0-2.300-3-2.900-4.200-.9z" fill="#f4a3a3"/>
+        <path d="M46 24c-3 3 3 6 0 9M56 26c-3 3 3 6 0 9" stroke="#8fb6d6" stroke-width="2.200" stroke-linecap="round"/>
+        <path d="M22 40h56v18c0 12-10 20-28 20S22 70 22 58V40z" fill="#fff" stroke="#1e3a5f" stroke-width="3"/>
+        <path d="M78 46h6c7 0 11 4 11 9s-4 9-11 9h-6" stroke="#1e3a5f" stroke-width="3" fill="none"/>
+        <path d="M50 51c-3.600-4.600-9-1-6.200 3.600 2 3.200 6.200 6 6.200 6s4.200-2.800 6.200-6c2.800-4.600-2.600-8.200-6.200-3.600z" fill="#f5b942"/>
+        <ellipse cx="50" cy="82" rx="34" ry="4.500" fill="#fff" stroke="#1e3a5f" stroke-width="3"/>
+      </svg>
+    <button class="cafe-x" onclick="fecharCafe()" aria-label="Close">&#10005;</button>
+    <div class="cafe-body">
+      <h3>Thanks for using our CEP Validator!</h3>
+      <p class="cafe-msg">If this tool saved you time today and helped you find the right address, please consider supporting me! Any amount helps keep this service <strong>free</strong> and brings <strong>new tools to the community</strong>.</p>
+      <button class="cafe-cta" id="cafeBtnLink" onclick="abrirLinkCafe()"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 8h11l-1.200 11a2 2 0 0 1-2 1.800h-5.600a2 2 0 0 1-2-1.800L6 8z" fill="#ffdd00" stroke="#fff" stroke-width="1.200"/><path d="M5 4.500h13l-1 3.500H6l-1-3.500z" fill="#fff"/></svg><span>Buy me a coffee</span></button>
+      <div class="cafe-pix" id="cafePix">
+        <small>From Brazil? You can also use Pix:</small>
+        <code id="cafePixChave"></code>
+        <button onclick="copiarPixCafe()" id="cafePixBtn">Copy Pix key</button>
+      </div>
+      <button class="cafe-later" onclick="fecharCafe()">Maybe later</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AVALIACAO -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Avalie o site">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">&#10005;</button>
+      <h3>How was your experience?</h3>
+      <p>Your feedback helps us improve</p>
+    </div>
+    <div class="modal-body">
+      <span class="modal-label">Your rating</span>
+      <div class="stars" role="group" aria-label="Estrelas de avaliacao"
+           onmouseleave="atualizarStars(_starSelecionada)">
+        <button class="star" onclick="setStar(1)" onmouseover="atualizarStars(1)" aria-label="1 estrela">&#9733;</button>
+        <button class="star" onclick="setStar(2)" onmouseover="atualizarStars(2)" aria-label="2 estrelas">&#9733;</button>
+        <button class="star" onclick="setStar(3)" onmouseover="atualizarStars(3)" aria-label="3 estrelas">&#9733;</button>
+        <button class="star" onclick="setStar(4)" onmouseover="atualizarStars(4)" aria-label="4 estrelas">&#9733;</button>
+        <button class="star" onclick="setStar(5)" onmouseover="atualizarStars(5)" aria-label="5 estrelas">&#9733;</button>
+      </div>
+      <div class="star-hint" id="starHint"></div>
+      <span class="modal-label">Suggestions <span style="font-weight:400;text-transform:none">(optional)</span></span>
+      <textarea class="modal-textarea" id="modalSugestao" placeholder="What could be better?"></textarea>
+      <div class="modal-success" id="modalSuccess">
+        <span class="modal-success-icon">&#127881;</span>
+        <span class="modal-success-text">Thank you for your feedback!</span>
+        <span class="modal-success-sub">Your opinion means a lot to us.</span>
+      </div>
+      <div class="modal-footer" id="modalFooter">
+        <button class="btn-modal-later" onclick="fecharModal()">Not now</button>
+        <button class="btn-modal-send" onclick="enviarFeedback()">Send &#8594;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var res = [];
+var inp    = document.getElementById('cepInput');
+var cnt    = document.getElementById('cepHint');
+var prog   = document.getElementById('prog');
+var pFill  = document.getElementById('pFill');
+var pLbl   = document.getElementById('pLbl');
+var sT     = document.getElementById('sTotal');
+var sO     = document.getElementById('sOk');
+var sE     = document.getElementById('sErr');
+var hInfo  = document.getElementById('hInfo');
+var expR   = document.getElementById('exportRow');
+var scrl   = document.getElementById('tableScroll');
+var upName = document.getElementById('uploadName');
+var upArea = document.getElementById('uploadArea');
+
+upArea.addEventListener('dragover', function(e) { e.preventDefault(); upArea.classList.add('drag'); });
+upArea.addEventListener('dragleave', function() { upArea.classList.remove('drag'); });
+upArea.addEventListener('drop', function(e) {
+  e.preventDefault(); upArea.classList.remove('drag');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+
+inp.addEventListener('input', atualizarCount);
+
+function switchTab(id) {
+  var btns = document.querySelectorAll('.tab-btn');
+  var panels = document.querySelectorAll('.tab-panel');
+  for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); btns[i].setAttribute('aria-selected','false'); }
+  for (var i = 0; i < panels.length; i++) { panels[i].classList.remove('active'); }
+  document.getElementById('btn-' + id).classList.add('active');
+  document.getElementById('btn-' + id).setAttribute('aria-selected','true');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function atualizarCount() {
+  var n = parseTxt().length;
+  cnt.textContent = n + ' CEP' + (n !== 1 ? 's' : '') + ' detected . max. 1000';
+}
+
+function parseTxt() {
+  var raw = inp.value.split(/[\n,;\s]+/).map(function(t){ var v = t.replace(/\D/g,''); return v.length > 0 ? v.padStart(8,'0') : ''; }).filter(function(t){ return t.length > 0; });
+  var seen = {};
+  var uniq = [];
+  for (var i = 0; i < raw.length; i++) { if (!seen[raw[i]]) { seen[raw[i]] = true; uniq.push(raw[i]); } }
+  return uniq.slice(0, 1000);
+}
+
+function handleFile(file) {
+  if (!file) return;
+  upName.textContent = 'Loading...';
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var wb = XLSX.read(e.target.result, { type: 'array' });
+      var ws = wb.Sheets[wb.SheetNames[0]];
+      var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+      var ceps = rows.map(function(r){ var v = String(r[0] || '').replace(/\D/g,''); return v.length > 0 ? v.padStart(8,'0') : ''; }).filter(function(c){ return c.length > 0; });
+      inp.value = ceps.join('\n');
+      upName.textContent = file.name + ' - ' + ceps.length + ' row(s)';
+      atualizarCount();
+    } catch(err) { upName.textContent = 'Error reading file.'; }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function baixarModelo() {
+  var ws = XLSX.utils.aoa_to_sheet([['01310100'],['22070900'],['30112020'],['70040020']]);
+  ws['!cols'] = [{ wch: 16 }];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
+  XLSX.writeFile(wb, 'modelo_ceps.xlsx');
+}
+
+function sleep(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+
+function setLoading(on) {
+  if (on) {
+    prog.classList.add('show');
+    expR.style.display = 'none';
+    mostrarOverlay(true);
+  } else {
+    prog.classList.remove('show');
+    mostrarOverlay(false);
+  }
+}
+
+function mostrarOverlay(show) {
+  var wrap = document.getElementById('tableOverlayWrap');
+  if (!wrap) return;
+  if (show) {
+    wrap.style.display = 'flex';
+    document.getElementById('overlayLabel').textContent = 'Validating CEPs...';
+    document.getElementById('overlayPct').textContent = 'Please wait...';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+var _pausado = false;
+var _parar   = false;
+var _rodando = false;
+
+function pausarConsulta() {
+  _pausado = !_pausado;
+  var label = _pausado ? '&#9654; Resume' : '&#9646;&#9646; Pause';
+  document.getElementById('btnPausa').innerHTML  = label;
+  if (document.getElementById('btnPausa2')) document.getElementById('btnPausa2').innerHTML = label;
+  pLbl.textContent = _pausado ? 'Pausado.' : 'Retomando...';
+}
+
+function pararConsulta() {
+  _parar = true;
+  _pausado = false;
+}
+
+function mostrarControles(show) {
+  var el  = document.getElementById('pausaControles');
+  var el2 = document.getElementById('pausaControles2');
+  if (el)  el.style.display  = show ? 'flex' : 'none';
+  if (el2) el2.style.display = show ? 'flex' : 'none';
+}
+
+async function consultarCeps() {
+  var ceps = parseTxt();
+  if (!ceps.length) return;
+  // Limpa resultado anterior antes de começar
+  res = [];
+  sT.textContent = sO.textContent = sE.textContent = '-';
+  hInfo.textContent = '';
+  expR.style.display = 'none';
+  document.getElementById('toggleHifenLabel').style.display = 'none';
+  document.getElementById('toggleHifen').checked = false;
+  comHifen = false;
+  scrl.innerHTML = '';
+  // Scrolla para a area de resultados automaticamente
+  scrl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  res = new Array(ceps.length).fill(null);
+  _pausado = false;
+  _parar   = false;
+  _rodando = true;
+  setLoading(true);
+  mostrarControles(true);
+
+  var LOTE = 40;
+  var done = 0;
+
+  for (var i = 0; i < ceps.length; i += LOTE) {
+    if (_parar) break;
+
+    while (_pausado) {
+      await sleep(200);
+      if (_parar) break;
+    }
+    if (_parar) break;
+
+    var grupo   = ceps.slice(i, i + LOTE);
+    var idxBase = i;
+
+    var promessas = grupo.map(function(cep, j) {
+      return fetchCep(cep).then(function(r) {
+        res[idxBase + j] = r;
+        done++;
+        pFill.style.width = (done / ceps.length * 100) + '%';
+        pLbl.textContent = done + ' / ' + ceps.length;
+        var ol = document.getElementById('overlayLabel');
+        var os = document.getElementById('overlayPct');
+        if (ol) ol.textContent = done + ' of ' + ceps.length + ' validated';
+        if (os) {
+          var pct = Math.round(done / ceps.length * 100);
+          os.textContent = pct + '% done';
+        }
+        // Atualiza stats em tempo real sem renderizar a tabela
+        var okCount = 0;
+        for (var k = 0; k < res.length; k++) { if (res[k] && res[k].ok) okCount++; }
+        var totalCount = res.filter(function(x){ return x; }).length;
+        sT.textContent = totalCount;
+        sO.textContent = okCount;
+        sE.textContent = totalCount - okCount;
+      });
+    });
+
+    await Promise.all(promessas);
+    await sleep(50);
+  }
+
+  _rodando = false;
+  mostrarControles(false);
+  pFill.style.width = '100%';
+  pLbl.textContent = _parar ? 'Interrompido.' : 'Done.';
+  _parar = false;
+  setLoading(false);
+  // Renderiza tabela completa só ao terminar
+  var rows = '';
+  var num = 0;
+  for (var i = 0; i < res.length; i++) {
+    var r = res[i];
+    if (!r) continue;
+    num++;
+    var cepFmt = comHifen ? fmt(r.cep ? r.cep.replace(/[^0-9]/g,'') : '') : (r.cep ? r.cep.replace(/[^0-9]/g,'') : '');
+    var c = r.cep ? r.cep.replace(/[^0-9]/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    if (r.ok) {
+      var maps = 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.end+', '+r.bairro+', '+r.cidade+' - '+r.uf);
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+cFmt+'</td><td><span class="badge badge-ok">Valid</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td><a href="'+maps+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;background:#2980b9;padding:3px 10px;border-radius:4px;text-decoration:none;white-space:nowrap;letter-spacing:.02em">&#128205; Maps</a></td></tr>';
+    } else {
+      rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+fmt(r.cep)+'</td><td><span class="badge badge-err">Invalid</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
+    }
+  }
+  scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Street</th><th scope="col">District</th><th scope="col">City / State</th><th scope="col">Mapa</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  if (res.filter(function(r){ return r; }).length > 0) {
+    expR.style.display = 'flex';
+    document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
+    posValidacaoModais();
+  }
+  mostrarControles(false);
+  pFill.style.width = _parar ? pFill.style.width : '100%';
+  pLbl.textContent = _parar ? 'Interrompido.' : 'Done.';
+  setLoading(false);
+  if (res.filter(function(r){ return r; }).length > 0) {
+    expR.style.display = 'flex';
+    document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
+    // Abre modal se usuario ainda nao avaliou e nao clicou "Agora nao" nessa sessao
+    posValidacaoModais();
+  }
+}
+
+async function fetchCep(cep) {
+  if (!/^\d{8}$/.test(cep)) return { cep: cep, ok: false, motivo: 'Invalid format' };
+  var tentativas = 3;
+  for (var t = 0; t < tentativas; t++) {
+    try {
+      var resp = await fetch('https://viacep.com.br/ws/' + cep + '/json/');
+      if (!resp.ok) { await sleep(200); continue; }
+      var d = await resp.json();
+      if (d.erro) return { cep: cep, ok: false, motivo: 'Not found in database' };
+      return { cep: d.cep || cep, ok: true, end: d.logradouro || '-', bairro: d.bairro || '-', cidade: d.localidade || '-', uf: d.uf || '-', ibge: d.ibge || '-' };
+    } catch(e) {
+      if (t < tentativas - 1) { await sleep(300); } else { return { cep: cep, ok: false, motivo: 'Connection error' }; }
+    }
+  }
+  return { cep: cep, ok: false, motivo: 'Connection error' };
+}
+
+async function buscarPorEndereco() {
+  var rua    = document.getElementById('inputRua').value.trim();
+  var cidade = document.getElementById('inputCidade').value.trim();
+  var uf     = document.getElementById('inputUF').value.trim();
+  var hint   = document.getElementById('endHint');
+  if (!rua || !cidade || !uf) { hint.textContent = 'Please enter street, city and state.'; return; }
+  hint.textContent = 'Searching...';
+  res = [];
+  setLoading(true);
+  pLbl.textContent = 'Searching...';
+  pFill.style.width = '50%';
+  try {
+    var url = 'https://viacep.com.br/ws/' + uf + '/' + encodeURIComponent(cidade) + '/' + encodeURIComponent(rua) + '/json/';
+    var data = await (await fetch(url)).json();
+    pFill.style.width = '100%';
+    pLbl.textContent = 'Done.';
+    if (!Array.isArray(data) || data.length === 0) {
+      res = [{ cep: rua + ', ' + cidade + ' - ' + uf, ok: false, motivo: 'No CEPs found for this address' }];
+    } else {
+      res = data.map(function(d) {
+        return { cep: d.cep || '-', ok: true, end: d.logradouro || '-', bairro: d.bairro || '-', cidade: d.localidade || '-', uf: d.uf || '-', ibge: d.ibge || '-' };
+      });
+    }
+    renderTabela();
+  } catch(e) {
+    pLbl.textContent = 'Erro.';
+    res = [{ cep: '-', ok: false, motivo: 'Error searching address' }];
+    renderTabela();
+  }
+  setLoading(false);
+  expR.style.display = 'flex';
+  hint.textContent = 'Enter street, city and state.';
+}
+
+function renderTabela() {
+  var validos = res.filter(function(r){ return r && r.ok; });
+  var invalidos = res.filter(function(r){ return r && !r.ok; });
+  var total = validos.length + invalidos.length;
+  sT.textContent = total;
+  sO.textContent = validos.length;
+  sE.textContent = invalidos.length;
+  hInfo.textContent = '- ' + total + ' record' + (total !== 1 ? 's' : '');
+  var rows = '';
+  var num = 0;
+  for (var i = 0; i < res.length; i++) {
+    var r = res[i];
+    if (!r) continue;
+    num++;
+    if (r.ok) {
+      var cepFmt = comHifen ? fmt(r.cep.replace(/\D/g,'')) : r.cep.replace(/\D/g,'');
+    rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+cepFmt+'</td><td><span class="badge badge-ok">Valid</span></td><td>'+r.end+'</td><td>'+r.bairro+'</td><td>'+r.cidade+' / '+r.uf+'</td><td><a href="https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(r.end+', '+r.bairro+', '+r.cidade+' - '+r.uf)+'" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:#fff;background:#2980b9;padding:3px 10px;border-radius:4px;text-decoration:none;white-space:nowrap;letter-spacing:.02em">&#128205; Maps</a></td></tr>';
+    } else {
+      var cepErrFmt = comHifen ? fmt(r.cep.replace(/\D/g,'')) : r.cep.replace(/\D/g,'');
+    rows += '<tr><td class="td-m">'+num+'</td><td class="td-cep">'+cepErrFmt+'</td><td><span class="badge badge-err">Invalid</span></td><td class="td-m" colspan="4">'+r.motivo+'</td></tr>';
+    }
+  }
+  scrl.innerHTML = '<table><thead><tr><th scope="col">#</th><th scope="col">CEP</th><th scope="col">Status</th><th scope="col">Street</th><th scope="col">District</th><th scope="col">City / State</th><th scope="col">Mapa</th></tr></thead><tbody>'+rows+'</tbody></table>';
+}
+
+function limpar() {
+  inp.value = ''; res = [];
+  upName.textContent = '';
+  document.getElementById('fileInput').value = '';
+  document.getElementById('inputRua').value = '';
+  document.getElementById('inputCidade').value = '';
+  document.getElementById('endHint').textContent = 'Enter street, city and state.';
+  atualizarCount();
+  sT.textContent = sO.textContent = sE.textContent = '-';
+  comHifen = false;
+  document.getElementById('toggleHifen').checked = false;
+  document.getElementById('toggleHifenLabel').style.display = 'none';
+  hInfo.textContent = '';
+  expR.style.display = 'none';
+  prog.classList.remove('show');
+  pFill.style.width = '0%';
+  scrl.innerHTML = '<div class="empty"><div class="empty-box"><p>Paste CEPs, import a file<br>or search by address,<br>then click <strong>Validate CEPs</strong>.</p></div></div>';
+}
+
+// SERVICE WORKER
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+
+// PWA INSTALL
+var _pwaPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  _pwaPrompt = e;
+  var btn = document.getElementById('btnInstalar');
+  if (btn) btn.style.display = 'flex';
+});
+
+window.addEventListener('appinstalled', function() {
+  var btn = document.getElementById('btnInstalar');
+  if (btn) btn.style.display = 'none';
+  _pwaPrompt = null;
+});
+
+function instalarPWA() {
+  if (_pwaPrompt) {
+    _pwaPrompt.prompt();
+    _pwaPrompt.userChoice.then(function(result) {
+      if (result.outcome === 'accepted') {
+        var btn = document.getElementById('btnInstalar');
+        if (btn) btn.style.display = 'none';
+      }
+      _pwaPrompt = null;
+    });
+  } else {
+    // Fallback: instrucoes manuais para Chrome/Edge
+    var ua = navigator.userAgent;
+    var msg = '';
+    if (ua.indexOf('Edg') !== -1) {
+      msg = 'In Edge: click the 3 dots (...) in the top right corner > Apps > Install this site as an app.';
+    } else if (ua.indexOf('Chrome') !== -1) {
+      msg = 'In Chrome: click the 3 dots in the top right corner > More tools > Create shortcut... > check "Open as window" and click Create.';
+    } else {
+      msg = 'In your browser: look for the option to install or create a shortcut in the browser settings.';
+    }
+    alert(msg);
+  }
+}
+
+// MODAL
+var _starSelecionada = 0;
+var _avaliacoes = JSON.parse(localStorage.getItem('cep_avaliacoes') || '[]');
+
+function abrirModal() {
+  // Se já avaliou alguma vez, não mostra mais
+  try {
+    if (localStorage.getItem('cep_ja_avaliou') === '1') return;
+  } catch(e) {}
+  _starSelecionada = 0;
+  document.getElementById('modalSugestao').value = '';
+  document.getElementById('modalSuccess').style.display = 'none';
+  document.getElementById('modalFooter').style.display = 'flex';
+  atualizarStars(0);
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function fecharModal() {
+  var overlay = document.getElementById('modalOverlay');
+  overlay.classList.add('fechando');
+  setTimeout(function() {
+    overlay.style.display = 'none';
+    overlay.classList.remove('fechando');
+  }, 220);
+  try { sessionStorage.setItem('cep_modal_visto', '1'); } catch(e) {}
+  setTimeout(abrirCafe, 700);
+}
+
+var _starHints = ['','Poor','Fair','Good','Great','Excellent!'];
+function setStar(n) {
+  _starSelecionada = n;
+  atualizarStars(n);
+  var hint = document.getElementById('starHint');
+  if (hint) hint.innerHTML = n ? _starHints[n] : '';
+}
+
+function atualizarStars(n) {
+  var stars = document.querySelectorAll('.star');
+  for (var i = 0; i < stars.length; i++) {
+    stars[i].classList.toggle('on', i < n);
+  }
+}
+
+async function enviarFeedback() {
+  var sugestao = document.getElementById('modalSugestao').value.trim();
+  if (!_starSelecionada && !sugestao) { fecharModal(); return; }
+
+  // Salva estrelas localmente e marca como ja avaliou
+  if (_starSelecionada) {
+    _avaliacoes.push({ nota: _starSelecionada, data: new Date().toISOString() });
+    try { localStorage.setItem('cep_avaliacoes', JSON.stringify(_avaliacoes)); } catch(e){}
+  }
+  // Marca que ja avaliou -- nao aparece mais nunca
+  try { localStorage.setItem('cep_ja_avaliou', '1'); } catch(e){}
+
+  // Salva no JSONBin acumulando todas as avaliacoes
+  try {
+    var BIN_ID = '6a5b9512da38895dfe6f5d84';
+    var API_KEY = '$2a$10$8B/3ZfiP7IGgPko3X/xFUecpr5nMZRepDIVZ4gbicS56SYshDsya2';
+    var BASE = 'https://api.jsonbin.io/v3/b/' + BIN_ID;
+
+    // Le o JSON atual
+    var getResp = await fetch(BASE + '/latest', {
+      headers: { 'X-Master-Key': API_KEY }
+    });
+    var getData = await getResp.json();
+    var lista = Array.isArray(getData.record) ? getData.record : [];
+
+    // Adiciona nova avaliacao
+    lista.push({
+      nota: _starSelecionada || null,
+      sugestao: sugestao || '',
+      data: new Date().toLocaleString('pt-BR')
+    });
+
+    // Salva de volta
+    await fetch(BASE, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Master-Key': API_KEY
+      },
+      body: JSON.stringify(lista)
+    });
+  } catch(e) {}
+
+  document.getElementById('modalSuccess').style.display = 'block';
+  document.getElementById('modalFooter').style.display = 'none';
+  setTimeout(fecharModal, 1800);
+}
+
+// Fecha ao clicar fora
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) fecharModal();
+});
+
+function fmt(c) { return c.length === 8 ? c.slice(0,5)+'-'+c.slice(5) : c; }
+
+var comHifen = false;
+function aplicarHifen() {
+  comHifen = document.getElementById('toggleHifen').checked;
+  renderTabela();
+}
+
+function aplicarHifenGerador() {
+  var checked = document.getElementById('toggleHifenGer').checked;
+  var output  = document.getElementById('geradoOutput');
+  var ceps    = output.value.split('\n').filter(Boolean);
+  output.value = ceps.map(function(c) {
+    var raw = c.replace(/\D/g, '');
+    return checked && raw.length === 8 ? raw.slice(0,5)+'-'+raw.slice(5) : raw;
+  }).join('\n');
+}
+
+function exportXLSX() {
+  var header = ['CEP','Status','Street','District','City','State','IBGE'];
+  var rows = res.map(function(r){
+    var c = r.cep ? r.cep.replace(/\D/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    return r.ok ? [cFmt,'Valid',r.end,r.bairro,r.cidade,r.uf,r.ibge] : [cFmt,'Invalid',r.motivo,'','','',''];
+  });
+  var ws = XLSX.utils.aoa_to_sheet([header].concat(rows));
+  ws['!cols'] = [14,10,32,24,20,6,10].map(function(w){ return { wch: w }; });
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Results');
+  XLSX.writeFile(wb, 'ceps_validados.xlsx');
+}
+
+function exportCSV() {
+  var rows = res.map(function(r){
+    var c = r.cep ? r.cep.replace(/\D/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    return r.ok
+      ? '"'+cFmt+'","Valid","'+r.end+'","'+r.bairro+'","'+r.cidade+'","'+r.uf+'","'+r.ibge+'"'
+      : '"'+cFmt+'","Invalid","'+r.motivo+'","","","",""';
+  });
+  var b = new Blob(['CEP,Status,Street,District,City,State,IBGE\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'ceps_validados.csv';
+  a.click();
+}
+
+function copiar() {
+  var lines = ['CEP\tStatus\tStreet\tDistrict\tCity\tState\tIBGE'];
+  for (var i = 0; i < res.length; i++) {
+    var r = res[i];
+    var c = r.cep ? r.cep.replace(/\D/g,'') : '';
+    var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
+    lines.push(r.ok ? cFmt+'\tValid\t'+r.end+'\t'+r.bairro+'\t'+r.cidade+'\t'+r.uf+'\t'+r.ibge : cFmt+'\tInvalid\t'+r.motivo+'\t\t\t\t');
+  }
+  navigator.clipboard.writeText(lines.join('\n'));
+}
+
+var CEP_LISTA = ["07429815", "06786110", "06280090", "02732040", "03268020", "03389010", "06268192", "05415010", "05210050", "07864090", "07786880", "07133360", "06636090", "04890230", "08130020", "06523015", "06511001", "04747000", "05398160", "02140030", "07991160", "03931000", "07111140", "06719045", "06331110", "04822200", "05048070", "04268005", "07083310", "04109030", "08141570", "06695620", "07252180", "05202120", "04532000", "06716663", "05508190", "04193315", "06852490", "05546210", "05038000", "04602905", "06655806", "06345740", "07434430", "07097041", "05735110", "06810252", "05361000", "02188100", "04464040", "06861600", "06537095", "03728050", "06122060", "08311150", "07161220", "06070030", "03904100", "06764130", "07134640", "02367090", "06288130", "03690040", "06693295", "08090250", "04087917", "07600111", "04645000", "05603070", "02652161", "06075230", "06243000", "04844420", "04637042", "08040260", "03821150", "06804385", "07932020", "07152507", "06709330", "08372202", "08051360", "05093903", "06132380", "06435170", "04852001", "08225030", "05275010", "01439020", "04678001", "05760060", "03434050", "02278060", "06396230", "02561060", "07600448", "05727200", "07145415", "04244000", "03140050", "04863620", "06704505", "04965180", "03717001", "03331000", "01501904", "06702804", "07631590", "05693000", "04653100", "02240000", "06755380", "04455190", "05850130", "03909090", "06807540", "03951070", "06192080", "06524280", "05579060", "07230440", "04860130", "07626530", "04627050", "04560030", "06362032", "07790480", "07865250", "07243140", "05208000", "05756210", "07124750", "05786100", "04469107", "07270550", "06648040", "02288027", "08151550", "06727182", "02236300", "02340145", "06296170", "06703590", "08344620", "07131080", "02273060", "01254060", "07663235", "04785120", "04810080", "01428040", "03943105", "05374120", "04851430", "02460082", "04151090", "04367010", "05407001", "02636020", "06351380", "07162020", "07910090", "08270350", "03642120", "05085020", "05018040", "07151830", "02178060", "04813040", "02373190", "06653430", "05365150", "05821050", "06213100", "05302970", "04842200", "08150740", "06026120", "03927310", "02423020", "04079900", "03509030", "06706210", "04303100", "04343070", "05794370", "08121540", "06814080", "06045060", "04332080", "05782390", "06722360", "06824100", "05887370", "08295070", "05551190", "07435615", "08030400", "06317040", "05572200", "03922000", "06423210", "08080160", "06753400", "08161400", "04956005", "04770080", "06126110", "05565240", "03152020", "05174400", "06855732", "04374070", "04850070", "07175470", "02982130", "07124210", "06449420", "03304120", "07251061", "06420240", "03682060", "06343230", "08132480", "06333050", "06886040", "02839040", "02256020", "06867420", "04894435", "07144020", "04753210", "05614010", "02550000", "04157000", "06038323", "04349020", "04514103", "06327040", "05077110", "07224190", "01333021", "07024141", "07143210", "07743450", "02987107", "03579145", "02117006", "02334050", "06539120", "07940080", "05861390", "04920010", "06454904", "04476260", "05855250", "07901095", "04022030", "06616050", "01017902", "07142223", "04429010", "03758010", "06033220", "02124090", "08110130", "05240005", "05281120", "08280390", "03254400", "07747270", "06184300", "08120620", "05517050", "07792440", "06680055", "05857510", "06683380", "08346500", "06226330", "04003909", "03215010", "08290130", "07033020", "02993310", "06528079", "06380150", "04187240", "04209030", "07727555", "03720250", "05117090", "06716100", "04434050", "06030140", "03017970", "02260001", "03478005", "03884070", "06784490", "08321082", "06413140", "02251070", "08260410", "07986110", "05422060", "08215400", "04055090", "05267300", "04713000", "05368078", "07661410", "03607100", "05271120", "03132010", "02209080", "06715365", "04902010", "04414150", "02281203", "07656140", "06870172", "03652000", "01050903", "04856710", "02556061", "02678011", "07056041", "04696220", "08020280", "08031210", "04235150", "07662100", "04852505", "07629626", "03572020", "02266080", "06501100", "02077005", "04177480", "01415902", "01202002", "08111790", "04294050", "06701262", "03938030", "06142040", "02990000", "06233200", "01547030", "02566060", "03527902", "07845140", "06390600", "04083004", "04618010", "04326110", "05750080", "08142390", "06401065", "03634050", "04762030", "05477902", "06826530", "02991070", "04962130", "05868760", "03443030", "05543050", "08226022", "04320160", "01133100", "06630040", "03711010", "04530001", "03694900", "04896040", "07810150", "04403160", "07179155", "03125900", "02963090", "08032180", "06872085", "03192210", "08380051", "07914000", "01301911", "06790220", "02848000", "05713460", "06622210", "06787240", "05142040", "04674110", "08320307", "07180380", "04877140", "04166001", "04840530", "05634040", "04163005", "07776450", "05656025", "03380060", "04730030", "04613030", "06180112", "08210535", "06726600", "07768385", "03668040", "01001000", "04459000", "06053007", "08410165", "06355635", "06851240", "06774090", "08245350", "07601325", "02410060", "01240901", "06246200", "06858075", "04849337", "02327180", "08111010", "02855000", "06384000", "06263221", "06365347", "01141901", "03425010", "07085290", "02056080", "04337170", "06655080", "02805180", "07621245", "01232907", "01448070", "07182230", "02535210", "06724810", "05187120", "03113080", "04622060", "06502255", "07082350", "07605715", "02347140", "07853105", "03362075", "08072002", "02522110", "03052000", "06728018", "06112140", "07813050", "07140000", "06665325", "05205220", "06542015", "07241100", "07619020", "04520910", "01422003", "02470090", "03159020", "01514010", "07173380", "01311922", "06690050", "07174470", "06276016", "02168150", "05894240", "03962000", "06846595", "07121320", "08240305", "06322190", "06445110", "05529070", "06600190", "04174150", "05525040", "06473079", "03614900", "04649105", "05626080", "06447510", "04047002", "02842330", "07439025", "02046060", "04119010", "07856250", "05790390", "05311000", "03980070", "06093090", "07076021", "04016002", "04473000", "02365000", "07176391", "04582002", "04942160", "06729260", "08382000", "05436110", "02956035", "07094150", "08141002", "08390550", "07053171", "03589170", "06519300", "05798110", "07123200", "05675090", "06783440", "02434120", "05454160", "06850365", "05890210", "04568003", "03814075", "06624235", "02320150", "05181095", "04855210", "07144842", "02018010", "06864360", "03063040", "05055050", "03371007", "04001000", "02246090", "06766365", "03348000", "07703045", "03556080", "01453000", "06660762", "05103020", "02466020", "07611610", "04031080", "03924045", "08220290", "02220170", "04884050", "05846390", "07622405", "03737210", "05767520", "07861115", "06865815", "04226009", "01308080", "07659615", "06083909", "03735045", "04114100", "06341480", "02010405", "04475100", "04534013", "04424015", "03207020", "06409000", "02068973", "07417230", "05030010", "05587070", "02859080", "07196240", "06765305", "06145170", "04204001", "07402010", "02936010", "06535055", "04316000", "01318020", "06604160", "02131094", "04406100", "03984080", "08235510", "07400715", "06815080", "03188000", "07152884", "06844220", "08160370", "03828180", "02515020", "04814340", "07669270", "06654470", "05832210", "05618010", "03035050", "02725055", "08223110", "06806170", "03406030", "05109260", "06543135", "02216020", "04563090", "08011160", "03812035", "07832165", "03239030", "07081000", "05777130", "01538000", "07850151", "07750978", "03073040", "02977100", "02871030", "02756150", "07859070", "07244060", "07722010", "03282000", "06160004", "07074150", "07664360", "02310090", "04741040", "04144080", "04124170", "07031009", "05540000", "02812080", "03413000", "06540205", "04929390", "02227250", "05132150", "03164902", "04254000", "06144260", "07193060", "06845250", "04571923", "06608150", "07918090", "04856180", "07274020", "06770060", "07802140", "03225040", "07022031", "04909160", "07609400", "06321010", "01224040", "06532301", "04137070", "05879445", "06236730", "07064002", "07183500", "04537908", "02314050", "05593040", "07807210", "02764090", "01247010", "07793620", "05323002", "03917100", "06857025", "02323290", "03263020", "07040280", "07714630", "06514315", "06710550", "05466020", "03376015", "04835170", "06253200", "05356030", "04130060", "07615500", "03977417", "04707903", "08310268", "06170454", "04932350", "04849005", "05184300", "02920120", "02883020", "04477410", "05329030", "04072080", "03277025", "07210460", "04854110", "02541190", "03460140", "07051001", "06266020", "08255540", "08150060", "06149314", "04774070", "04310110", "07179720", "02232000", "01527050", "06310395", "02325526", "04358030", "02613055", "01324900", "07791175", "07404050", "08041325", "06529185", "06465080", "06516090", "08340440", "06160382", "05386090", "06906560", "04065010", "03575060", "07194550", "05763470", "03250020", "06705490", "07840140", "05836140", "01011100", "03563030", "05874286", "07411220", "02750030", "01028010", "04858530", "07013142", "07072071", "07636345", "03807375", "06803290", "04926040", "06663565", "04041001", "07782195", "07904190", "07154230", "06694420", "03449040", "04280010", "07717225", "04664145", "06700539", "01037903", "04607901", "08042280", "07262206", "07115360", "03471070", "05135360", "06816320", "06700193", "06462220", "06404326", "07172190", "07428005", "04826010", "04184010", "03174060", "06429305", "06673060", "07619472", "04236310", "05065120", "07151200", "02878010", "05882430", "05448090", "04438250", "06721110", "04257140", "08050350", "02307000", "04007005", "08275370", "07155280", "08062190", "07061043", "05124901", "07625015", "08342140", "03976195", "08248020", "06708370", "06810856", "07739245", "03676090", "04411000", "07222170", "06726040", "02618170", "07191080", "06835090", "06657266", "03732010", "06660160", "04387140", "08382635", "05170220", "07606456", "07260296", "06835675", "04792070", "02038060", "03356970", "02442010", "08070270", "04781000", "07242120", "04915040", "04843450", "07263053", "07232075", "04544050", "04857590", "04816070", "08021600", "04547130", "02151070", "06329130", "01215000", "04218050", "05663130", "02318020", "06713200", "03385005", "04719060", "08230650", "02815010", "07764345", "03819020", "07178080", "05641110", "07132263", "04430330", "06162320", "03583110", "03027006", "04893060", "07951100", "03286190", "04287100", "03005020", "02833010", "02474100", "02864000", "04891150", "06416090", "03087090", "07998000", "07144474", "06386660", "06825100", "06874357", "02929130", "02225260", "05443090", "06757310", "04660004", "02873590", "07114080", "07272490", "08411310", "06060050", "04012010", "05162000", "03621100", "06544072", "02223090", "07159205", "03550030", "04880600", "05843270", "02969070", "04508902", "04830180", "01045000", "06458275", "04382080", "02996250", "08370380", "06530555", "08081270", "02356130", "04938130", "07261455", "08330560", "05427030", "03273300", "01406900", "02714000", "02030000", "03313010", "08191100", "05685900", "03320002", "06364130", "05158400", "07170030", "07043130", "03180002", "06817365", "08253450", "02913060", "04689040", "02205002", "08061020", "06411110", "03518010", "07944080", "05814210", "05346904", "02353040", "05885370", "04726160", "03568080", "05007060", "01121030", "06152050", "04103000", "02083100", "04866090", "04417070", "05396190", "02405001", "07141120", "06711275", "05866070", "06820510", "02362010", "04552908", "06220240", "07628145", "08390246", "06680675", "05338010", "03105000", "03626150", "06717160", "07713147", "04846120", "07263665", "04805000", "07160180", "07956020", "07170971", "03659150", "06340110", "06437130", "06843200", "04948970", "08391594", "05569030", "06505030", "08180640", "02418050", "06018060", "06775970", "06720135", "05872030", "04836530", "06853505", "03978140", "02377280", "07091190", "02945120", "03970050", "03804190", "03337050", "06385720", "03542000", "04828050", "04870510"];
+
+function embaralhar(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+function gerarCeps() {
+  var qtd = Math.min(1000, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
+  var lista = embaralhar(CEP_LISTA.slice()).slice(0, qtd);
+  document.getElementById('geradoOutput').value = lista.join('\n');
+  document.getElementById('geradoCount').textContent = lista.length + ' CEPs generated';
+  document.getElementById('toggleHifenGerador').style.display = 'inline-flex';
+  document.getElementById('toggleHifenGer').checked = false;
+  document.getElementById('geradoWrap').style.display = 'flex';
+}
+
+
+function copiarGerados() {
+  navigator.clipboard.writeText(document.getElementById('geradoOutput').value);
+}
+
+function baixarGeradosTxt() {
+  var b = new Blob([document.getElementById('geradoOutput').value],{type:'text/plain;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'ceps_gerados.txt';
+  a.click();
+}
+
+function baixarGeradosXLSX() {
+  var ceps = document.getElementById('geradoOutput').value.split('\n').filter(Boolean);
+  var ws = XLSX.utils.aoa_to_sheet(ceps.map(function(c){ return [c]; }));
+  ws['!cols'] = [{ wch: 12 }];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'CEPs');
+  XLSX.writeFile(wb, 'ceps_gerados.xlsx');
+}
+
+function enviarParaValidar() {
+  inp.value = document.getElementById('geradoOutput').value;
+  atualizarCount();
+  switchTab('ceps');
+}
+
+function limparGerador() {
+  document.getElementById('inputQtd').value = '10';
+  document.getElementById('geradoOutput').value = '';
+  document.getElementById('geradoCount').textContent = '';
+  document.getElementById('geradoWrap').style.display = 'none';
+}
+
+// Em teste local (file://) os links /en/ e / nao existem: aponta direto para os arquivos
+(function(){
+  if (location.protocol !== 'file:') return;
+  var a = document.querySelector('.lang-btn');
+  if (!a) return;
+  a.setAttribute('href', a.getAttribute('href') === '/en/' ? 'en/index.html' : '../index.html');
+})();
+
+// ===== Modal "Me pague um cafe" =====
+// Preencha UM (ou os dois): link de pagamento (Mercado Pago, Pix copia e cola, Buy Me a Coffee...) e/ou chave Pix.
+// Enquanto os dois estiverem vazios, o modal NAO aparece.
+var CAFE_LINK = 'https://buymeacoffee.com/victorhjsg';
+var CAFE_PIX  = '';
+
+function cafeConfigurado() { return !!(CAFE_LINK || CAFE_PIX); }
+function cafeRecente(chave, dias) {
+  try {
+    var t = parseInt(localStorage.getItem(chave) || '0', 10);
+    return t && (Date.now() - t) < dias * 86400000;
+  } catch(e) { return false; }
+}
+function posValidacaoModais() {
+  var jaAvaliou = false, vistoHoje = false;
+  try {
+    jaAvaliou = localStorage.getItem('cep_ja_avaliou') === '1';
+    vistoHoje = sessionStorage.getItem('cep_modal_visto') === '1';
+  } catch(e) {}
+  // Avaliacao tem prioridade; o cafe abre logo depois que ela for fechada (nunca os dois juntos)
+  if (!jaAvaliou && !vistoHoje) { setTimeout(abrirModal, 800); return; }
+  // Cafe: toda vez que uma busca termina, mas so 1x por visita (reabre apos fechar e abrir o site)
+  setTimeout(abrirCafe, 800);
+}
+function abrirCafe() {
+  if (!cafeConfigurado()) return;
+  try { if (sessionStorage.getItem('cep_cafe_sessao') === '1') return; } catch(e) {}
+  if (document.getElementById('modalOverlay').style.display === 'flex') return;
+  var pix = document.getElementById('cafePix');
+  if (CAFE_PIX) {
+    document.getElementById('cafePixChave').textContent = CAFE_PIX;
+    pix.style.display = 'block';
+  }
+  if (!CAFE_LINK) document.getElementById('cafeBtnLink').style.display = 'none';
+  document.getElementById('cafeOverlay').style.display = 'flex';
+  try { sessionStorage.setItem('cep_cafe_sessao', '1'); } catch(e) {}
+}
+function fecharCafe() {
+  var o = document.getElementById('cafeOverlay');
+  o.classList.add('fechando');
+  setTimeout(function(){ o.style.display = 'none'; o.classList.remove('fechando'); }, 220);
+}
+function abrirLinkCafe() {
+  if (typeof gtag === 'function') gtag('event', 'cafe_click');
+  window.open(CAFE_LINK, '_blank', 'noopener');
+  fecharCafe();
+}
+function copiarPixCafe() {
+  var b = document.getElementById('cafePixBtn');
+  function ok() { b.textContent = 'Key copied! Thank you \u2615'; if (typeof gtag === 'function') gtag('event', 'cafe_pix_copiado'); }
+  if (navigator.clipboard) navigator.clipboard.writeText(CAFE_PIX).then(ok, ok); else ok();
+}
+document.getElementById('cafeOverlay').addEventListener('click', function(e){ if (e.target === this) fecharCafe(); });
+
+// Em teste local (file://) os links /en/ e / nao existem: aponta direto para os arquivos
+(function(){
+  if (location.protocol !== 'file:') return;
+  var a = document.querySelector('.lang-btn');
+  if (!a) return;
+  a.setAttribute('href', a.getAttribute('href') === '/en/' ? 'en/index.html' : '../index.html');
+})();
+</script>
+</body>
+</html>
