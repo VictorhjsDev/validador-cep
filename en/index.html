@@ -327,6 +327,18 @@
       .empty{padding:1.5rem}
       .seo-block{flex:none;max-height:32vh;overflow-y:auto;margin-top:0;padding:14px 24px}
     }
+    .modal-body.enviado>:not(.modal-success){display:none}
+    .modal-body.enviado .modal-success{padding-top:6px}
+    .btn-modal-send:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .star-hint.need{color:var(--red);font-weight:500}
+    .modal-success-sub{display:block;margin:0 auto 14px;max-width:290px;line-height:1.55}
+    .btn-share{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px;background:var(--blue-btn);color:#fff;font-family:'Roboto',sans-serif;font-size:14px;font-weight:700;border:none;border-radius:6px;cursor:pointer;transition:background .15s,transform .1s}
+    .btn-share:hover{background:var(--blue-btn-h)}
+    .btn-share:active{transform:scale(.98)}
+    .btn-share svg{width:17px;height:17px;flex:none}
+    .btn-success-close{display:block;margin:10px auto 0;background:none;border:none;color:var(--muted);font-family:'Roboto',sans-serif;font-size:13px;cursor:pointer;padding:6px 12px}
+    .btn-success-close:hover{color:var(--text);text-decoration:underline}
+    html[data-theme=dark] .star-hint.need{color:#ff8f86}
 </style>
 </head>
 <body>
@@ -587,7 +599,6 @@
 <div class="modal-overlay" id="modalOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Avalie o site">
   <div class="modal-box">
     <div class="modal-header">
-      <button class="modal-close" onclick="fecharModal()" aria-label="Fechar">&#10005;</button>
       <h3>How was your experience?</h3>
       <p>Your feedback helps us improve</p>
     </div>
@@ -601,17 +612,18 @@
         <button class="star" onclick="setStar(4)" onmouseover="atualizarStars(4)" aria-label="4 estrelas">&#9733;</button>
         <button class="star" onclick="setStar(5)" onmouseover="atualizarStars(5)" aria-label="5 estrelas">&#9733;</button>
       </div>
-      <div class="star-hint" id="starHint"></div>
+      <div class="star-hint" id="starHint">Choose 1 to 5 stars to continue</div>
       <span class="modal-label">Suggestions <span style="font-weight:400;text-transform:none">(optional)</span></span>
       <textarea class="modal-textarea" id="modalSugestao" placeholder="What could be better?"></textarea>
       <div class="modal-success" id="modalSuccess">
         <span class="modal-success-icon">&#127881;</span>
         <span class="modal-success-text">Thank you for your feedback!</span>
-        <span class="modal-success-sub">Your opinion means a lot to us.</span>
+        <span class="modal-success-sub">Know someone else who needs to validate CEPs? Share the tool!</span>
+        <button class="btn-share" id="btnShare" onclick="compartilharSite()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.600 13.500l6.800 4M15.400 6.500l-6.800 4"/></svg><span id="btnShareTxt">Share</span></button>
+        <button class="btn-success-close" onclick="fecharModal()">Close</button>
       </div>
       <div class="modal-footer" id="modalFooter">
-        <button class="btn-modal-later" onclick="fecharModal()">Not now</button>
-        <button class="btn-modal-send" onclick="enviarFeedback()">Send &#8594;</button>
+        <button class="btn-modal-send" id="btnEnviar" onclick="enviarFeedback()" disabled>Send &#8594;</button>
       </div>
     </div>
   </div>
@@ -998,8 +1010,11 @@ function abrirModal() {
   _starSelecionada = 0;
   document.getElementById('modalSugestao').value = '';
   document.getElementById('modalSuccess').style.display = 'none';
+  document.querySelector('#modalOverlay .modal-body').classList.remove('enviado');
   document.getElementById('modalFooter').style.display = 'flex';
   atualizarStars(0);
+  var _h = document.getElementById('starHint'); if (_h) { _h.className = 'star-hint'; _h.innerHTML = 'Choose 1 to 5 stars to continue'; }
+  var _b = document.getElementById('btnEnviar'); if (_b) _b.disabled = true;
   document.getElementById('modalOverlay').style.display = 'flex';
 }
 
@@ -1019,7 +1034,8 @@ function setStar(n) {
   _starSelecionada = n;
   atualizarStars(n);
   var hint = document.getElementById('starHint');
-  if (hint) hint.innerHTML = n ? _starHints[n] : '';
+  if (hint) { hint.className = 'star-hint'; hint.innerHTML = n ? _starHints[n] : ''; }
+  var b = document.getElementById('btnEnviar'); if (b) b.disabled = !n;
 }
 
 function atualizarStars(n) {
@@ -1031,7 +1047,10 @@ function atualizarStars(n) {
 
 async function enviarFeedback() {
   var sugestao = document.getElementById('modalSugestao').value.trim();
-  if (!_starSelecionada && !sugestao) { fecharModal(); return; }
+  if (!_starSelecionada) {
+    var h = document.getElementById('starHint'); if (h) { h.className = 'star-hint need'; h.innerHTML = 'Please select a rating to continue'; }
+    return;
+  }
 
   // Salva estrelas localmente e marca como ja avaliou
   if (_starSelecionada) {
@@ -1074,13 +1093,22 @@ async function enviarFeedback() {
 
   document.getElementById('modalSuccess').style.display = 'block';
   document.getElementById('modalFooter').style.display = 'none';
-  setTimeout(fecharModal, 1800);
+  document.querySelector('#modalOverlay .modal-body').classList.add('enviado');
 }
 
-// Fecha ao clicar fora
-document.getElementById('modalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) fecharModal();
-});
+// A avaliacao e obrigatoria: nao fecha ao clicar fora (so apos enviar)
+function compartilharSite() {
+  var url = 'https://validadorcep.com.br/en/';
+  var texto = 'Check out the Brazilian CEP Validator: validate up to 1,000 CEPs at once, free.';
+  var lbl = document.getElementById('btnShareTxt');
+  if (typeof gtag === 'function') gtag('event', 'compartilhar');
+  if (navigator.share) {
+    navigator.share({ title: 'Brazilian CEP Validator', text: texto, url: url }).catch(function(){});
+    return;
+  }
+  var ok = function() { if (lbl) lbl.textContent = 'Link copied!'; };
+  if (navigator.clipboard) navigator.clipboard.writeText(texto + ' ' + url).then(ok, ok); else ok();
+}
 
 function fmt(c) { return c.length === 8 ? c.slice(0,5)+'-'+c.slice(5) : c; }
 
