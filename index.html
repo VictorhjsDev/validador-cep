@@ -350,7 +350,7 @@
     <div class="logo" aria-label="Validador de CEP em Massa">Validador de <span>CEP</span> em Massa</div>
     <p>Ferramenta gratuita para consultar e validar m&#250;ltiplos CEPs de uma vez</p>
   </div>
-  <div class="hdr-right"><button class="theme-btn" id="themeBtn" type="button" onclick="alternarTema()" data-dark="Modo escuro" data-light="Modo claro"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.800A9 9 0 1 1 11.200 3a7 7 0 0 0 9.800 9.800z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.200" fill="currentColor"/><path d="M12 2v2.500M12 19.500V22M2 12h2.500M19.500 12H22M4.900 4.900l1.800 1.800M17.300 17.300l1.800 1.800M4.900 19.100l1.800-1.800M17.300 6.700l1.800-1.800"/></svg></button><a class="lang-btn" style="text-decoration:none" href="/en/" hreflang="en" title="Read this page in English"><svg class="flag" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="2" fill="#fff"/><rect y="0.00" width="28" height="1.54" fill="#b22234"/><rect y="3.08" width="28" height="1.54" fill="#b22234"/><rect y="6.15" width="28" height="1.54" fill="#b22234"/><rect y="9.23" width="28" height="1.54" fill="#b22234"/><rect y="12.31" width="28" height="1.54" fill="#b22234"/><rect y="15.38" width="28" height="1.54" fill="#b22234"/><rect y="18.46" width="28" height="1.54" fill="#b22234"/><rect width="12" height="10.800" rx="1" fill="#3c3b6e"/><circle cx="1.6" cy="2.2" r=".55" fill="#fff"/><circle cx="3.6" cy="2.2" r=".55" fill="#fff"/><circle cx="5.6" cy="2.2" r=".55" fill="#fff"/><circle cx="7.6" cy="2.2" r=".55" fill="#fff"/><circle cx="9.6" cy="2.2" r=".55" fill="#fff"/><circle cx="1.6" cy="4.4" r=".55" fill="#fff"/><circle cx="3.6" cy="4.4" r=".55" fill="#fff"/><circle cx="5.6" cy="4.4" r=".55" fill="#fff"/><circle cx="7.6" cy="4.4" r=".55" fill="#fff"/><circle cx="9.6" cy="4.4" r=".55" fill="#fff"/><circle cx="1.6" cy="6.6" r=".55" fill="#fff"/><circle cx="3.6" cy="6.6" r=".55" fill="#fff"/><circle cx="5.6" cy="6.6" r=".55" fill="#fff"/><circle cx="7.6" cy="6.6" r=".55" fill="#fff"/><circle cx="9.6" cy="6.6" r=".55" fill="#fff"/></svg><span>EN</span></a></div>
+  <div class="hdr-right"><button class="theme-btn" id="themeBtn" type="button" onclick="alternarTema()" data-dark="Modo escuro" data-light="Modo claro"><svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.800A9 9 0 1 1 11.200 3a7 7 0 0 0 9.800 9.800z"/></svg><svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.200" fill="currentColor"/><path d="M12 2v2.500M12 19.500V22M2 12h2.500M19.500 12H22M4.900 4.900l1.800 1.800M17.300 17.300l1.800 1.800M4.900 19.100l1.800-1.800M17.300 6.700l1.800-1.800"/></svg></button><a class="lang-btn" onclick="rastrear('trocar_idioma',{para:'en'})" style="text-decoration:none" href="/en/" hreflang="en" title="Read this page in English"><svg class="flag" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="2" fill="#fff"/><rect y="0.00" width="28" height="1.54" fill="#b22234"/><rect y="3.08" width="28" height="1.54" fill="#b22234"/><rect y="6.15" width="28" height="1.54" fill="#b22234"/><rect y="9.23" width="28" height="1.54" fill="#b22234"/><rect y="12.31" width="28" height="1.54" fill="#b22234"/><rect y="15.38" width="28" height="1.54" fill="#b22234"/><rect y="18.46" width="28" height="1.54" fill="#b22234"/><rect width="12" height="10.800" rx="1" fill="#3c3b6e"/><circle cx="1.6" cy="2.2" r=".55" fill="#fff"/><circle cx="3.6" cy="2.2" r=".55" fill="#fff"/><circle cx="5.6" cy="2.2" r=".55" fill="#fff"/><circle cx="7.6" cy="2.2" r=".55" fill="#fff"/><circle cx="9.6" cy="2.2" r=".55" fill="#fff"/><circle cx="1.6" cy="4.4" r=".55" fill="#fff"/><circle cx="3.6" cy="4.4" r=".55" fill="#fff"/><circle cx="5.6" cy="4.4" r=".55" fill="#fff"/><circle cx="7.6" cy="4.4" r=".55" fill="#fff"/><circle cx="9.6" cy="4.4" r=".55" fill="#fff"/><circle cx="1.6" cy="6.6" r=".55" fill="#fff"/><circle cx="3.6" cy="6.6" r=".55" fill="#fff"/><circle cx="5.6" cy="6.6" r=".55" fill="#fff"/><circle cx="7.6" cy="6.6" r=".55" fill="#fff"/><circle cx="9.6" cy="6.6" r=".55" fill="#fff"/></svg><span>EN</span></a></div>
 </header>
 
 <div class="wrap">
@@ -631,6 +631,13 @@
 
 <script>
 var res = [];
+// ===== Eventos do Google Analytics (GA4) =====
+var _origemValidacao = 'colar';
+function rastrear(nome, params) {
+  try {
+    if (typeof gtag === 'function') gtag('event', nome, Object.assign({ transport_type: 'beacon' }, params || {}));
+  } catch(e) {}
+}
 var inp    = document.getElementById('cepInput');
 var cnt    = document.getElementById('cepHint');
 var prog   = document.getElementById('prog');
@@ -655,6 +662,7 @@ upArea.addEventListener('drop', function(e) {
 inp.addEventListener('input', atualizarCount);
 
 function switchTab(id) {
+  rastrear('trocar_aba', { aba: id });
   var btns = document.querySelectorAll('.tab-btn');
   var panels = document.querySelectorAll('.tab-panel');
   for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); btns[i].setAttribute('aria-selected','false'); }
@@ -688,6 +696,8 @@ function handleFile(file) {
       var rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
       var ceps = rows.map(function(r){ var v = String(r[0] || '').replace(/\D/g,''); return v.length > 0 ? v.padStart(8,'0') : ''; }).filter(function(c){ return c.length > 0; });
       inp.value = ceps.join('\n');
+      _origemValidacao = 'importar';
+      rastrear('importar_arquivo', { linhas: ceps.length });
       upName.textContent = file.name + ' - ' + ceps.length + ' linha(s)';
       atualizarCount();
     } catch(err) { upName.textContent = 'Erro ao ler o arquivo.'; }
@@ -696,6 +706,7 @@ function handleFile(file) {
 }
 
 function baixarModelo() {
+  rastrear('baixar_modelo');
   var ws = XLSX.utils.aoa_to_sheet([['01310100'],['22070900'],['30112020'],['70040020']]);
   ws['!cols'] = [{ wch: 16 }];
   var wb = XLSX.utils.book_new();
@@ -755,6 +766,8 @@ function mostrarControles(show) {
 async function consultarCeps() {
   var ceps = parseTxt();
   if (!ceps.length) return;
+  rastrear('validar_ceps', { quantidade: ceps.length, origem: _origemValidacao });
+  _origemValidacao = 'colar';
   // Limpa resultado anterior antes de começar
   res = [];
   sT.textContent = sO.textContent = sE.textContent = '-';
@@ -851,6 +864,7 @@ async function consultarCeps() {
   if (res.filter(function(r){ return r; }).length > 0) {
     expR.style.display = 'flex';
     document.getElementById('toggleHifenLabel').style.display = 'inline-flex';
+    rastrear('validacao_concluida', { validos: res.filter(function(r){ return r && r.ok; }).length, invalidos: res.filter(function(r){ return r && !r.ok; }).length, interrompida: !!_parar });
     // Abre modal se usuario ainda nao avaliou e nao clicou "Agora nao" nessa sessao
     posValidacaoModais();
   }
@@ -874,6 +888,7 @@ async function fetchCep(cep) {
 }
 
 async function buscarPorEndereco() {
+  rastrear('buscar_endereco');
   var rua    = document.getElementById('inputRua').value.trim();
   var cidade = document.getElementById('inputCidade').value.trim();
   var uf     = document.getElementById('inputUF').value.trim();
@@ -974,6 +989,7 @@ window.addEventListener('appinstalled', function() {
 });
 
 function instalarPWA() {
+  rastrear('instalar_app_clique');
   if (_pwaPrompt) {
     _pwaPrompt.prompt();
     _pwaPrompt.userChoice.then(function(result) {
@@ -1016,6 +1032,7 @@ function abrirModal() {
   var _h = document.getElementById('starHint'); if (_h) { _h.className = 'star-hint'; _h.innerHTML = 'Escolha de 1 a 5 estrelas para continuar'; }
   var _b = document.getElementById('btnEnviar'); if (_b) _b.disabled = true;
   document.getElementById('modalOverlay').style.display = 'flex';
+  rastrear('modal_avaliacao_aberto');
 }
 
 function fecharModal() {
@@ -1054,6 +1071,7 @@ async function enviarFeedback() {
 
   // Salva estrelas localmente e marca como ja avaliou
   if (_starSelecionada) {
+    rastrear('avaliacao_enviada', { nota: _starSelecionada, com_sugestao: !!sugestao });
     _avaliacoes.push({ nota: _starSelecionada, data: new Date().toISOString() });
     try { localStorage.setItem('cep_avaliacoes', JSON.stringify(_avaliacoes)); } catch(e){}
   }
@@ -1129,6 +1147,7 @@ function aplicarHifenGerador() {
 }
 
 function exportXLSX() {
+  rastrear('exportar', { formato: 'xlsx', linhas: res.length });
   var header = ['CEP','Status','Logradouro','Bairro','Cidade','UF','IBGE'];
   var rows = res.map(function(r){
     var c = r.cep ? r.cep.replace(/\D/g,'') : '';
@@ -1143,6 +1162,7 @@ function exportXLSX() {
 }
 
 function exportCSV() {
+  rastrear('exportar', { formato: 'csv', linhas: res.length });
   var rows = res.map(function(r){
     var c = r.cep ? r.cep.replace(/\D/g,'') : '';
     var cFmt = comHifen && c.length===8 ? c.slice(0,5)+'-'+c.slice(5) : c;
@@ -1158,6 +1178,7 @@ function exportCSV() {
 }
 
 function copiar() {
+  rastrear('exportar', { formato: 'copiar', linhas: res.length });
   var lines = ['CEP\tStatus\tLogradouro\tBairro\tCidade\tUF\tIBGE'];
   for (var i = 0; i < res.length; i++) {
     var r = res[i];
@@ -1182,6 +1203,7 @@ function embaralhar(arr) {
 function gerarCeps() {
   var qtd = Math.min(1000, Math.max(1, parseInt(document.getElementById('inputQtd').value) || 10));
   var lista = embaralhar(CEP_LISTA.slice()).slice(0, qtd);
+  rastrear('gerar_ceps', { quantidade: lista.length });
   document.getElementById('geradoOutput').value = lista.join('\n');
   document.getElementById('geradoCount').textContent = lista.length + ' CEPs gerados';
   document.getElementById('toggleHifenGerador').style.display = 'inline-flex';
@@ -1195,6 +1217,7 @@ function copiarGerados() {
 }
 
 function baixarGeradosTxt() {
+  rastrear('baixar_gerados', { formato: 'txt' });
   var b = new Blob([document.getElementById('geradoOutput').value],{type:'text/plain;charset=utf-8;'});
   var a = document.createElement('a');
   a.href = URL.createObjectURL(b);
@@ -1203,6 +1226,7 @@ function baixarGeradosTxt() {
 }
 
 function baixarGeradosXLSX() {
+  rastrear('baixar_gerados', { formato: 'xlsx' });
   var ceps = document.getElementById('geradoOutput').value.split('\n').filter(Boolean);
   var ws = XLSX.utils.aoa_to_sheet(ceps.map(function(c){ return [c]; }));
   ws['!cols'] = [{ wch: 12 }];
@@ -1212,6 +1236,8 @@ function baixarGeradosXLSX() {
 }
 
 function enviarParaValidar() {
+  _origemValidacao = 'gerador';
+  rastrear('gerador_enviar_validar');
   inp.value = document.getElementById('geradoOutput').value;
   atualizarCount();
   switchTab('ceps');
@@ -1259,6 +1285,7 @@ function abrirCafe() {
   }
   if (!CAFE_LINK) document.getElementById('cafeBtnLink').style.display = 'none';
   document.getElementById('cafeOverlay').style.display = 'flex';
+  rastrear('modal_cafe_aberto');
   try { sessionStorage.setItem('cep_cafe_sessao', '1'); } catch(e) {}
 }
 function fecharCafe() {
